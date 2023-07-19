@@ -1,0 +1,7 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{REQUEST_URI} !^/public/
+    # RewriteRule ^(.*)$ https://www.justhalaall.com/$1 [R,L]
+    RewriteRule ^(.*)$ /public/$1 [L,QSA]
+    RewriteRule ^ server.php [L]
+</IfModule>

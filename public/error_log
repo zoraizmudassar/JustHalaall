@@ -1,0 +1,80 @@
+[03-Oct-2021 14:39:09 America/Boise] PHP Fatal error:  Uncaught ReflectionException: Class env does not exist in /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php:873
+Stack trace:
+#0 /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php(873): ReflectionClass->__construct('env')
+#1 /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php(754): Illuminate\Container\Container->build('env')
+#2 /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(841): Illuminate\Container\Container->resolve('env', Array, true)
+#3 /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php(692): Illuminate\Foundation\Application->resolve('env', Array)
+#4 /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(826): Illuminate\Container\Container->make('env', Array)
+#5 /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php(14 in /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 875
+[03-Oct-2021 14:39:19 America/Boise] PHP Fatal error:  Uncaught ReflectionException: Class env does not exist in /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php:873
+Stack trace:
+#0 /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php(873): ReflectionClass->__construct('env')
+#1 /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php(754): Illuminate\Container\Container->build('env')
+#2 /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(841): Illuminate\Container\Container->resolve('env', Array, true)
+#3 /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php(692): Illuminate\Foundation\Application->resolve('env', Array)
+#4 /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(826): Illuminate\Container\Container->make('env', Array)
+#5 /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php(14 in /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 875
+[03-Oct-2021 14:39:54 America/Boise] PHP Fatal error:  Uncaught ReflectionException: Class env does not exist in /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php:873
+Stack trace:
+#0 /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php(873): ReflectionClass->__construct('env')
+#1 /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php(754): Illuminate\Container\Container->build('env')
+#2 /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(841): Illuminate\Container\Container->resolve('env', Array, true)
+#3 /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php(692): Illuminate\Foundation\Application->resolve('env', Array)
+#4 /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(826): Illuminate\Container\Container->make('env', Array)
+#5 /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php(14 in /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 875
+[03-Oct-2021 14:40:02 America/Boise] PHP Fatal error:  Uncaught ReflectionException: Class env does not exist in /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php:873
+Stack trace:
+#0 /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php(873): ReflectionClass->__construct('env')
+#1 /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php(754): Illuminate\Container\Container->build('env')
+#2 /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(841): Illuminate\Container\Container->resolve('env', Array, true)
+#3 /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php(692): Illuminate\Foundation\Application->resolve('env', Array)
+#4 /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(826): Illuminate\Container\Container->make('env', Array)
+#5 /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php(14 in /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 875
+[03-Oct-2021 14:41:00 America/Boise] PHP Fatal error:  Uncaught ReflectionException: Class env does not exist in /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php:873
+Stack trace:
+#0 /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php(873): ReflectionClass->__construct('env')
+#1 /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php(754): Illuminate\Container\Container->build('env')
+#2 /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(841): Illuminate\Container\Container->resolve('env', Array, true)
+#3 /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php(692): Illuminate\Foundation\Application->resolve('env', Array)
+#4 /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(826): Illuminate\Container\Container->make('env', Array)
+#5 /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php(14 in /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 875
+[03-Oct-2021 14:41:36 America/Boise] PHP Fatal error:  Uncaught ReflectionException: Class env does not exist in /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php:873
+Stack trace:
+#0 /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php(873): ReflectionClass->__construct('env')
+#1 /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php(754): Illuminate\Container\Container->build('env')
+#2 /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(841): Illuminate\Container\Container->resolve('env', Array, true)
+#3 /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php(692): Illuminate\Foundation\Application->resolve('env', Array)
+#4 /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(826): Illuminate\Container\Container->make('env', Array)
+#5 /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php(14 in /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 875
+[03-Oct-2021 14:41:44 America/Boise] PHP Fatal error:  Uncaught ReflectionException: Class env does not exist in /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php:873
+Stack trace:
+#0 /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php(873): ReflectionClass->__construct('env')
+#1 /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php(754): Illuminate\Container\Container->build('env')
+#2 /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(841): Illuminate\Container\Container->resolve('env', Array, true)
+#3 /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php(692): Illuminate\Foundation\Application->resolve('env', Array)
+#4 /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(826): Illuminate\Container\Container->make('env', Array)
+#5 /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php(14 in /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 875
+[03-Oct-2021 14:41:49 America/Boise] PHP Fatal error:  Uncaught ReflectionException: Class env does not exist in /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php:873
+Stack trace:
+#0 /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php(873): ReflectionClass->__construct('env')
+#1 /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php(754): Illuminate\Container\Container->build('env')
+#2 /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(841): Illuminate\Container\Container->resolve('env', Array, true)
+#3 /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php(692): Illuminate\Foundation\Application->resolve('env', Array)
+#4 /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(826): Illuminate\Container\Container->make('env', Array)
+#5 /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php(14 in /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 875
+[03-Oct-2021 14:42:01 America/Boise] PHP Fatal error:  Uncaught ReflectionException: Class env does not exist in /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php:873
+Stack trace:
+#0 /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php(873): ReflectionClass->__construct('env')
+#1 /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php(754): Illuminate\Container\Container->build('env')
+#2 /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(841): Illuminate\Container\Container->resolve('env', Array, true)
+#3 /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php(692): Illuminate\Foundation\Application->resolve('env', Array)
+#4 /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(826): Illuminate\Container\Container->make('env', Array)
+#5 /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php(14 in /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 875
+[03-Oct-2021 14:42:43 America/Boise] PHP Fatal error:  Uncaught ReflectionException: Class env does not exist in /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php:873
+Stack trace:
+#0 /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php(873): ReflectionClass->__construct('env')
+#1 /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php(754): Illuminate\Container\Container->build('env')
+#2 /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(841): Illuminate\Container\Container->resolve('env', Array, true)
+#3 /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php(692): Illuminate\Foundation\Application->resolve('env', Array)
+#4 /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(826): Illuminate\Container\Container->make('env', Array)
+#5 /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php(14 in /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 875

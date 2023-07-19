@@ -1,0 +1,76 @@
+Route::group(['prefix' => 'restaurant', 'namespace' => 'Api\Restaurant'], function () {
+
+    Route::group(['prefix' => 'auth', 'namespace' => 'Auth'], function () {
+        Route::post('login', 'LoginController@login');
+        Route::post('register', 'RegisterController@register');
+        // Route::post('verify-phone', 'CustomerAuthController@verify_phone');
+
+        // Route::post('check-email', 'CustomerAuthController@check_email');
+        // Route::post('verify-email', 'CustomerAuthController@verify_email');
+
+        // Route::post('forgot-password', 'PasswordResetController@reset_password_request');
+        // Route::post('verify-token', 'PasswordResetController@verify_token');
+        // Route::put('reset-password', 'PasswordResetController@reset_password_submit');
+
+        // Route::group(['prefix' => 'delivery-man'], function () {
+        //     Route::post('login', 'DeliveryManLoginController@login');
+        // });
+    });
+
+    Route::group(['middleware' => 'auth:api-restaurant'], function (){
+
+        Route::group(['prefix' => 'account'], function() {
+            Route::post('create', 'AccountController@store');
+            Route::post('update', 'AccountController@update');
+        });
+
+        Route::group(['prefix' => 'product'], function() {
+            Route::post('list', 'ProductController@index');
+            Route::post('create', 'ProductController@store');
+            Route::post('update', 'ProductController@update');
+        });
+
+        Route::group(['prefix' => 'deal'], function(){
+            Route::post('list', 'DealController@index');
+            Route::post('create', 'DealController@store');
+            Route::post('update', 'DealController@update');
+        });
+    });
+});
+
+Route::group(['prefix' => 'user', 'namespace' => 'Api\User'],
+    function() {
+
+    Route::group(['prefix' => 'auth', 'namespace' => 'Auth'], function () {
+        Route::post('login', 'LoginController@login');
+        Route::post('register', 'RegisterController@register');
+        Route::post('account/verify', 'VerificationController@verify');
+        Route::post('resend/verification-code', 'VerificationController@resendVerificationCode');
+        Route::post('forgot-password', 'ForgotPasswordController@forgotPassword');
+        Route::post('reset-password', 'ResetPasswordController@resetPassword');
+
+    });
+
+    Route::post('dashboard', 'DashboardController');
+    Route::post('restaurant/show', 'RestaurantController@show');
+    Route::post('restaurant/products', 'RestaurantController@products');
+    Route::post('restaurant/featured-products', 'RestaurantController@featuredProduct');
+    Route::post('restaurant/deals', 'RestaurantController@deals');
+
+    Route::group(['middleware' => 'auth:api'], function() {
+
+        Route::group(['prefix' => 'cart'], function() {
+            Route::post('/', 'CartController@cart');
+            Route::post('item/add', 'CartController@store');
+            Route::post('item/update', 'CartController@update');
+            Route::post('item/remove', 'CartController@remove');
+        });
+
+        Route::group(['prefix' => 'order'], function() {
+            Route::post('/', 'OrderController@list');
+            Route::post('invoice-id', 'OrderController@invoiceId');
+            Route::post('checkout', 'OrderController@store');
+            Route::post('update', 'OrderController@update');
+        });
+    });
+});
