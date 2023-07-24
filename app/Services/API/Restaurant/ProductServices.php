@@ -6,6 +6,7 @@ use App\Models\Cart;
 use App\Models\Category;
 use App\Models\Deal;
 use App\Models\Order;
+use App\Models\OrderDetail;
 use App\Models\Product;
 use App\Models\ProductImage;
 use App\Models\Restaurant;
@@ -451,7 +452,8 @@ class ProductServices
     public function featuredProductList($request)
     {
 
-        $products = Product::where(['restaurant_id'=>Auth::id()])->get();
+        // $products = Product::where(['restaurant_id'=>Auth::id()])->get();
+        $products = Product::all();
 
         if(!$products){
             return response()->json(['status'=> 404, 'message'=> 'Product not have yet!'], 404);
@@ -490,40 +492,42 @@ class ProductServices
     public function dashBoard($request)
     {
 
-        $orders = Order::with('carts','orderDetails')->get();
+        $orders = OrderDetail::where('restaurant_id',$request->restuarant_id)->get();
 
         $total_orders = [];
         $prepared = 0;
         $rtc = 0;
         $dv = 0;
         foreach ($orders as $key => $order){
-
-            $total_orders[$key]['order_number'] = $order->id;
-            $total_orders[$key]['status'] = $order->orderDetails['accepted_status'];
-            if ($order->orderDetails['accepted_status'] == 'preparing'){
+            $order_no = Order::find($order->order_id);
+            $total_orders[$key]['id'] = $order->id;
+            $total_orders[$key]['order_id'] = $order->order_id;
+            $total_orders[$key]['order_number'] = $order_no->order_no;
+            $total_orders[$key]['status'] = $order_no->status;
+            if ($order_no->status == 'preparing'){
                 $prepared += 1;
             }
-            if ($order->orderDetails['accepted_status'] == 'ready to collect'){
+            if ($order_no->status == 'make order on way'){
                 $rtc += 1;
             }
-            if ($order->orderDetails['accepted_status'] == 'delivered'){
+            if ($order_no->status == 'complete'){
                 $dv += 1;
             }
-            $total_orders[$key]['payment_method'] = $order->payment_type;
+            $total_orders[$key]['payment_method'] = $order->payment_id;
 
-            $carts = Cart::where('restaurant_id',Auth::id())->with('restaurant','user')->get();
+            // $carts = Cart::where('restaurant_id',Auth::id())->with('restaurant','user')->get();
 
-            //if ($order->cart->restaurant_id == Auth::id()){
-                foreach($carts as $key=> $cart){
-                    $total_orders[$key]['name'] = $cart->user->name;
-                    $total_orders[$key]['number'] = $cart->user->phone;
-                }
-            //}
+            // //if ($order->cart->restaurant_id == Auth::id()){
+            //     foreach($carts as $key=> $cart){
+            //         $total_orders[$key]['name'] = $cart->user->name;
+            //         $total_orders[$key]['number'] = $cart->user->phone;
+            //     }
+            // //}
         }
         $order_priodics = [
-            'prepared' => $prepared,
-            'ready to collect' => $rtc,
-            'delivered' => $dv,
+            'Preparing' => $prepared,
+            'Make Order On Way' => $rtc,
+            'Order Complete' => $dv,
         ];
 
         $data = [

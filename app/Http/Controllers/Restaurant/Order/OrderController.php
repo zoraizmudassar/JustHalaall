@@ -22,6 +22,10 @@ class OrderController extends Controller
     {
         return $orderServices->accepted($request);
     }
+    public function onWay(Request $request,OrderServices $orderServices)
+    {
+        return $orderServices->onWay($request);
+    }
     public function rejected(Request $request,OrderServices $orderServices)
     {
         return $orderServices->rejected($request);

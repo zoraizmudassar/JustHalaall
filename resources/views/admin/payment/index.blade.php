@@ -38,7 +38,7 @@
                                             <td>{{ $index + 1 }}</td>
                                             <td>{{ $item->name ?? '' }}</td>
                                             @php
-                                                $comission = $payment->where('restaurant_id', $item->id)->where('payment_status', 'pending')->sum('total_commission');
+                                                $comission = $payment->where('restaurant_id', $item->id)->where('comission_status', 'pending')->sum('total_commission');
                                             @endphp
                                             <td>{{  $comission?? '0' }}
                                             </td>

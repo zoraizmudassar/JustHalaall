@@ -16,7 +16,7 @@ class OrderController extends Controller
 
     public function index()
     {
-        $query = 'SELECT order_details.*, orders.order_no, orders.status_id,orders.payment_type,
+        $query = 'SELECT order_details.*, orders.order_no, orders.status,orders.payment_type,
         orders.order_place_date as order_date, restaurants.name as restaurant FROM orders
         JOIN order_details ON order_details.order_id = orders.id
         JOIN restaurants ON order_details.restaurant_id = restaurants.id WHERE orders.user_id = '.Auth()->user()->id.'';

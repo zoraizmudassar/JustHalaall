@@ -62,7 +62,7 @@
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                             New Order's (Pending) </div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{\App\Models\Order::where('status_id',1)->count()}}</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{\App\Models\Order::where('status',1)->count()}}</div>
                     </div>
                     <div class="col-auto">
                         <i class="fa fa-clipboard-list fa-2x text-gray-300"></i>
@@ -83,7 +83,7 @@
                             </div>
                             <div class="row no-gutters align-items-center">
                                 <div class="col-auto">
-                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{\App\Models\Order::where('status_id',3)->count()}}</div>
+                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{\App\Models\Order::where('status',3)->count()}}</div>
                                 </div>
                                 <div class="col">
                                     <div class="progress progress-sm mr-2">

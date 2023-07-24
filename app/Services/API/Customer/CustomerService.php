@@ -17,11 +17,12 @@ class CustomerService
 {
     public function getDashboard()
     {
-        $category = Category::get();
+        $category = Category::where('status', 1)->get();
         $restaurant = Restaurant::where('status', 'approved')->get();
-        $featuredProducts = Product::inRandomOrder()->limit(5)->get();
+        // $featuredProducts = Product::where('status','approved')->inRandomOrder()->limit(5)->get();
+        $featuredProducts = Product::where('status', 'approved')->where('is_available', 1)->where('is_featured', 1)->get();        
         return response()->json([
-            'status' => 200,
+            'status' => true,
             'category' => $category,
             'restaurant' => $restaurant,
             'featuredProducts' => $featuredProducts,
@@ -32,7 +33,7 @@ class CustomerService
     {
         $restaurant = Restaurant::where('status', 'approved')->get();
         return response()->json([
-            'status' => 200,
+            'status' => true,
             'data' => $restaurant,
         ], 200);
     }
@@ -65,13 +66,13 @@ class CustomerService
 
         if ($validator->fails()) {
             return response()->json([
-                'status' => 400,
+                'status' => false,
                 'message' => $validator->messages()->first()
             ], 400);
         } else {
             $restaurant = Restaurant::where('id', $request->restaurant_id)->get();
             return response()->json([
-                'status' => 200,
+                'status' => true,
                 'data' => $restaurant
             ], 200);
         }
@@ -97,7 +98,7 @@ class CustomerService
                     'data' => $restaurant
                 ], 200);
             } else {
-                $products = Product::where('restaurant_id', $request->restaurant_id)->get();
+                $products = Product::where('status','approved')->where('restaurant_id', $request->restaurant_id)->get();
                 $records = [];
                 foreach ($products as $product) {
                     $wishlist = WishList::where('product_id', $product->id)->where('user_id', $request->user_id)->count();
@@ -149,7 +150,7 @@ class CustomerService
                     'data' => $restaurant
                 ], 200);
             } else {
-                $products = Product::where('restaurant_id', $request->restaurant_id)->inRandomOrder()->limit(5)->get();
+                $products = Product::where('status','approved')->where('restaurant_id', $request->restaurant_id)->inRandomOrder()->limit(5)->get();
                 $records = [];
                 foreach ($products as $product) {
                     $wishlist = WishList::where('product_id', $product->id)->where('user_id', $request->user_id)->count();
@@ -222,7 +223,7 @@ class CustomerService
                 'message' => $validator->messages()->first()
             ], 400);
         } else {
-            $products = Product::where('name', 'LIKE', '%' . $request->food_name . '%')->get();
+            $products = Product::where('status','approved')->where('name', 'LIKE', '%' . $request->food_name . '%')->get();
             return response()->json([
                 'status' => 200,
                 'data' => $products
@@ -242,7 +243,7 @@ class CustomerService
                 'message' => $validator->messages()->first()
             ], 400);
         } else {
-            $productDeatil = Product::where('id', $request->product_id)->get();
+            $productDeatil = Product::where('status','approved')->where('id', $request->product_id)->get();
             return response()->json([
                 'status' => 200,
                 'data' => $productDeatil
@@ -306,13 +307,13 @@ class CustomerService
 
         if ($validator->fails()) {
             return response()->json([
-                'status' => 400,
+                'status' => false,
                 'message' => $validator->messages()->first()
             ], 400);
         } else {
-            $user = User::where('id', $request->user_id)->get();
+            $user = User::find($request->user_id);
             return response()->json([
-                'status' => 200,
+                'status' => true,
                 'data' => $user
             ], 200);
         }
@@ -331,10 +332,10 @@ class CustomerService
                 $validator = Validator::make($request->all(), [
                     'user_id' => 'required',
                     'name' => '',
-                    'email' => [
-                        'required',
-                        Rule::unique('users')->ignore($request->user_id)
-                    ],
+                    // 'email' => [
+                    //     'required',
+                    //     Rule::unique('users')->ignore($request->user_id)
+                    // ],
                     'phone' => [
                         'required',
                         Rule::unique('users')->ignore($request->user_id)
@@ -345,34 +346,43 @@ class CustomerService
                 ]);
                 if ($validator->fails()) {
                     return response()->json([
-                        'status' => 400,
+                        'status' => false,
                         'message' => $validator->messages()->first()
                     ], 400);
                 } else {
                     $user = User::where('id', $request->user_id)->first();
                     $file = $request->image;
-                    $path = '';
-                    if ($file) {
-                        if ($request->hasFile('image')) {
-                            $fileName = $file->getClientOriginalName();
-                            $explodeImage = explode('.', $fileName);
-                            $fileName = $explodeImage[0];
-                            $extension = end($explodeImage);
-                            $fileName = time() . "-" . $fileName . "." . $extension;
-                            $imageExtensions = ['jpg', 'jpeg', 'png'];
-                            if (in_array($extension, $imageExtensions)) {
-                                $folderName = "uploads/users";
-                                $file->move($folderName, $fileName);
-                                $path = $folderName . '/' . $fileName;
-                            } else {
-                                return response()->json([
-                                    'status' => 301,
-                                    'message' => 'Image should be in JPG or PNG and JPEG',
-                                ], 301);
-                            }
-                        }
+                    $filename = '';
+                    if($file){
+                        $f = finfo_open();
+                        $mime_type = finfo_buffer($f, base64_decode($request->image) , FILEINFO_MIME_TYPE);
+                        $type = explode('/', $mime_type);
+                        $randomNumber = rand(1000000000,9999999999);
+                        $filename = '/uploads/users/' .$randomNumber.'.'.$type[1];
+                        file_put_contents(public_path() . $filename, base64_decode($request->image));
+                        $filename = 'https://www.justhalaall.com/public'.$filename;
                     }
-                    $userImage = $path != '' ? $path : $user->image;
+                    // if ($file) {
+                    //     if ($request->hasFile('image')) {
+                    //         $fileName = $file->getClientOriginalName();
+                    //         $explodeImage = explode('.', $fileName);
+                    //         $fileName = $explodeImage[0];
+                    //         $extension = end($explodeImage);
+                    //         $fileName = time() . "-" . $fileName . "." . $extension;
+                    //         $imageExtensions = ['jpg', 'jpeg', 'png'];
+                    //         if (in_array($extension, $imageExtensions)) {
+                    //             $folderName = "uploads/users";
+                    //             $file->move($folderName, $fileName);
+                    //             $path = $folderName . '/' . $fileName;
+                    //         } else {
+                    //             return response()->json([
+                    //                 'status' => 301,
+                    //                 'message' => 'Image should be in JPG or PNG and JPEG',
+                    //             ], 301);
+                    //         }
+                    //     }
+                    // }
+                    $userImage = $filename != '' ? $filename : $user->image;
                     $user->name = $request->name ? $request->name : $user->name;
                     $user->phone = $request->phone ? $request->phone : $user->phone;
                     $user->email = $request->email ? $request->email : $user->email;
@@ -382,7 +392,7 @@ class CustomerService
                     $updateUser = $user->save();
                     if (!$updateUser) {
                         return response()->json([
-                            'status' => 500,
+                            'status' => false,
                             'message' => 'Server Error'
                         ], 500);
                     } else {
@@ -391,14 +401,14 @@ class CustomerService
                             'name' => $user->name,
                             'email' => $user->email,
                             'phone' => $user->phone,
-                            'image' => asset($path),
+                            'image' => asset($filename),
                             'address' => $user->address,
-                            'password' => $user->password,
-                            'created_at' => $user->created_at,
-                            'updated_at' => $user->updated_at,
+                            // 'password' => $user->password,
+                            // 'created_at' => $user->created_at,
+                            // 'updated_at' => $user->updated_at,
                         ];
                         return response()->json([
-                            'status' => 200,
+                            'status' => true,
                             'message' => 'Profile updated successfully',
                             'data' => $data,
                         ], 200);
@@ -416,20 +426,20 @@ class CustomerService
 
         if ($validator->fails()) {
             return response()->json([
-                'status' => 400,
+                'status' => false,
                 'message' => $validator->messages()->first()
             ], 400);
         } else {
-            $categoryProductList = Product::where('category_id', $request->category_id)->get();
+            $categoryProductList = Product::where('status','approved')->where('category_id', $request->category_id)->get();
             if (!$categoryProductList) {
                 return response()->json([
-                    'status' => 200,
+                    'status' => true,
                     'data' => $categoryProductList
                 ], 200);
             } else {
-                $categoryProductList = Product::where('category_id', $request->category_id)->get();
+                $categoryProductList = Product::where('status','approved')->where('category_id', $request->category_id)->get();
                 return response()->json([
-                    'status' => 200,
+                    'status' => true,
                     'data' => $categoryProductList
                 ], 200);
             }

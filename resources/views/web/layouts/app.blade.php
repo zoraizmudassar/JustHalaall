@@ -341,7 +341,6 @@
 
 <!-- ALL JS FILES -->
 @include('web.layouts.js')
-@yield('script')
 </body>
 
 </html>

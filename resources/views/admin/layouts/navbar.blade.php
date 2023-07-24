@@ -143,11 +143,11 @@
         <li class="nav-item dropdown no-arrow">
             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ auth()->user() ? \App\Models\Admin::getAdminFullName() : "Admin" }}</span>
-                <img class="img-profile rounded-circle" height="20px" src="{{ asset(\Illuminate\Support\Facades\Auth::user()->avatar) }}">
+                <img class="img-profile rounded-circle" height="20px" src="{{ asset(\Illuminate\Support\Facades\Auth::user()->avatar??'') }}">
             </a>
             <!-- Dropdown - User Information -->
             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="{{route('admin.editProfile',['admin' => \Illuminate\Support\Facades\Auth::user()->id])}}">
+                <a class="dropdown-item" href="{{route('admin.editProfile',['admin' => \Illuminate\Support\Facades\Auth::user()->id??'1'])}}">
                     <i class="fas fa-edit fa-sm fa-fw mr-2 text-gray-400"></i>
                     Edit Profile
 

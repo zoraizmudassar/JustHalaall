@@ -17,6 +17,11 @@ use Pnlinh\GoogleDistance\Facades\GoogleDistance;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/clear-cache', function() {
+    $exitCode = Artisan::call('optimize:clear');
+    return 'Done';
+    // return what you want
+});
 
 Route::get('oauth/{driver}', [SocialLoginController::class, 'redirectToProvider'])->name('social.oauth');
 Route::get('oauth/{driver}/callback', [SocialLoginController::class, 'handleProviderCallback'])->name('social.callback');
@@ -76,6 +81,7 @@ Route::namespace('Restaurant')->prefix('restaurant')->as('restaurants.')->group(
             Route::get('/order-pending', [App\Http\Controllers\Restaurant\Order\OrderController::class, 'pending'])->name('pending-order');
             Route::get('/order-accepted', [App\Http\Controllers\Restaurant\Order\OrderController::class, 'accepted'])->name('accepted-order');
             Route::get('/order-complete', [App\Http\Controllers\Restaurant\Order\OrderController::class, 'complete'])->name('complete-order');
+            Route::get('/on-way', [App\Http\Controllers\Restaurant\Order\OrderController::class, 'onWay'])->name('on-way');
             Route::get('/order-rejected', [App\Http\Controllers\Restaurant\Order\OrderController::class, 'rejected'])->name('rejected-order');
             Route::post('/order-change-status', [App\Http\Controllers\Restaurant\Order\OrderController::class, 'changeStatus'])->name('changeStatus-order');
             Route::post('/order-accepted-status', [App\Http\Controllers\Restaurant\Order\OrderController::class, 'acceptedStatus'])->name('acceptedStatus-order');
@@ -115,6 +121,24 @@ Route::get('profile', function () {
 Route::get('contact', function () {
     return view('web.contact');
 });
+// Route::get('homev1', function () {
+//     return view('website.home');
+// });
+Route::get('signupv1', function () {
+    return view('website.signup');
+});
+Route::get('loginv1', function () {
+    return view('website.login');
+});
+Route::get('resendOtpv1', function () {
+    return view('website.resendOtp');
+});
+Route::get('verifyotpv1', function () {
+    return view('website.verifyotp');
+});
+Route::get('updatePasswordv1', function () {
+    return view('website.updatePassword');
+});
 Route::post('contact/store',[\App\Http\Controllers\ContactController::class,'store']);
 Route::get('admin/contact',[\App\Http\Controllers\ContactController::class,'index']);
 Route::get('cart', [App\Http\Controllers\Web\CartController::class, 'index'])->name('cart')->middleware('auth');
@@ -125,6 +149,7 @@ Route::get('detail', function () {
 });
 //demo
 Route::get('/', [\App\Http\Controllers\HomeController::class, "index"])->name('index');
+Route::get('/web', [\App\Http\Controllers\HomeController::class, "index1"])->name('web');
 Route::get('search', [\App\Http\Controllers\HomeController::class, "search"])->name('search');
 Route::post('update-cart/{id}', [\App\Http\Controllers\Restaurant\Products\CartController::class, 'updateCart'])->name('updateCart');
 Route::get('categoryproducts/{categoryId}', [\App\Http\Controllers\HomeController::class, "categoryProducts"])->name('categoryproducts');
@@ -135,6 +160,20 @@ Route::get("distance", function () {
     $distance = google_distance('32.1877,74.1945', '31.4504,73.1350');
     printAll($distance / 1000);
 });
+
+//Authentication
+Route::post('/userRegister', [\App\Http\Controllers\Auth\RegisterController::class, 'create'])->name('userRegister');
+Route::post('/userLogin', [\App\Http\Controllers\Auth\LoginController::class, 'login'])->name('userLogin');
+Route::post('/updateProfile', [\App\Http\Controllers\Auth\ProfileController::class, 'update'])->name('updateProfile');
+Route::post('/updatePassword', [\App\Http\Controllers\Auth\ProfileController::class, 'updatePassword'])->name('updatePassword');
+Route::get('forgot-password', [App\Http\Controllers\Auth\ForgotPasswordController::class, 'forgotPassword'])->name('forgot-password');
+Route::post('forgotPassword', [App\Http\Controllers\Auth\ForgotPasswordController::class, 'forgot_Password'])->name('forgotPassword');
+Route::post('verify_otp', [App\Http\Controllers\Auth\ForgotPasswordController::class, 'verifyOtp'])->name('verify_otp');
+Route::post('update_password', [App\Http\Controllers\Auth\ForgotPasswordController::class, 'changeForgetPassword'])->name('update_password');
+Route::post('/logout', [\App\Http\Controllers\Auth\RegisterController::class, 'logout'])->name('logout');
+
+//Dashboard
+Route::get('/homev1', [\App\Http\Controllers\HomeController::class, "getDashboard"])->name('homev1');
 
 Route::get("map", function () {
 

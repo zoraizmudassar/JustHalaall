@@ -16,7 +16,9 @@ class CartController extends Controller
     {
         $this->cartService = $cartService;
     }
-
+public function cartTotal(Request $request){
+        return $this->cartService->cartTotal($request);
+    }
     public function cartList(Request $request){
         return $this->cartService->cartList($request);
     }
@@ -46,6 +48,7 @@ class CartController extends Controller
     }
 
     public function checkout(Request $request){
+        
         return $this->cartService->checkout($request);
     }
 

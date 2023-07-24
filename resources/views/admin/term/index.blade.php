@@ -1,5 +1,5 @@
 @extends('admin.layouts.app')
-@section('title','Categories')
+@section('title','Pending Products')
 @section('content')
     <style>
         .form-control{

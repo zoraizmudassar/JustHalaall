@@ -78,3 +78,10 @@ Stack trace:
 #3 /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php(692): Illuminate\Foundation\Application->resolve('env', Array)
 #4 /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(826): Illuminate\Container\Container->make('env', Array)
 #5 /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php(14 in /home1/justhal2/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 875
+[31-Dec-2022 20:53:59 UTC] PHP Fatal error:  Trait 'App\Traits\Firebase' not found in /home1/justhal2/public_html/app/Services/API/Customer/AuthenticationServices.php on line 16
+[31-Dec-2022 20:54:57 UTC] PHP Fatal error:  Trait 'App\Traits\Firebase' not found in /home1/justhal2/public_html/app/Services/API/Customer/AuthenticationServices.php on line 16
+[31-Dec-2022 21:20:52 UTC] PHP Fatal error:  Trait 'App\Traits\Firebase' not found in /home1/justhal2/public_html/app/Services/API/Customer/AuthenticationServices.php on line 16
+[31-Dec-2022 21:22:03 UTC] PHP Fatal error:  Trait 'App\Http\Traits\Firebase' not found in /home1/justhal2/public_html/app/Services/API/Customer/AuthenticationServices.php on line 16
+[31-Dec-2022 21:23:19 UTC] PHP Fatal error:  Trait 'App\Services\API\Customer\AuthenticatesUsers' not found in /home1/justhal2/public_html/app/Services/API/Customer/AuthenticationServices.php on line 16
+[31-Dec-2022 21:24:19 UTC] PHP Fatal error:  Trait 'App\Services\API\Customer\AuthenticatesUsers' not found in /home1/justhal2/public_html/app/Services/API/Customer/AuthenticationServices.php on line 16
+[11-Jan-2023 22:41:22 UTC] PHP Fatal error:  Cannot use DB as DB because the name is already in use in /home1/justhal2/public_html/app/Services/API/Restaurant/OrderServices.php on line 20

@@ -7,8 +7,10 @@ use App\Http\Resources\CartResource;
 use App\Http\Resources\WishListResource;
 use App\Http\Traits\ApiResponse;
 use App\Http\Traits\ApiValidation;
+use App\Http\Traits\Firebase;
 use App\Models\Cart;
 use App\Models\Order;
+use App\Models\User;
 use App\Models\OrderCart;
 use App\Models\OrderDetail;
 use App\Models\Restaurant;
@@ -21,17 +23,78 @@ use Stripe\Customer;
 use Stripe\EphemeralKey;
 use Stripe\PaymentIntent;
 use Stripe;
+use DB;
+use Illuminate\Http\Request;
+use Exception;
 
 class CartService
 {
-    use ApiResponse, ApiValidation;
+    use ApiResponse, ApiValidation, Firebase;
 
-    public function cartList($request)
+public function cartTotal(Request $request)
     {
-        $carts = Cart::where('user_id', getApiLoggedUserId($request))
-            ->where('status', Cart::PENDING_CART_STATUS)
-            ->get();
-        return  $this->successResponse(CartResource::collection($carts));
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 400,
+                'message' => $validator->messages()
+            ], 400);
+            
+        } else {
+            $user_id = $request->user_id;
+                
+            $carts = Cart::where('user_id', $user_id)->count();
+            $data = [
+                "total" => $carts
+                ];
+            return  $this->successResponse($data);
+        }
+    }
+    public function cartList(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'latitude' => 'required',
+            'longitude' => 'required',
+            'user_id' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 400,
+                'message' => $validator->messages()
+            ], 400);
+            
+        } else {
+            $latitudeTo = $request->latitude;
+            $longitudeTo = $request->longitude;
+            $user_id = $request->user_id;
+                
+            $carts = Cart::with(['product','restaurant','user'])->where('user_id', $user_id)->get();
+            $data = [];
+            foreach($carts as $index=> $item){
+                $charges = 0;
+                $restaurant = Restaurant::find($item->restaurant_id);
+                $distance = $this->short_distance($latitudeTo,$longitudeTo,$restaurant->latitude,$restaurant->longitude);
+                $charges = $distance * $restaurant->delivery_charges;
+                $data [$index] = [
+                    'id'=>$item->id,
+                    'user_id'=>$item->user_id,
+                    'restaurant_id'=>$item->restaurant_id,
+                    'product_id'=>$item->product_id,
+                    'unit_price'=>$item->unit_price,
+                    'quantity'=>$item->quantity,
+                    'status'=>$item->status,
+                    'delivery_cahrge' => number_format((float)$charges, 2, '.', ''),
+                    'created_at'=>$item->created_at,
+                    'updated_at'=>$item->updated_at,
+                    'user'=>$item->user,
+                    'restaurant'=>$item->restaurant,
+                    'product'=>$item->product
+                    ];
+            }
+            return  $this->successResponse($data);
+        }
     }
 
     public function addToCart($request)
@@ -42,7 +105,7 @@ class CartService
         } else {
             $restaurant = Restaurant::find($request->restaurant_id);
             if (!$restaurant) {
-                return $this->errorMessage('Hotel not found');
+                return $this->errorMessage('Restuarant not found');
             }
 
             $product = Product::find($request->product_id);
@@ -148,67 +211,168 @@ class CartService
 
     public function orderList($request, $order_status = '')
     {
-        $orderList = new Order();
-        if ($order_status != '') {
-            $orderList = $orderList->where('status_id', getOrderStatusId($order_status));
-        }
-        $orderList = $orderList->where('user_id', getApiLoggedUserId($request))->get();
-        return $this->successResponse(OrderResource::collection($orderList));
+        $orderList = DB::table('orders')->select('order_details.id',
+        'order_details.product_id as product_id','order_details.order_id as order_id','order_details.total','products.name as product_name','products.images as product_image','restaurants.id as restaurant_id','restaurants.name as restaurant_name')
+        ->join('order_details','order_details.order_id','=','orders.id')
+        ->join('products','products.id','=','order_details.product_id')
+        ->join('restaurants','restaurants.id','=','order_details.restaurant_id')
+        ->where('orders.user_id',$request->user_id)->get();
+        return response()->json([ 'status' => 200 ,'data'=>$orderList ], 200);
     }
-
+    public function short_distance($latitudeTo,$longitudeTo,$latitudeFrom,$longitudeFrom){
+        try{
+        // Calculate distance between latitude and longitude
+        $theta    = $longitudeFrom - $longitudeTo;
+        $dist    = sin(deg2rad($latitudeFrom)) * sin(deg2rad($latitudeTo)) +  cos(deg2rad($latitudeFrom)) * cos(deg2rad($latitudeTo)) * cos(deg2rad($theta));
+        $dist    = acos($dist);
+        $dist    = rad2deg($dist);
+        $miles    = $dist * 60 * 1.1515;
+        $distance = round($miles * 1.609344, 2);
+       return $distance;
+        } catch (Exception $e) {
+            return $this->successResponse($e->getMessage());
+        }
+    }
+    
+    function getAddress($latitude, $longitude)
+    {
+        try{
+            //google map api url
+            $url = "https://maps.google.com/maps/api/geocode/json?latlng=$latitude,$longitude&key=AIzaSyA6Ry5WzM5kjO4ryPGeoLXL3-lkrAGi0xY";
+    
+            // send http request
+            $geocode = file_get_contents($url);
+            $json = json_decode($geocode);
+            
+            if(isset($json->results[0])) {
+                $response = array();
+                foreach($json_decode->results[0]->address_components as $addressComponet) {
+                    if(in_array('political', $addressComponet->types)) {
+                            $response[] = $addressComponet->long_name; 
+                    }
+                }
+            
+                if(isset($response[0])){ $first  =  $response[0];  } else { $first  = 'null'; }
+                if(isset($response[1])){ $second =  $response[1];  } else { $second = 'null'; } 
+                if(isset($response[2])){ $third  =  $response[2];  } else { $third  = 'null'; }
+                if(isset($response[3])){ $fourth =  $response[3];  } else { $fourth = 'null'; }
+                if(isset($response[4])){ $fifth  =  $response[4];  } else { $fifth  = 'null'; }
+            
+                if( $first != 'null' && $second != 'null' && $third != 'null' && $fourth != 'null' && $fifth != 'null' ) {
+                    echo "<br/>Address:: ".$first;
+                    echo "<br/>City:: ".$second;
+                    echo "<br/>State:: ".$fourth;
+                    echo "<br/>Country:: ".$fifth;
+                }
+                else if ( $first != 'null' && $second != 'null' && $third != 'null' && $fourth != 'null' && $fifth == 'null'  ) {
+                    echo "<br/>Address:: ".$first;
+                    echo "<br/>City:: ".$second;
+                    echo "<br/>State:: ".$third;
+                    echo "<br/>Country:: ".$fourth;
+                }
+                else if ( $first != 'null' && $second != 'null' && $third != 'null' && $fourth == 'null' && $fifth == 'null' ) {
+                    echo "<br/>City:: ".$first;
+                    echo "<br/>State:: ".$second;
+                    echo "<br/>Country:: ".$third;
+                }
+                else if ( $first != 'null' && $second != 'null' && $third == 'null' && $fourth == 'null' && $fifth == 'null'  ) {
+                    echo "<br/>State:: ".$first;
+                    echo "<br/>Country:: ".$second;
+                }
+                else if ( $first != 'null' && $second == 'null' && $third == 'null' && $fourth == 'null' && $fifth == 'null'  ) {
+                    echo "<br/>Country:: ".$first;
+                }
+              }
+            $address = $json->results[0]->address_components[1]->long_name??'no address';
+            $city = $json->results[0]->address_components[3]->long_name??'no city';
+            $state = $json->results[0]->address_components[4]->long_name??'no state';
+            $country = $json->results[0]->address_components[5]->long_name??'no country';
+            $address=[
+                'address'=>$address,
+                'city'=>$city,
+                'state'=>$state,
+                'country'=>$country,
+                'full'=>$address.','.$city.','.$state.','.$country
+                ];
+            return $address;
+        } catch (Exception $e) {
+            
+        return response()->json([ 'status' => 406 ,'message'=>$e->getMessage() ], 406);
+        }
+    }
+    
+    public function sendNotification($token, $title=null, $body=null,$icon=null,$sound=null,$data=null){
+        
+        try{
+        $url = 'https://fcm.googleapis.com/fcm/send';
+          
+        $serverKey = env('FCM_API_KEY');
+  
+        $data = [
+            "registration_ids" => array($token),
+            "notification" => [
+                "title" => $title,
+                "body" => $body,  
+            ]
+        ];
+        $encodedData = json_encode($data);
+    
+        $headers = [
+            'Authorization:key=' . $serverKey,
+            'Content-Type: application/json',
+        ];
+    
+        $ch = curl_init();
+      
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+        // Disabling SSL Certificate support temporarly
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);        
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $encodedData);
+        // Execute post
+        $result = curl_exec($ch);
+        if ($result === FALSE) {
+            die('Curl failed: ' . curl_error($ch));
+        }        
+        // Close connection
+        curl_close($ch);
+        return $result;
+        } catch (Exception $e) {
+        return response()->json([ 'status' => 406 ,'message'=>$e->getMessage() ], 406);
+        }
+            // $notification = [
+            //     'title' =>$title,
+            //     'body' => $body,
+            //     'icon' =>$icon,
+            //     'sound' => $sound
+            // ];
+            // $extraNotificationData = ["message" => $notification,"moredata" =>$data];
+    
+            // $fcmNotification = [
+            //     //'registration_ids' => $tokenList, //multple token array
+            //     'to'        => $token, //single token
+            //     'notification' => $notification,
+            //     'data' => $extraNotificationData
+            // ];
+            
+            // return $this->firebaseNotification($fcmNotification); 
+    
+        }
     public function checkout($request)
     {
+        try{
         $validationStatus = $this->validateData($request, 'checkout');
 
         if (!$validationStatus) {
             return $validationStatus;
         } else {
-
-            $cart = Cart::where('user_id', $request->user_id)->get();
-            $sub_total = 0;
-            $order = new Order;
-            $order->name = $request->name;
-            $order->email = $request->email;
-            $order->phone = $request->phone;
-            $order->address = $request->address;
-            $order->order_no = 'Order' . random_int(1000, 9999);
-            $order->order_place_date = Carbon::now()->format('Y-m-d');
-            $order->payment_status = 'pending';
-            $order->charge_id = $request->shipping_option;
-            $order->payment_type = $request->paymentMethod;
-            $order->user_id = $request->user_id;
-
-            $order->shipping_charge = $request->shipping_charge;
-            $order->address2 = $request->address2;
-            $order->country = $request->country;
-            $order->state = $request->state;
-            $order->city = $request->city;
-            $order->zipcode = $request->zipcode;
-            $order->same = $request->same;
-            $order->discount = 0;
-            $order->coupon_discount = 0;
-            $order->tax = 0;
-            $order->total = $request->total;
-            $order->save();
-
-            foreach ($cart as $item) {
-                $order_detail = new OrderDetail;
-                $order_detail->order_id = $order->id;
-                $order_detail->product_id = $item->product_id;
-                $order_detail->sub_total = $item->quantity * $item->unit_price;
-                $order_detail->total = $item->quantity * $item->unit_price;
-                $order_detail->restaurant_id = $item->restaurant_id;
-                $order_detail->commission_percent = 11;
-                $order_detail->payment_status = 'pending';
-                $order_detail->delivery_charges = 0;
-                $order_detail->total_commission = (($item->quantity * $item->unit_price) / 100) * 11;
-                $order_detail->payment_id = $request->paymentMethod;
-                $order_detail->save();
-            }
             if ($request->paymentMethod == 'card') {
-                $stripe = new \Stripe\StripeClient(
-                    'pk_test_51KT26VDuKSCrfM2pauObEL6P9pEphtZN4W0eOtz79NTcFlEVp8Yub37AgWxBnhXbFizoQQHe6UsmOqlpgotFutWq00L3bdQIgV'
-                );
+                try{
+                $stripe = new \Stripe\StripeClient('pk_test_51KT26VDuKSCrfM2pauObEL6P9pEphtZN4W0eOtz79NTcFlEVp8Yub37AgWxBnhXbFizoQQHe6UsmOqlpgotFutWq00L3bdQIgV');
                 $token = $stripe->tokens->create([
                     'card' => [
                         'number' => $request->card_no,
@@ -217,64 +381,108 @@ class CartService
                         'cvc' => $request->cvc,
                     ],
                 ]);
-                Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+                }catch(\Exception $e){
+                    return response()->json([ 'status' => 406 ,'message'=>$e->getMessage() ], 406);
+                }
+            }
+            $get_restaurant = DB::table('carts')->select('restaurant_id')->distinct()->get();
+            $user = User::find($request->user_id);
+            $address = $this->getAddress($request->latitude, $request->longitude);
+            foreach($get_restaurant as $item){
+            
+            $cart = Cart::where('user_id', $request->user_id)->where('restaurant_id',$item->restaurant_id)->get();
+            $sub_total = 0;
+            $order = new Order;
+            $order->name = $request->name;
+            $order->email = $request->email;
+            $order->phone = $request->phone;
+            $order->address = $address['address'];
+            $order->order_no = 'Order' . random_int(1000, 9999);
+            $order->order_place_date = Carbon::now()->format('Y-m-d');
+            $order->payment_status = 'pending';
+            $order->charge_id = $request->shipping_option;
+            $order->payment_type = $request->paymentMethod;
+            $order->user_id = $request->user_id;
+            // $order->address2 = $request->address2;
+            $order->country = $address['country'];
+            $order->state = $address['state'];
+            $order->city = $address['city'];
+            // $order->zipcode = $request->zipcode;
+            // $order->same = $request->same;
+            $order->discount = 0;
+            $order->coupon_discount = 0;
+            $order->tax = 0;
+            $order->total = $request->total;
+            
+            $order->save();
+            
+            $from = $request->address .' '.$request->city.','.$request->state.','.$request->country;
+            $shipping_charge = 0; 
+            foreach ($cart as $item) {
+                $restaurant = Restaurant::find($item->restaurant_id);
+                $ditance = $this->short_distance($request->latitude,$request->longitude,$restaurant->latitude,$restaurant->longitude);
+                $order_detail = new OrderDetail;
+                $order_detail->order_id = $order->id;
+                $order_detail->product_id = $item->product_id;
+                $order_detail->sub_total = $item->quantity * $item->unit_price;
+                $order_detail->total = $item->quantity * $item->unit_price;
+                $order_detail->restaurant_id = $item->restaurant_id;
+                $order_detail->commission_percent = 11;
+                $order_detail->payment_status = 'Paid';
+                $order_detail->accepted_status = 'Preparing';
+                if($request->paymentMethod=='cod'){
+                    $shipping_charge += $restaurant->delivery_charges * $ditance;
+                    $order_detail->delivery_charges = $restaurant->delivery_charges * $ditance;
+                }else{
+                    $order_detail->delivery_charges = 0.00;
+                }
+                
+                $order_detail->total_commission = (($item->quantity * $item->unit_price) / 100) * 11;
+                $order_detail->payment_id = $request->paymentMethod;
+                $order_detail->save();
+                
+                // Notification
+                $title ='New Order Arrived';
+                $body = 'Order no '.$order->id.' from '.$user->name;
+                $this->sendNotification($restaurant->fcm_token, $title, $body,$icon=null,$sound=null,$data=null);
+                
+            }
+            $order_update = Order::find($order->id);
+            $order_update->shipping_charge = $shipping_charge;
+            $order_update->total =$order_update->total + $shipping_charge;
+            if($request->paymentMethod == 'card'){
+                $order_update->restaurant_payment =$order_update->total + $shipping_charge;
+            }else{
+                $order_update->restaurant_status = 'paid';
+            }
+            $order_update->update();
+            
+            if ($request->paymentMethod == 'card') {
+                Stripe\Stripe::setApiKey('sk_test_51KT26VDuKSCrfM2pzNkem7TjWwpYd0JM68hsK21rqjs48MrgRA16fuehT8FdhbciOH3tkjDu4CLYK3Jc5GBd3flr00JrTOuYdb');
                 Stripe\Charge::create([
-                    "amount" => $request->total * 100,
+                    "amount" => ($request->total + $shipping_charge)  * 100,
                     "currency" => "gbp",
                     "source" => $token->id,
                     "description" => "This order payment"
                 ]);
+                $this->sendNotification($user->fcm_token, 'Your Order Payment Against Order No '.$order->id, 'payment recieved successfully!',$icon=null,$sound=null,$data=null);
             }
+            // Notification
+                $title1 ='Your Order has been Placed Successfully!';
+                $body1 = 'Your Order No '.$order->id;
+                $this->sendNotification($user->fcm_token, $title1, $body1,$icon=null,$sound=null,$data=null);
+            $data = [
+                'order' => $order
+                ];
+            }
+                
             $cart_empty = Cart::where('user_id', $request->user_id)->delete();
-
-
-            // $cartItems = $request->cart;
-
-            // $date = Carbon::now();
-            // $order = new Order();
-            // $order->name = $request->name;
-            // $order->email = $request->email;
-            // $order->phone = $request->phone;
-            // $order->address = $request->address;
-            // $order->payment_type = $request->payment_type;
-            // $order->payment_status = $request->payment_status;
-            // $order->stripe_payment_id = $request->stripe_id ?? 0;
-            // $order->user_id = getApiLoggedUserId($request);
-            // $order->status_id = 1;
-            // $order->save();
-
-            // $order_cart = array();
-            // foreach ($cartItems as $cart) {
-            //     $cartInfo = Cart::find($cart['cart_id']);
-            //     $commission = ((($cartInfo->unit_price * $cartInfo->quantity) / 100) * 11);
-            //     $temp = array();
-            //     $temp['cart_id'] = $cart['cart_id'];
-            //     $temp['delivery_charges'] = $cart['delivery_charges'] ?? 0;
-            //     $temp['retaurant_id'] = $cart['restaurant_id'];
-            //     $temp['commission'] = $commission ?? 0;
-            //     $temp['order_id'] = $order->id;
-            //     $temp['created_at'] = $date;
-            //     $temp['updated_at'] = $date;
-            //     $order_cart[] = $temp;
-
-            //     Cart::find($cart['cart_id'])->update([
-            //         'status' => Cart::ORDER_CART_STATUS
-            //     ]);
-            // }
-
-            // OrderCart::insert($order_cart);
-
-
-            // OrderDetail::create([
-            //     'order_id' => $order->id,
-            //     'delivery_charges' => "0",
-            //     'sub_total' => $order->totalAmount(),
-            //     'total' => $order->totalAmount(),
-            // ]);
-            return $this->successResponse($order);
+            return $this->successResponse($data);
+        }
+        } catch (Exception $e) {
+        return response()->json([ 'status' => 406 ,'message'=>$e->getMessage() ], 406);
         }
     }
-
     public function stripePayment($request, $amount)
     {
         Stripe\Stripe::setApiKey('sk_test_51K8R9YHPpBmXqUZOAWWGydpJuH1B6NI0gPzZjHCw9TmlXd36LHbcZuIzbj8SoI99ZZT25rBmdIp4Vz3bvem4vRIg00x9zsyDFn');
@@ -320,7 +528,7 @@ class CartService
             if (!$order) {
                 return $this->errorMessage('Order not exists');
             }
-            $order->status_id = getOrderStatusId($request->order_status);
+            $order->status = getOrderStatusId($request->order_status);
             $order->cancel_reason = $request->cancel_reason;
             $order->save();
             $order = new OrderResource($order);

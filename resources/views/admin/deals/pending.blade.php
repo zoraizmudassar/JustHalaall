@@ -39,8 +39,11 @@
 
                                         <td>
                                             <select data-id="{{$res->id}}"  style="width: auto"  class="custom-select custom-select-sm statusSet" aria-label="Select Status">
-                                                <option value="1" {{ $res->status == 1 ? "selected" : "" }}>Enable</option>
-                                                <option value="0" {{ $res->status == 0 ? "selected" : ""}}>Disable</option>
+                                                {{--                                                @foreach($statuses as $status)--}}
+                                                <option value="pending" {{ $res->status == "pending" ? "selected" : ""}}>Pending</option>
+                                                <option value="approved" {{ $res->status == "approved" ? "selected" : "" }}>Approved</option>
+                                                <option value="rejected" {{ $res->status == "rejected" ? "selected" : ""}}>Rejected</option>
+                                                {{--                                                @endforeach--}}
                                             </select>
                                         </td>
                                         <td><img src="{{asset($res->image)}}" class="embed-responsive"></td>

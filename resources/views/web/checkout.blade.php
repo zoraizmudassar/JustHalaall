@@ -109,30 +109,28 @@
                                     <div class="invalid-feedback"> Zip code required. </div>
                                 </div>
                             </div>
-                            <hr class="mb-4">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="same-address">
-                                <label class="custom-control-label" for="same-address">Shipping address is the same as my
-                                    billing address</label>
-                            </div>
+                            <!--<hr class="mb-4">-->
+                            <!--<div class="custom-control custom-checkbox">-->
+                            <!--    <input type="checkbox" class="custom-control-input" id="same-address">-->
+                            <!--    <label class="custom-control-label" for="same-address">Shipping address is the same as my-->
+                            <!--        billing address</label>-->
+                            <!--</div>-->
                             {{-- <div class="custom-control custom-checkbox">
                                 <input type="checkbox" class="custom-control-input" id="save-info">
                                 <label class="custom-control-label" for="save-info">Save this information for next
                                     time</label>
                             </div> --}}
-                            <hr class="mb-4">
-                            <div class="title"> <span>Payment</span> </div>
                             <div class="d-block my-3">
                                 {{-- <div class="custom-control custom-radio">
                                     <input id="credit" name="paymentMethod" type="radio" value="cod"
                                         class="custom-control-input" checked required>
                                     <label class="custom-control-label" for="credit">Cash on delivery</label>
                                 </div> --}}
-                                <div class="custom-control custom-radio">
+                                {{--<div class="custom-control custom-radio">
                                     <input id="debit" checked name="paymentMethod" type="radio" value="card"
                                         class="custom-control-input" required>
                                     <label class="custom-control-label" for="debit">Online Payment/Credit Card</label>
-                                </div>
+                                </div>--}}
                                 {{-- <div class="custom-control custom-radio">
                                     <input id="debit" name="paymentMethod" checked type="radio"
                                         class="custom-control-input" required>
@@ -145,37 +143,59 @@
                                 </div> --}}
                             </div>
                             {{-- id="div-stripe" --}}
-                            <div class="row">
+                            <div class="row" id="show_hide" style="display:none;">
+                            <div class="col-md-12">
+                                <hr class="mb-4">
+                            <div class="title" style="font-weight:bold;"> <span>Payment</span> </div>
+                            </div>
                                 <div class="col-md-6 mb-3">
                                     <label for="cc-name">Name on card</label>
-                                    <input type="text" class="form-control" id="cc-name" placeholder="Card Name"
-                                        required>
-                                    <small class="text-muted">Full name as displayed on card</small>
-                                    <div class="invalid-feedback"> Name on card is required </div>
+                                    <input type="text" class="form-control" name="card_name" placeholder="Card Name">
+                                    @if($errors->has('card_name'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('card_name') }}
+                    </div>
+                @endif
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label for="cc-number">Credit card number</label>
-                                    <input type="text" class="form-control card-number" id="cc-number"
-                                        placeholder="Card Number" required>
-                                    <div class="invalid-feedback"> Credit card number is required </div>
+                                    <input type="text" class="form-control card-number" name="number"
+                                        placeholder="Card Number">
+                                    @if($errors->has('number'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('number') }}
+                    </div>
+                @endif
                                 </div>
                                 <div class="col-md-3 mb-3">
                                     <label for="cc-expiration">Expiration Month</label>
-                                    <input type="text" class="form-control card-expiry-month" id="cc-expiration"
-                                        placeholder="Expiry Month ex.12" required>
-                                    <div class="invalid-feedback"> Expiration month required </div>
+                                    <input type="text" class="form-control card-expiry-month" name="exp_month"
+                                        placeholder="Expiry Month ex.12">
+                                    @if($errors->has('exp_month'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('exp_month') }}
+                    </div>
+                @endif
                                 </div>
                                 <div class="col-md-3 mb-3">
                                     <label for="cc-expiration">Expiration Year</label>
-                                    <input type="text" class="form-control card-expiry-year" id="cc-expiration"
-                                        placeholder="Expiry Year ex.2022" required>
-                                    <div class="invalid-feedback"> Expiration month required </div>
+                                    <input type="text" class="form-control card-expiry-year" name="exp_year"
+                                        placeholder="Expiry Year ex.2022" >
+                                    @if($errors->has('exp_year'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('exp_year') }}
+                    </div>
+                @endif
                                 </div>
                                 <div class="col-md-3 mb-3">
                                     <label for="cc-expiration">CVV</label>
-                                    <input type="text" class="form-control card-cvc" id="cc-cvv" placeholder="CVV"
-                                        required>
-                                    <div class="invalid-feedback"> Security code required </div>
+                                    <input type="text" class="form-control card-cvc" name="ccv" placeholder="CVV"
+                                        >
+                                    @if($errors->has('ccv'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('ccv') }}
+                    </div>
+                @endif
                                 </div>
                                 <div class='form-row row'>
                                     <div class='col-md-12 hide error form-group'>
@@ -211,24 +231,25 @@
                                 </div>
                                 <div class="mb-4">
                                     <div class="custom-control custom-radio">
-                                        <input id="shippingOption1" name="shipping_option" value="1"
+                                        <input id="shippingOption1" name="paymentMethod" value="cod"
                                             class="custom-control-input" checked="checked" type="radio">
-                                        <label class="custom-control-label" for="shippingOption1">Standard
-                                            Delivery</label> <span class="float-right font-weight-bold">FREE</span>
+                                        <label class="custom-control-label" for="shippingOption1">Cash on
+                                            Delivery</label> 
+                                            <!--<span class="float-right font-weight-bold">FREE</span>-->
                                     </div>
-                                    <div class="ml-4 mb-2 small">(3-7 business days)</div>
+                                    <!--<div class="ml-4 mb-2 small">(3-7 business days)</div>-->
                                     <div class="custom-control custom-radio">
-                                        <input id="shippingOption2" name="shipping_option" value="2"
+                                        <input id="shippingOption2" name="paymentMethod" value="card"
                                             class="custom-control-input" type="radio">
-                                        <label class="custom-control-label" for="shippingOption2">Express Delivery</label>
-                                        <span class="float-right font-weight-bold">£10.00</span>
+                                        <label class="custom-control-label" for="shippingOption2">Online Card</label>
+                                        <!--<span class="float-right font-weight-bold">£10.00</span>-->
                                     </div>
-                                    <div class="ml-4 mb-2 small">(2-4 business days)</div>
+                                    <!--<div class="ml-4 mb-2 small">(2-4 business days)</div>-->
                                     <div class="custom-control custom-radio">
-                                        <input id="shippingOption3" name="shipping_option" value="3"
+                                        <input id="shippingOption3" name="paymentMethod" value="coc"
                                             class="custom-control-input" type="radio">
-                                        <label class="custom-control-label" for="shippingOption3">Next Business
-                                            day</label> <span class="float-right font-weight-bold">£20.00</span>
+                                        <label class="custom-control-label" for="shippingOption3">Cash on Collection</label>
+                                        <!--<span class="float-right font-weight-bold">£20.00</span>-->
                                     </div>
                                 </div>
                             </div>
@@ -340,132 +361,19 @@
     <!-- End Cart -->
 @endsection
 @section('script')
-    <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
-    <script type="text/javascript">
-        $(function() {
-            var $form = $(".require-validation");
-            $('form.require-validation').bind('submit', function(e) {
-                var $form = $(".require-validation"),
-                    inputSelector = ['input[type=email]', 'input[type=password]',
-                        'input[type=text]', 'input[type=file]',
-                        'textarea'
-                    ].join(', '),
-                    $inputs = $form.find('.required').find(inputSelector),
-                    $errorMessage = $form.find('div.error'),
-                    valid = true;
-                $errorMessage.addClass('d-none');
-                $('.has-error').removeClass('has-error');
-                $inputs.each(function(i, el) {
-                    var $input = $(el);
-                    if ($input.val() === '') {
-                        $input.parent().addClass('has-error');
-                        $errorMessage.removeClass('d-none');
-                        e.preventDefault();
-                    }
-                });
-                if (!$form.data('cc-on-file')) {
-                    e.preventDefault();
-                    Stripe.setPublishableKey($form.data('stripe-publishable-key'));
-                    Stripe.createToken({
-                        number: $('.card-number').val(),
-                        cvc: $('.card-cvc').val(),
-                        exp_month: $('.card-expiry-month').val(),
-                        exp_year: $('.card-expiry-year').val()
-                    }, stripeResponseHandler);
-                }
-            });
+<script>
+$(document).ready(function(){
+    $("input[name=paymentMethod]").change(function() {
+        var test = $(this).val();
+                if(test=='card'){
+                $("#show_hide").show();
+            }else{
+                
+        $("#show_hide").hide();
+            }
+    });
+});
     
-            function stripeResponseHandler(status, response) {
-                if (response.error) {
-                    $('.error')
-                        .removeClass('d-none')
-                        .find('.alert')
-                        .text(response.error.message);
-                } else {
-                    /* token contains id, last4, and card type */
-                    var token = response['id'];
-                    $form.find('input[type=text]').empty();
-                    $form.append("<input type='hidden' name='stripeToken' value='" + token + "'/>");
-                    $form.get(0).submit();
-                }
-            }
-        });
-    </script>
-    {{-- <script type="text/javascript">
-        $(document).ready(function() {
-            
-        $(function() {
-            var $form = $(".validation");
-            $('form.validation').bind('submit', function(e) {
-                var $form = $(".validation"),
-                    inputVal = ['input[type=email]', 'input[type=password]',
-                        'input[type=text]', 'input[type=file]',
-                        'textarea'
-                    ].join(', '),
-                    $inputs = $form.find('.required').find(inputVal),
-                    $errorStatus = $form.find('div.error'),
-                    valid = true;
-                $errorStatus.addClass('hide');
-
-                $('.has-error').removeClass('has-error');
-                $inputs.each(function(i, el) {
-                    var $input = $(el);
-                    if ($input.val() === '') {
-                        $input.parent().addClass('has-error');
-                        $errorStatus.removeClass('hide');
-                        e.preventDefault();
-                    }
-                });
-
-                if (!$form.data('cc-on-file')) {
-                    e.preventDefault();
-                    Stripe.setPublishableKey($form.data('stripe-publishable-key'));
-                    Stripe.createToken({
-                        number: $('.card-num').val(),
-                        cvc: $('.card-cvc').val(),
-                        exp_month: $('.card-expiry-month').val(),
-                        exp_year: $('.card-expiry-year').val()
-                    }, stripeHandleResponse);
-                }
-
-            });
-
-            function stripeHandleResponse(status, response) {
-                if (response.error) {
-                    $('.error')
-                        .removeClass('hide')
-                        .find('.alert')
-                        .text(response.error.message);
-                } else {
-                    var token = response['id'];
-                    $form.find('input[type=text]').empty();
-                    $form.append("<input type='hidden' name='nonce' value='" + token + "'/>");
-                    $form.get(0).submit();
-                }
-            }
-
-        });
-        $('#div-stripe').hide();
-            $('#debit').click(function() {
-                $('#div-stripe').show();
-            });
-            $('#credit').click(function() {
-                $('#div-stripe').hide();
-            });
-        });
-        $('#shippingOption2').click(function() {
-            $('#shipping_charges').val('10');
-            var total = ($('#shipping_total').val() * 1) + 10;
-            $('#shipping_total').val(total);
-        });
-        $('#shippingOption3').click(function() {
-            $('#shipping_charges').val('20');
-            var total = ($('#shipping_total').val() * 1) + 20;
-            $('#shipping_total').val(total);
-        });
-        $('#checkout').click(function() {
-            $('#div-stripe').hide();
-        });
-    </script> --}}
+</script>
 
 @endsection

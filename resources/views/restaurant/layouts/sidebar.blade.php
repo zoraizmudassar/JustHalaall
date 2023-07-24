@@ -66,6 +66,7 @@
                                 <h6 class="collapse-header">Order Components:</h6>
                 <a class="collapse-item" href="{{route('restaurants.order.pending-order')}}">Pending</a>
                 <a class="collapse-item" href="{{route('restaurants.order.accepted-order')}}">Accepted</a>
+                <a class="collapse-item" href="{{route('restaurants.order.on-way')}}">On Way</a>
                 <a class="collapse-item" href="{{route('restaurants.order.complete-order')}}">Complete</a>
                 <a class="collapse-item" href="{{route('restaurants.order.rejected-order')}}">Rejected</a>
             </div>

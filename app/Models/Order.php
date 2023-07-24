@@ -36,15 +36,15 @@ class Order extends Model
         return $total;
     }
 
-    public function totalDeliveryCharges(){
-        $total = 0;
-        $cartsInfo = $this->cartsInfo();
-        foreach ($cartsInfo as $item){
-            $cartCharges = OrderCart::where('cart_id', $item->id)->where('order_id', $this->id)->first();
-            $total = ($total + $cartCharges->delivery_charges);
-        }
-        return $total;
-    }
+    // public function totalDeliveryCharges(){
+    //     $total = 0;
+    //     $cartsInfo = $this->cartsInfo();
+    //     foreach ($cartsInfo as $item){
+    //         $cartCharges = OrderCart::where('cart_id', $item->id)->where('order_id', $this->id)->first();
+    //         $total = ($total + $cartCharges->delivery_charges);
+    //     }
+    //     return $total;
+    // }
 
 
     public function orderDetails()

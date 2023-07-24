@@ -8,6 +8,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Support\Facades\Validator;
 
 class SocialController extends Controller
 {
@@ -19,19 +20,54 @@ class SocialController extends Controller
     protected $providers = [
         'facebook', 'google'
     ];
-
-    public function redirectToProvider($driver)
+public function redirectToProvider($driver)
     {
         if( ! $this->isProviderAllowed($driver) ) {
             return $this->sendFailedResponse("{$driver} is not currently supported");
         }
 
         try {
-            return Socialite::driver($driver)->redirect();
+            $data = Socialite::driver($driver)->redirect();
+            return $data;
         } catch (Exception $e) {
             // You should show something simple fail message
             return $this->sendFailedResponse($e->getMessage());
         }
+    }
+    public function socialLogin(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+
+            'access_token' => 'required',
+            'provider' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 406, 'message' => $validator->messages()->first()
+            ], 406);
+        }
+        $provider = $request->provider;
+        $token = $request->input('access_token');
+        // get the provider's user. (In the provider server)
+        $providerUser = Socialite::driver($provider)->userFromToken($token);
+        // check if access token exists etc..
+        // search for a user in our server with the specified provider id and provider name
+        $user = User::where('provider_name', $provider)->where('provider_id', $providerUser->id)->first();
+        // if there is no record with these data, create a new user
+        if($user == null){
+            $user = User::create([
+                'provider' => $provider,
+                'provider_id' => $providerUser->id,
+            ]);
+        }
+        // create a token for the user, so they can login
+        $token = $user->createToken(env('APP_NAME'))->accessToken;
+        // return the token for usage
+        return response()->json([
+            'success' => true,
+            'token' => $token
+        ]);
     }
 
 

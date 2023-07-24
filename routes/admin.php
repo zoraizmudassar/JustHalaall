@@ -71,6 +71,7 @@ Route::namespace('Admin')->prefix('admin')->as('admin.')->group(function () {
 
         Route::get('/pending', [\App\Http\Controllers\Admin\Order\OrderController::class, 'pending'])->name('pending');
         Route::get('/accepted', [\App\Http\Controllers\Admin\Order\OrderController::class, 'accepted'])->name('accepted');
+        Route::get('/on-way', [\App\Http\Controllers\Admin\Order\OrderController::class, 'onWay'])->name('on-way');
         Route::get('/complete', [\App\Http\Controllers\Admin\Order\OrderController::class, 'complete'])->name('complete');
         Route::get('/rejected', [\App\Http\Controllers\Admin\Order\OrderController::class, 'rejected'])->name('rejected');
         Route::post('/change-status', [\App\Http\Controllers\Admin\Order\OrderController::class, 'changeStatus'])->name('changeStatus');
@@ -90,8 +91,10 @@ Route::namespace('Admin')->prefix('admin')->as('admin.')->group(function () {
     //    Payment Route's
     Route::namespace('Payment')->prefix('payment')->as('payment.')->group(function () {
 
-        Route::get('/payment', [App\Http\Controllers\Admin\PaymentController::class, 'index'])->name('payment');
+        Route::get('/', [App\Http\Controllers\Admin\PaymentController::class, 'index'])->name('payment');
         Route::post('/pay', [App\Http\Controllers\Admin\PaymentController::class, 'pay'])->name('pay');
+        Route::get('/restaurant', [App\Http\Controllers\Admin\PaymentController::class, 'restaurant'])->name('restaurant_payment');
+        Route::post('/restaurant-pay', [App\Http\Controllers\Admin\PaymentController::class, 'restaurant_pay'])->name('restaurant_pay');
     });
     //    Term Route's
     Route::namespace('Term')->prefix('term')->as('term.')->group(function () {

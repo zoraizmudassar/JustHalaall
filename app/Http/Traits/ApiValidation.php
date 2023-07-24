@@ -5,6 +5,11 @@ use Illuminate\Support\Facades\Validator;
 
 trait ApiValidation {
     public $validationArray = array(
+        'cart_list'=> [
+            'latitude' => 'required',
+            'longitude' => 'required',
+            'user_id' => 'required',
+            ],
         'add_to_cart'=> [
             'restaurant_id' => 'required',
             'product_id' => 'required',
@@ -24,8 +29,6 @@ trait ApiValidation {
             'phone' => 'required',
             'address' => 'required',
             'payment_type' => 'required',
-            'stripe_id' => 'required',
-            'cart' => 'required|array',
         ],
          'update_order_status'=>[
              'order_id' => 'required',

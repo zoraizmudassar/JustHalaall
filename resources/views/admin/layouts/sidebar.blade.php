@@ -96,6 +96,7 @@
                                 <h6 class="collapse-header">Order Components:</h6>
                 <a class="collapse-item" href="{{route('admin.order.pending')}}">Pending</a>
                 <a class="collapse-item" href="{{route('admin.order.accepted')}}">Accepted</a>
+                <a class="collapse-item" href="{{route('admin.order.on-way')}}">On Way</a>
                 <a class="collapse-item" href="{{route('admin.order.complete')}}">Complete</a>
                 <a class="collapse-item" href="{{route('admin.order.rejected')}}">Rejected</a>
             </div>
@@ -131,8 +132,9 @@
         </a>
         <div id="collapsePayment" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Comissions:</h6>
-                <a class="collapse-item" href="#">View</a>
+                <h6 class="collapse-header">Payments:</h6>
+                <a class="collapse-item" href="{{url('admin/payment')}}">Commission</a>
+                <a class="collapse-item" href="{{url('admin/payment/restaurant')}}">Restaurant Payment</a>
             </div>
         </div>
     </li>

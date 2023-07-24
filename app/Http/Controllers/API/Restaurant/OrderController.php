@@ -37,9 +37,16 @@ class OrderController extends Controller
     {
         return $orderServices->orderAccept($request);
     }
-
+    public function onWay(Request $request,OrderServices $orderServices)
+    {
+        return $orderServices->onWay($request);
+    }
     public function orderReject(Request $request,OrderServices $orderServices)
     {
         return $orderServices->orderReject($request);
+    }
+    public function orderStatusChange(Request $request,OrderServices $orderServices)
+    {
+        return $orderServices->orderStatusChange($request);
     }
 }

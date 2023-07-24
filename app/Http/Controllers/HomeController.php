@@ -24,8 +24,24 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
+     
+    public function index1()
+    {
+        $foodCategory=Category::get();
+        $resturant=Restaurant::where('status', 'approved')->get();
+        return view('web.home', compact('foodCategory', 'resturant'));
+    }
+    
+    public function getDashboard()
+    {
+        $foodCategory = Category::get();
+        $resturant = Restaurant::where('status', 'approved')->get();
+        return view('website.home', compact('foodCategory', 'resturant'));
+    }
     public function index()
     {
+
+        return view('web.home2');
         // $foodCategory=Category::whereIn('id', [1,5,8,9])->get();
         $foodCategory=Category::get();
         $resturant=Restaurant::where('status', 'approved')->get();

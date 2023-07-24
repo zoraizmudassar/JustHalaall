@@ -23,11 +23,11 @@ Route::namespace('API\Restaurant')->prefix('restaurant')->as('restaurant.')->mid
     Route::post('forgetpassword', [\App\Http\Controllers\API\Restaurant\AuthenticationController::class, 'forgetPassword'])->name('forgetPassword');
     Route::post('verify-otp', [\App\Http\Controllers\API\Restaurant\AuthenticationController::class, 'verifyOtp'])->name('verifyOtp');
     Route::post('resend-otp', [\App\Http\Controllers\API\Restaurant\AuthenticationController::class, 'resendOtp'])->name('resendOtp');
+    Route::post('change-password', [\App\Http\Controllers\API\Restaurant\AuthenticationController::class, 'changePassword'])->name('changePassword');
 
 
     Route::middleware(['auth:restaurant-api', 'Restaurant'])->group(function () {
 
-        Route::post('change-password', [\App\Http\Controllers\API\Restaurant\AuthenticationController::class, 'changePassword'])->name('changePassword');
         Route::post('get-profile', [\App\Http\Controllers\API\Restaurant\RestaurantController::class, 'getProfile'])->name('getProfile');
         Route::post('edit-profile', [\App\Http\Controllers\API\Restaurant\RestaurantController::class, 'editProfile'])->name('editProfile');
         Route::post('account-details', [\App\Http\Controllers\API\Restaurant\RestaurantController::class, 'accountDetails'])->name('accountDetails');
@@ -71,11 +71,11 @@ Route::namespace('API\Restaurant')->prefix('restaurant')->as('restaurant.')->mid
 //Customer Side Api's Routes
 Route::namespace('API\Customer')->prefix('customer')->as('customer.')->middleware('json.response')->group(function () {
 
-    Route::get('oauth/{driver}', [\App\Http\Controllers\API\SocialController::class, 'redirectToProvider'])->name('social');
-    Route::get('oauth/{driver}/callback', [\App\Http\Controllers\API\SocialController::class, 'handleProviderCallback'])->name('callback');
+    Route::get('social-login/{driver}', [\App\Http\Controllers\API\SocialController::class, 'redirectToProvider'])->name('social');
+    Route::post('store-social', [\App\Http\Controllers\API\SocialController::class, 'socialLogin'])->name('callback');
 
     Route::post('signup', [\App\Http\Controllers\API\Customer\AuthenticationController::class, 'register'])->name('signup');
-    Route::post('login', [\App\Http\Controllers\API\Customer\AuthenticationController::class, 'login'])->name('login');
+    Route::match(['get', 'post'],'login', [\App\Http\Controllers\API\Customer\AuthenticationController::class, 'login'])->name('login');
     Route::post('forget-password', [\App\Http\Controllers\API\Customer\AuthenticationController::class, 'forgetPassword'])->name('forgetPassword');
     Route::post('verify-otp', [\App\Http\Controllers\API\Customer\AuthenticationController::class, 'verifyOtp'])->name('verifyOtp');
     Route::post('changeForgetPassword', [\App\Http\Controllers\API\Customer\AuthenticationController::class, 'changeForgetPassword'])->name('changeForgetPassword');
@@ -83,7 +83,7 @@ Route::namespace('API\Customer')->prefix('customer')->as('customer.')->middlewar
     Route::get('getDashboard', [CustomerController::class, 'getDashboard'])->name('getDashboard');
     Route::get('getRestaurant', [CustomerController::class, 'getRestaurant'])->name('getRestaurant');
     Route::get('searchRestaurant', [CustomerController::class, 'searchRestaurant'])->name('searchRestaurant');
-    Route::get('restaurantDetail', [CustomerController::class, 'restaurantDetail'])->name('restaurantDetail');
+    Route::post('restaurantDetail', [CustomerController::class, 'restaurantDetail'])->name('restaurantDetail');
     Route::get('restaurantProducts', [CustomerController::class, 'restaurantProducts'])->name('restaurantProducts');
     Route::get('restaurantFeaturedProducts', [CustomerController::class, 'restaurantFeaturedProducts'])->name('restaurantFeaturedProducts');
     Route::get('restaurantDeals', [CustomerController::class, 'restaurantDeals'])->name('restaurantDeals');
@@ -91,10 +91,10 @@ Route::namespace('API\Customer')->prefix('customer')->as('customer.')->middlewar
     Route::get('restaurantProductDetail', [CustomerController::class, 'restaurantProductDetail'])->name('restaurantProductDetail');
     Route::get('restaurantDealDetail', [CustomerController::class, 'restaurantDealDetail'])->name('restaurantDealDetail');
     Route::get('categoryList', [CustomerController::class, 'categoryList'])->name('categoryList');
-    Route::get('getProfile', [CustomerController::class, 'getProfile'])->name('getProfile');
+    Route::post('getProfile', [CustomerController::class, 'getProfile'])->name('getProfile');
     Route::post('updateProfile', [CustomerController::class, 'updateProfile'])->name('updateProfile');
     Route::post('change-password', [\App\Http\Controllers\API\Customer\AuthenticationController::class, 'changePassword'])->name('changePassword');
-    Route::get('categoryProducts', [CustomerController::class, 'categoryProducts'])->name('categoryProducts');
+    Route::post('categoryProducts', [CustomerController::class, 'categoryProducts'])->name('categoryProducts');
 
     Route::get('rating', [\App\Http\Controllers\API\Restaurant\RatingController::class, 'index'])->name('rating');
     Route::post('rating-store', [\App\Http\Controllers\API\Restaurant\RatingController::class, 'store'])->name('rating.store');
@@ -112,6 +112,7 @@ Route::namespace('API\Customer')->prefix('customer')->as('customer.')->middlewar
 
 Route::middleware(['json.response'])->group(function () {
     Route::get('cartList', [CartController::class, 'cartList'])->name('cartList');
+    Route::get('total-cart', [CartController::class, 'cartTotal']);
     Route::post('addToCart', [CartController::class, 'addToCart'])->name('addToCart');
     Route::get('removeFromCart', [CartController::class, 'removeFromCart'])->name('removeFromCart');
 

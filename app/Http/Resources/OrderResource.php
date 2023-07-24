@@ -27,7 +27,7 @@ class OrderResource extends JsonResource
             'deliveryCharges' => $delivery_charges,
             'total' => $total,
             'payment_type' => $this->payment_type,
-            'order_status' => $this->status->status,
+            'order_status' => $this->status,
             'carts' => CartResource::collection($this->cartsInfo()),
         ];
     }

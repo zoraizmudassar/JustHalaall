@@ -19,7 +19,7 @@ class Restaurant
      */
     public function handle(Request $request, Closure $next)
     {
-//        dd(Auth::user()->status);
+        // dd(Auth::user()->status);
         if(Auth::check()){
 //            dd(Auth::guard('restaurant')->user());
             if(Auth::user()->status == "approved"){

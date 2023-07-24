@@ -17,7 +17,10 @@ class OrderController extends Controller
     {
         return $orderServices->pending($request);
     }
-
+    public function onWay(Request $request,OrderServices $orderServices)
+    {
+        return $orderServices->onWay($request);
+    }
     public function accepted(Request $request,OrderServices $orderServices)
     {
         return $orderServices->accepted($request);
