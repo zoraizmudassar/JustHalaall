@@ -1,134 +1,151 @@
 @extends('website.layouts.app')
-
 @section('content')
-
-
-	<!-- breadcrumb-section -->
-	<div class="breadcrumb-section breadcrumb-bg">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-8 offset-lg-2 text-center">
-					<div class="breadcrumb-text">
-						<p>Fresh and Organic</p>
-						<h1>Cart</h1>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- end breadcrumb section -->
-
-	<!-- cart -->
-	<div class="cart-section mt-150 mb-150">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-8 col-md-12">
-					<div class="cart-table-wrap">
-						<table class="cart-table">
-							<thead class="cart-table-head">
-								<tr class="table-head-row">
-									<th class="product-remove"></th>
-									<th class="product-image">Product Image</th>
-									<th class="product-name">Name</th>
-									<th class="product-price">Price</th>
-									<th class="product-quantity">Quantity</th>
-									<th class="product-total">Total</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr class="table-body-row">
-									<td class="product-remove"><a href="#"><i class="far fa-window-close"></i></a></td>
-									<td class="product-image"><img src="website/assets/img/products/product-img-1.jpg" alt=""></td>
-									<td class="product-name">Strawberry</td>
-									<td class="product-price">$85</td>
-									<td class="product-quantity"><input type="number" placeholder="0"></td>
-									<td class="product-total">1</td>
-								</tr>
-								<tr class="table-body-row">
-									<td class="product-remove"><a href="#"><i class="far fa-window-close"></i></a></td>
-									<td class="product-image"><img src="website/assets/img/products/product-img-2.jpg" alt=""></td>
-									<td class="product-name">Berry</td>
-									<td class="product-price">$70</td>
-									<td class="product-quantity"><input type="number" placeholder="0"></td>
-									<td class="product-total">1</td>
-								</tr>
-								<tr class="table-body-row">
-									<td class="product-remove"><a href="#"><i class="far fa-window-close"></i></a></td>
-									<td class="product-image"><img src="website/assets/img/products/product-img-3.jpg" alt=""></td>
-									<td class="product-name">Lemon</td>
-									<td class="product-price">$35</td>
-									<td class="product-quantity"><input type="number" placeholder="0"></td>
-									<td class="product-total">1</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-				</div>
-
-				<div class="col-lg-4">
-					<div class="total-section">
-						<table class="total-table">
-							<thead class="total-table-head">
-								<tr class="table-total-row">
-									<th>Total</th>
-									<th>Price</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr class="total-data">
-									<td><strong>Subtotal: </strong></td>
-									<td>$500</td>
-								</tr>
-								<tr class="total-data">
-									<td><strong>Shipping: </strong></td>
-									<td>$45</td>
-								</tr>
-								<tr class="total-data">
-									<td><strong>Total: </strong></td>
-									<td>$545</td>
-								</tr>
-							</tbody>
-						</table>
-						<div class="cart-buttons">
-							<a href="cart.html" class="boxed-btn">Update Cart</a>
-							<a href="checkout.html" class="boxed-btn black">Check Out</a>
-						</div>
-					</div>
-
-					<div class="coupon-section">
-						<h3>Apply Coupon</h3>
-						<div class="coupon-form-wrap">
-							<form action="index.html">
-								<p><input type="text" placeholder="Coupon"></p>
-								<p><input type="submit" value="Apply"></p>
-							</form>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- end logo carousel -->
-		<!-- copyright -->
-	<div class="copyright">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-6 col-md-12">
-									<p>Copyrights &copy; 2023 - <a href="https://imransdesign.com/">Just Halaall Team</a>,  All Rights Reserved.<br>
-					</p>
-				</div>
-				<div class="col-lg-6 text-right col-md-12">
-					<div class="social-icons">
-						<ul>
-							<li><a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
-							<li><a href="#" target="_blank"><i class="fab fa-twitter"></i></a></li>
-							<li><a href="#" target="_blank"><i class="fab fa-instagram"></i></a></li>
-							<li><a href="#" target="_blank"><i class="fab fa-linkedin"></i></a></li>
-							<li><a href="#" target="_blank"><i class="fab fa-dribbble"></i></a></li>
-						</ul>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+@section('style')
+<style>
+	.qty, .submit{
+		position: relative;
+		z-index: 1;
+		display: inline-block;
+		height: 3em;
+		padding: 1em;
+		line-height: 1em;
+		text-align: center;
+		border-radius: .6em;
+		background: #ccc;
+	}
+	input.qty{
+		z-index: 2;
+		width: 3em;
+		padding: 0;
+		height: 3.28em;
+		border: .15em solid #fff;
+	}
+	.qty-minus{
+		margin-right: -1em;
+		padding: 1em 1.2em 1em .8em;
+		cursor: pointer;
+	}
+	.qty-plus{
+		margin-left: -1em;
+		padding: 1em .8em 1em 1.2em;
+		cursor: pointer;
+	}
+	.submit{
+		margin-left: 1em;
+		border: none;
+		background: #c44034;
+		color: #fff;
+	}
+	input::-webkit-inner-spin-button{
+		display: none;
+		margin: 0;
+	}
+</style>
 @endsection
+<div class="breadcrumb-section breadcrumb-bg">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 offset-lg-2 text-center">
+				<div class="breadcrumb-text">
+					<h1>Cart</h1>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="cart-section mt-150 mb-150">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 col-md-12">
+				<div class="cart-table-wrap">
+					<table class="cart-table">
+						<thead class="cart-table-head">
+							<tr class="table-head-row">
+								<th class="product-image">Product Image</th>
+								<th class="product-name">Name</th>
+								<th class="product-price">Price</th>
+								<th class="product-quantity">Quantity</th>
+								<th class="product-total">Total</th>
+								<th class="product-total">Remove</th>
+							</tr>
+						</thead>
+						<tbody>
+							@if($cartData)
+                                @foreach($cartData as $key => $cart)
+									<tr class="table-body-row">									
+										<td class="product-image"><img src="{{asset($cart->product->images ?? '')}}" alt=""></td>
+										<td class="product-name">{{$cart->product->name ?? ''}}</td>
+										<td class="product-price">{{$cart['unit_price'] ?? ''}}</td>
+										<td class="quantity-box">
+                                            <form action="{{url('update-cartv1/'.$cart->id)}}" method="POST">
+                                                @csrf
+                                                <div class="qty qty-minus" onclick="decreaseQty('cartQty{{$cart->id}}')">-</div>
+                                                <input id="cartQty{{$cart->id}}" name="qty" class="qty" type="number" value="{{ $cart['quantity'] ?? '' }}" min="1" size="1">
+                                                <div class="qty qty-plus" onclick="increaseQty('cartQty{{$cart->id}}')">+</div>
+                                                <button type="submit" style="border: 2px solid; color: #fd7050; margin-left: 10px; height: 47px; border-radius: 8px;"><i class="fa fa-check"></i></button>
+                                            </form>
+                                        </td>
+										<td class="product-total">£ {{$cart['unit_price'] * $cart['quantity']}}</td>
+										<td class="remove-pr">
+                                            <a href="{{'remove-itemv1/' . $cart->id}}"><i class="fas fa-times text-dark"></i></a>
+                                        </td>
+									</tr>
+								@endforeach
+                            @endif
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="col-lg-4">
+				<div class="total-section">
+					<table class="total-table">
+						<thead class="total-table-head">
+							<tr class="table-total-row">
+								<th>Total</th>
+								<th>Price</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr class="total-data">
+								<td><strong>Total Item: </strong></td>
+								<td>{{$totalItem}}</td>
+							</tr>
+							<tr class="total-data">
+								<td><strong>Sub Total: </strong></td>
+								<td>£ {{$cartSum}} </td>
+							</tr>
+							<tr class="total-data">
+								<td><strong>Grand Total: </strong></td>
+								<td>£ {{$cartSum}}</td>
+							</tr>
+						</tbody>
+					</table>
+					<div class="cart-buttons">
+						<a href="{{'checkoutv1'}}" class="boxed-btn black float-right">Check Out</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+@endsection
+<script>
+	function increaseQty(qtyId){
+		console.log("increaseQty");
+		console.log(qtyId);
+		var location = document.getElementById(qtyId);
+		var currentQty = location.value;
+		var qty = Number(currentQty) + 1;
+		location.value = qty;
+	}
+	function decreaseQty(qtyId){
+		console.log("decreaseQty");
+		console.log(qtyId);
+		var location = document.getElementById(qtyId);
+		var currentQty = location.value;
+		if(currentQty > 1){
+			var qty = Number(currentQty) - 1;
+			location.value = qty;
+		}
+	}
+</script>

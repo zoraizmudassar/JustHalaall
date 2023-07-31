@@ -62,7 +62,7 @@
 						<!-- logo -->
 						<div class="site-logo">
 							<a href="index.html">
-								<img src="website/assets/img/halaall.png" alt="">
+								<img src="website/assets/img/halaall.png" alt="" style="max-width: 50%;">
 							</a>
 						</div>
 						<!-- logo -->
@@ -70,39 +70,9 @@
 						<!-- menu start -->
 						<nav class="main-menu">
 							<ul>
-								<li class="current-list-item"><a href="#">Home</a>
-									<ul class="sub-menu">
-										<li><a href="#">Static Home</a></li>
-										<li><a href="#">Slider Home</a></li>
-									</ul>
-								</li>
-								<li><a href="#">About</a></li>
-								<li><a href="#">Pages</a>
-									<ul class="sub-menu">
-										<li><a href="#">404 page</a></li>
-										<li><a href="#">About</a></li>
-										<li><a href="#">Cart</a></li>
-										<li><a href="#">Check Out</a></li>
-										<li><a href="#">Contact</a></li>
-										<li><a href="#">News</a></li>
-										<li><a href="#">Shop</a></li>
-									</ul>
-								</li>
-								<li><a href="#">News</a>
-									<ul class="sub-menu">
-										<li><a href="#">News</a></li>
-										<li><a href="#">Single News</a></li>
-									</ul>
-								</li>
-								<li><a href="#">Contact</a></li>
-								<li><a href="#">Shop</a>
-									<ul class="sub-menu">
-										<li><a href="#">Shop</a></li>
-										<li><a href="#">Check Out</a></li>
-										<li><a href="#">Single Product</a></li>
-										<li><a href="#">Cart</a></li>
-									</ul>
-								</li>
+								<li><a href="/homev1">Home</a></li>
+								<li><a href="/aboutv1">About</a></li>
+								<li><a href="/contactv1">Contact</a></li>
 								<li hidden>
 									<div class="header-icons">
 										<a class="shopping-cart" href="#"><i class="fas fa-shopping-cart"></i></a>
@@ -139,12 +109,10 @@
 		</div>
 	</div>
 	<!-- end search area -->
-
         
-            @yield('content')
-       
+    @yield('content')
    
-        <!-- Scripts -->
+    <!-- Scripts -->
     <!--<script src="{{ asset('js/app.js') }}" defer></script>-->
     
     <!-- jquery -->

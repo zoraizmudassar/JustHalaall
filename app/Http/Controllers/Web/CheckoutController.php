@@ -18,6 +18,7 @@ class CheckoutController extends Controller
     {
         return $this->middleware("auth");
     }
+
     public function index()
     {
         $cart = Cart::where('user_id',Auth()->user()->id)->get();
@@ -27,6 +28,17 @@ class CheckoutController extends Controller
             $cartSum += $item->unit_price * $item->quantity;
         }
         return view('web.checkout',compact('cart','totalItem','cartSum'));
+    }
+
+    public function indexv1()
+    {
+        $cart = Cart::where('user_id',Auth()->user()->id)->get();
+        $cartSum = 0;
+        $totalItem  = Cart::where('user_id',Auth()->user()->id)->sum('quantity');
+        foreach($cart as $item){
+            $cartSum += $item->unit_price * $item->quantity;
+        }
+        return view('website.checkout',compact('cart','totalItem','cartSum'));
     }
     
     public function Checkout(Request $request){

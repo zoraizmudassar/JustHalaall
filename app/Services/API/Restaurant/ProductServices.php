@@ -35,42 +35,52 @@ class ProductServices
                 'price' => 'required|integer|min:0',
                 'category_id' => 'required',
                 'delivery_time' => 'required|date_format:H:i',
-                'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'image' => 'required',
             ], $customMsgs
         );
         if ($validator->fails()) {
-            return response()->json(['status' => 406, 'message' => $validator->messages()->first()], 200);
+            return response()->json(['status' => false, 'message' => $validator->messages()->first()], 200);
         }
 
         $categroy = Category::where('id',$request->category_id)->first();
         if(!$categroy){
 
-            return response()->json([ 'status' => 404  , 'message' => 'Category id Not Found'],404);
+            return response()->json([ 'status' => false  , 'message' => 'Category id Not Found'],404);
         }
-        $file = $request->image;
-        if ($request->hasFile('image')) {
-            $fileName = $file->getClientOriginalName();
-            $fileSize = ($file->getSize()) / 2000; //Size in kb
-            $explodeImage = explode('.', $fileName);
-            $fileName = $explodeImage[0];
-            $extension = end($explodeImage);
-            $fileName = time() . "-" . $fileName . "." . $extension;
-            $imageExtensions = ['jpg', 'jpeg', 'gif', 'png', 'heif', 'hevc', 'heic', 'PNG'];
-            if (in_array($extension, $imageExtensions)) {
-                if ($fileSize > 2000) {
-                    return response()->json(['status' => 0, 'message' => "Image size should be less than 2 MB"]);
-                }
-                $folderName = "uploads/products";
-                $file->move($folderName, $fileName);
-                $path = $folderName . '/' . $fileName;
-                $save_image = $path;
+        $filename = null;
+        if($request->image){
+            $f = finfo_open();
+            $mime_type = finfo_buffer($f, base64_decode($request->image) , FILEINFO_MIME_TYPE);
+            $type = explode('/', $mime_type);
+            $randomNumber = rand(1000000000,9999999999);
+            $filename = '/uploads/products/' .$randomNumber.'.'.$type[1];
+            file_put_contents(public_path() . $filename, base64_decode($request->image));
+            $filename = 'https://www.justhalaall.com/public'.$filename;
+        }
+//         $file = $request->image;
+//         if ($request->hasFile('image')) {
+//             $fileName = $file->getClientOriginalName();
+//             $fileSize = ($file->getSize()) / 2000; //Size in kb
+//             $explodeImage = explode('.', $fileName);
+//             $fileName = $explodeImage[0];
+//             $extension = end($explodeImage);
+//             $fileName = time() . "-" . $fileName . "." . $extension;
+//             $imageExtensions = ['jpg', 'jpeg', 'gif', 'png', 'heif', 'hevc', 'heic', 'PNG'];
+//             if (in_array($extension, $imageExtensions)) {
+//                 if ($fileSize > 2000) {
+//                     return response()->json(['status' => 0, 'message' => "Image size should be less than 2 MB"]);
+//                 }
+//                 $folderName = "uploads/products";
+//                 $file->move($folderName, $fileName);
+//                 $path = $folderName . '/' . $fileName;
+//                 $save_image = $path;
 
-//                if (isset($path) && !empty($path)){
-//                    if(file_exists(public_path($product->images))){
-//                        $img_del = unlink(public_path($product->images));
-//                    }
-            }
-        }
+// //                if (isset($path) && !empty($path)){
+// //                    if(file_exists(public_path($product->images))){
+// //                        $img_del = unlink(public_path($product->images));
+// //                    }
+//             }
+//         }
 
 
 
@@ -81,10 +91,10 @@ class ProductServices
             'description' => $request->description,
             'delivery_time' => $request->delivery_time,
             'price' => $request->price,
-            'images' => $save_image,
+            'images' => $filename,
         ]);
 
-        return response()->json([ 'status' => 200  , 'message' => 'Product Add Successfully'],200);
+        return response()->json([ 'status' => true  , 'message' => 'Product Add Successfully'],200);
 
     }
 
@@ -97,7 +107,7 @@ class ProductServices
             'price.required' => 'Please Provide Price',
             'category_id.required' => 'Please Provide Category',
             'delivery_time.required' => 'Please Provide Description',
-            'image.required' => 'Please Provide Image',
+            // 'image.required' => 'Please Provide Image',
         ];
         $validator = Validator::make($request->all(),
             [
@@ -107,51 +117,62 @@ class ProductServices
                 'price' => 'required|integer|min:0',
                 'category_id' => 'required',
                 'delivery_time' => 'required|date_format:H:i',
-                'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                // 'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             ], $customMsgs
         );
         if ($validator->fails()) {
-            return response()->json(['status' => 0, 'message' => $validator->messages()->first()], 200);
+            return response()->json(['status' => false, 'message' => $validator->messages()->first()], 200);
         }
 
         $product =  Product::where('restaurant_id',Auth::id())->where('id',$request->product_id)->first();
         if(!$product){
-            return response()->json([ 'status' => 404  , 'message' => 'Product id does not belong to you']);
+            return response()->json([ 'status' => false  , 'message' => 'Product id does not belong to you']);
         }
 
         $categroy = Category::where('id',$request->category_id)->first();
         if(!$categroy){
 
-            return response()->json([ 'status' => 404  , 'message' => 'Category id Not Found'],404);
+            return response()->json([ 'status' => false  , 'message' => 'Category id Not Found'],404);
+        }
+        
+        $filename = null;
+        if($request->image){
+            $f = finfo_open();
+            $mime_type = finfo_buffer($f, base64_decode($request->image) , FILEINFO_MIME_TYPE);
+            $type = explode('/', $mime_type);
+            $randomNumber = rand(1000000000,9999999999);
+            $filename = '/uploads/products/' .$randomNumber.'.'.$type[1];
+            file_put_contents(public_path() . $filename, base64_decode($request->image));
+            $filename = 'https://www.justhalaall.com/public'.$filename;
         }
 
-        $save_image = $product->images;
-        $file = $request->image;
+        // $save_image = $product->images;
+        // $file = $request->image;
 
-        if ($request->hasFile('image')) {
-            $fileName = $file->getClientOriginalName();
-            $fileSize = ($file->getSize()) / 2000; //Size in kb
-            $explodeImage = explode('.', $fileName);
-            $fileName = $explodeImage[0];
-            $extension = end($explodeImage);
-            $fileName = time() . "-" . $fileName . "." . $extension;
-            $imageExtensions = ['jpg', 'jpeg', 'gif', 'png', 'heif', 'hevc', 'heic', 'PNG'];
-            if (in_array($extension, $imageExtensions)) {
-                if ($fileSize > 2000) {
-                    return response()->json(['status' => 0, 'message' => "Image size should be less than 2 MB"]);
-                }
-                $folderName = "uploads/products";
-                $file->move($folderName, $fileName);
-                $path = $folderName . '/' . $fileName;
-                $save_image = $path;
+        // if ($request->hasFile('image')) {
+        //     $fileName = $file->getClientOriginalName();
+        //     $fileSize = ($file->getSize()) / 2000; //Size in kb
+        //     $explodeImage = explode('.', $fileName);
+        //     $fileName = $explodeImage[0];
+        //     $extension = end($explodeImage);
+        //     $fileName = time() . "-" . $fileName . "." . $extension;
+        //     $imageExtensions = ['jpg', 'jpeg', 'gif', 'png', 'heif', 'hevc', 'heic', 'PNG'];
+        //     if (in_array($extension, $imageExtensions)) {
+        //         if ($fileSize > 2000) {
+        //             return response()->json(['status' => 0, 'message' => "Image size should be less than 2 MB"]);
+        //         }
+        //         $folderName = "uploads/products";
+        //         $file->move($folderName, $fileName);
+        //         $path = $folderName . '/' . $fileName;
+        //         $save_image = $path;
 
-                if (isset($path) && !empty($path)){
-                    if(file_exists(public_path($product->images))){
-                        $img_del = unlink(public_path($product->images));
-                    }
-                }
-            }
-        }
+        //         if (isset($path) && !empty($path)){
+        //             if(file_exists(public_path($product->images))){
+        //                 $img_del = unlink(public_path($product->images));
+        //             }
+        //         }
+        //     }
+        // }
 
         $product->update([
             'name' => $request->name,
@@ -159,10 +180,10 @@ class ProductServices
             'category_id' => $request->category_id,
             'delivery_time' => $request->delivery_time,
             'price' => $request->price,
-            'images' => $save_image,
+            'images' => $filename,
         ]);
 
-        return response()->json([ 'status' => 200  , 'message' => 'Product Detail Update Successfully']);
+        return response()->json([ 'status' => true  , 'message' => 'Product Detail Update Successfully']);
     }
     public function addFeaturedProduct($request)
     {
@@ -181,42 +202,53 @@ class ProductServices
                 'price' => 'required|integer|min:0',
                 'category_id' => 'required',
                 'delivery_time' => 'required|date_format:H:i',
-                'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'image' => 'required',
             ], $customMsgs
         );
         if ($validator->fails()) {
-            return response()->json(['status' => 406, 'message' => $validator->messages()->first()], 200);
+            return response()->json(['status' => false, 'message' => $validator->messages()->first()], 200);
         }
 
         $categroy = Category::where('id',$request->category_id)->first();
         if(!$categroy){
 
-            return response()->json([ 'status' => 404  , 'message' => 'Category id Not Found'],404);
+            return response()->json([ 'status' => false  , 'message' => 'Category id Not Found'],404);
         }
-        $file = $request->image;
-        if ($request->hasFile('image')) {
-            $fileName = $file->getClientOriginalName();
-            $fileSize = ($file->getSize()) / 2000; //Size in kb
-            $explodeImage = explode('.', $fileName);
-            $fileName = $explodeImage[0];
-            $extension = end($explodeImage);
-            $fileName = time() . "-" . $fileName . "." . $extension;
-            $imageExtensions = ['jpg', 'jpeg', 'gif', 'png', 'heif', 'hevc', 'heic', 'PNG'];
-            if (in_array($extension, $imageExtensions)) {
-                if ($fileSize > 2000) {
-                    return response()->json(['status' => 0, 'message' => "Image size should be less than 2 MB"]);
-                }
-                $folderName = "uploads/products";
-                $file->move($folderName, $fileName);
-                $path = $folderName . '/' . $fileName;
-                $save_image = $path;
+        
+        $filename = null;
+        if($request->image){
+            $f = finfo_open();
+            $mime_type = finfo_buffer($f, base64_decode($request->image) , FILEINFO_MIME_TYPE);
+            $type = explode('/', $mime_type);
+            $randomNumber = rand(1000000000,9999999999);
+            $filename = '/uploads/products/' .$randomNumber.'.'.$type[1];
+            file_put_contents(public_path() . $filename, base64_decode($request->image));
+            $filename = 'https://www.justhalaall.com/public'.$filename;
+        }
+//         $file = $request->image;
+//         if ($request->hasFile('image')) {
+//             $fileName = $file->getClientOriginalName();
+//             $fileSize = ($file->getSize()) / 2000; //Size in kb
+//             $explodeImage = explode('.', $fileName);
+//             $fileName = $explodeImage[0];
+//             $extension = end($explodeImage);
+//             $fileName = time() . "-" . $fileName . "." . $extension;
+//             $imageExtensions = ['jpg', 'jpeg', 'gif', 'png', 'heif', 'hevc', 'heic', 'PNG'];
+//             if (in_array($extension, $imageExtensions)) {
+//                 if ($fileSize > 2000) {
+//                     return response()->json(['status' => 0, 'message' => "Image size should be less than 2 MB"]);
+//                 }
+//                 $folderName = "uploads/products";
+//                 $file->move($folderName, $fileName);
+//                 $path = $folderName . '/' . $fileName;
+//                 $save_image = $path;
 
-//                if (isset($path) && !empty($path)){
-//                    if(file_exists(public_path($product->images))){
-//                        $img_del = unlink(public_path($product->images));
-//                    }
-            }
-        }
+// //                if (isset($path) && !empty($path)){
+// //                    if(file_exists(public_path($product->images))){
+// //                        $img_del = unlink(public_path($product->images));
+// //                    }
+//             }
+//         }
 
 
 
@@ -228,10 +260,10 @@ class ProductServices
             'description' => $request->description,
             'delivery_time' => $request->delivery_time,
             'price' => $request->price,
-            'images' => $save_image,
+            'images' => $filename,
         ]);
 
-        return response()->json([ 'status' => 200  , 'message' => 'Featured Product Add Successfully'],200);
+        return response()->json([ 'status' => true  , 'message' => 'Featured Product Add Successfully'],200);
 
     }
 
@@ -244,7 +276,7 @@ class ProductServices
             'price.required' => 'Please Provide Price',
             'category_id.required' => 'Please Provide Category',
             'delivery_time.required' => 'Please Provide Description',
-            'image.required' => 'Please Provide Image',
+            // 'image.required' => 'Please Provide Image',
         ];
         $validator = Validator::make($request->all(),
             [
@@ -254,55 +286,66 @@ class ProductServices
                 'price' => 'required|integer|min:0',
                 'category_id' => 'required',
                 'delivery_time' => 'required|date_format:H:i',
-                'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                // 'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             ], $customMsgs
         );
         if ($validator->fails()) {
-            return response()->json(['status' => 0, 'message' => $validator->messages()->first()], 200);
+            return response()->json(['status' => false, 'message' => $validator->messages()->first()], 200);
         }
 
         $product =  Product::where('restaurant_id',Auth::id())->where('id',$request->product_id)->first();
         if(!$product){
-            return response()->json([ 'status' => 404  , 'message' => 'Product Id Not Found']);
+            return response()->json([ 'status' => false  , 'message' => 'Product Id Not Found']);
         }
         if($product->is_featured == 0){
 
-            return response()->json([ 'status' => 404  , 'message' => 'This Product is not Featured Product' ]);
+            return response()->json([ 'status' => false  , 'message' => 'This Product is not Featured Product' ]);
         }
 
         $categroy = Category::where('id',$request->category_id)->first();
         if(!$categroy){
 
-            return response()->json([ 'status' => 404  , 'message' => 'Category id Not Found'],404);
+            return response()->json([ 'status' => false  , 'message' => 'Category id Not Found'],404);
+        }
+        
+        $filename = null;
+        if($request->image){
+            $f = finfo_open();
+            $mime_type = finfo_buffer($f, base64_decode($request->image) , FILEINFO_MIME_TYPE);
+            $type = explode('/', $mime_type);
+            $randomNumber = rand(1000000000,9999999999);
+            $filename = '/uploads/products/' .$randomNumber.'.'.$type[1];
+            file_put_contents(public_path() . $filename, base64_decode($request->image));
+            $filename = 'https://www.justhalaall.com/public'.$filename;
         }
 
-        $save_image = $product->images;
-        $file = $request->image;
+        // $save_image = $product->images;
+        // $file = $request->image;
 
-        if ($request->hasFile('image')) {
-            $fileName = $file->getClientOriginalName();
-            $fileSize = ($file->getSize()) / 2000; //Size in kb
-            $explodeImage = explode('.', $fileName);
-            $fileName = $explodeImage[0];
-            $extension = end($explodeImage);
-            $fileName = time() . "-" . $fileName . "." . $extension;
-            $imageExtensions = ['jpg', 'jpeg', 'gif', 'png', 'heif', 'hevc', 'heic', 'PNG'];
-            if (in_array($extension, $imageExtensions)) {
-                if ($fileSize > 2000) {
-                    return response()->json(['status' => 0, 'message' => "Image size should be less than 2 MB"]);
-                }
-                $folderName = "uploads/products";
-                $file->move($folderName, $fileName);
-                $path = $folderName . '/' . $fileName;
-                $save_image = $path;
+        // if ($request->hasFile('image')) {
+        //     $fileName = $file->getClientOriginalName();
+        //     $fileSize = ($file->getSize()) / 2000; //Size in kb
+        //     $explodeImage = explode('.', $fileName);
+        //     $fileName = $explodeImage[0];
+        //     $extension = end($explodeImage);
+        //     $fileName = time() . "-" . $fileName . "." . $extension;
+        //     $imageExtensions = ['jpg', 'jpeg', 'gif', 'png', 'heif', 'hevc', 'heic', 'PNG'];
+        //     if (in_array($extension, $imageExtensions)) {
+        //         if ($fileSize > 2000) {
+        //             return response()->json(['status' => 0, 'message' => "Image size should be less than 2 MB"]);
+        //         }
+        //         $folderName = "uploads/products";
+        //         $file->move($folderName, $fileName);
+        //         $path = $folderName . '/' . $fileName;
+        //         $save_image = $path;
 
-                if (isset($path) && !empty($path)){
-                    if(file_exists(public_path($product->images))){
-                        $img_del = unlink(public_path($product->images));
-                    }
-                }
-            }
-        }
+        //         if (isset($path) && !empty($path)){
+        //             if(file_exists(public_path($product->images))){
+        //                 $img_del = unlink(public_path($product->images));
+        //             }
+        //         }
+        //     }
+        // }
 
         $product->update([
             'name' => $request->name,
@@ -310,10 +353,10 @@ class ProductServices
             'category_id' => $request->category_id,
             'delivery_time' => $request->delivery_time,
             'price' => $request->price,
-            'images' => $save_image,
+            'images' => $filename,
         ]);
 
-        return response()->json([ 'status' => 200  , 'message' => 'Product Detail Update Successfully']);
+        return response()->json([ 'status' => true  , 'message' => 'Product Detail Update Successfully']);
 
     }
 
@@ -329,7 +372,7 @@ class ProductServices
         );
 
         if ($validator->fails()) {
-            return response()->json(['status' => 406, 'message' => $validator->messages()->first()], 406);
+            return response()->json(['status' => false, 'message' => $validator->messages()->first()], 406);
         }
 
         $product = Product::where('restaurant_id',Auth::id())->where('id',$request->product_id)->first();
@@ -338,7 +381,7 @@ class ProductServices
 
         if(!$product){
 
-            return response()->json(['status'=> 404, 'message'=> 'product id does not belong to You'],404);
+            return response()->json(['status'=> false, 'message'=> 'product id does not belong to You'],404);
         }
         if ($product->is_featured == 0){
 //            foreach ($product->images as $proimage){
@@ -356,9 +399,9 @@ class ProductServices
             ];
 
 
-            return response()->json(['status'=> 200, 'data' => $data],200);
+            return response()->json(['status'=> true, 'data' => $data],200);
         }
-        return response()->json(['status'=> 404, 'message'=> 'products Empty'],404);
+        return response()->json(['status'=> false, 'message'=> 'products Empty'],404);
 
 
     }
@@ -371,7 +414,7 @@ class ProductServices
 
 
         if(!$products){
-            return response()->json(['status'=> 404, 'message'=> 'Product not have yet!'], 404);
+            return response()->json(['status'=> false, 'message'=> 'Product not have yet!'], 404);
         }
 
 //        $images = [];
@@ -400,7 +443,7 @@ class ProductServices
             $records[] = $data;
         }
 
-        return response()->json([ 'status' => 200 ,'data'=>$records ], 200);
+        return response()->json([ 'status' => true ,'data'=>$records ], 200);
 
 
     }
@@ -419,7 +462,7 @@ class ProductServices
         );
 
         if ($validator->fails()) {
-            return response()->json(['status' => 406, 'message' => $validator->messages()->first()], 406);
+            return response()->json(['status' => true, 'message' => $validator->messages()->first()], 406);
         }
 
         $product = Product::where('restaurant_id',Auth::id())->where('id',$request->product_id)->first();
@@ -428,7 +471,7 @@ class ProductServices
 
         if(!$product){
 
-            return response()->json(['status'=> 404, 'message'=> 'product does not belong to You'],404);
+            return response()->json(['status'=> true, 'message'=> 'product does not belong to You'],404);
         }
         if ($product->is_featured == 1){
 
@@ -443,20 +486,20 @@ class ProductServices
             ];
 
 
-            return response()->json(['status'=> 200, 'data' => $data],200);
+            return response()->json(['status'=> true, 'data' => $data],200);
         }
-        return response()->json(['status'=> 404, 'message'=> 'products Empty'],200);
+        return response()->json(['status'=> false, 'message'=> 'products Empty'],200);
 
     }
 
     public function featuredProductList($request)
     {
 
-        // $products = Product::where(['restaurant_id'=>Auth::id()])->get();
-        $products = Product::all();
+        $products = Product::where(['restaurant_id'=>Auth::id()])->where('is_featured',1)->get();
+        // $products = Product::all();
 
         if(!$products){
-            return response()->json(['status'=> 404, 'message'=> 'Product not have yet!'], 404);
+            return response()->json(['status'=> false, 'message'=> 'Product not have yet!'], 404);
         }
 
         $images = [];
@@ -480,19 +523,19 @@ class ProductServices
 
                 $records[] = $data;
             }
-//            else{
-//                return response()->json([ 'status' => 404 ,'data'=>"There is no Feature product!" ], 404);
-//            }
+            else{
+                return response()->json([ 'status' => false ,'data'=>"There is no Feature product!" ], 404);
+            }
 
 
         }
-        return response()->json([ 'status' => 200 ,'data'=>$records ], 200);
+        return response()->json([ 'status' => true ,'data'=>$records ], 200);
     }
 
     public function dashBoard($request)
     {
 
-        $orders = OrderDetail::where('restaurant_id',$request->restuarant_id)->get();
+        $orders = OrderDetail::where('restaurant_id', Auth::id())->get();
 
         $total_orders = [];
         $prepared = 0;
@@ -536,9 +579,9 @@ class ProductServices
         ];
 
         if (!empty($total_orders)){
-            return response()->json([ 'status' => 200,'data'=>$data,'message'=> 'Order lists' ], 200);
+            return response()->json([ 'status' => true,'data'=>$data,'message'=> 'Order lists' ], 200);
         }else{
-            return response()->json([ 'status' => 404,'message'=> 'Orders NOT found'], 404);
+            return response()->json([ 'status' => false,'message'=> 'Orders NOT found'], 404);
         }
 
     }
@@ -555,18 +598,18 @@ class ProductServices
         );
 
         if ($validator->fails()) {
-            return response()->json(['status' => 406, 'message' => $validator->messages()->first()], 406);
+            return response()->json(['status' => false, 'message' => $validator->messages()->first()], 406);
         }
         $products = Product::where(['restaurant_id'=>Auth::id()])->where('id',$request->product_id)->first();
 
         if(!$products){
-            return response()->json(['status'=> 404, 'message'=> 'Product Not Found'], 404);
+            return response()->json(['status'=> false, 'message'=> 'Product Not Found'], 404);
         }
-        if(file_exists(public_path($products->image))){
-            $img_del = unlink(public_path($products->images));
-        }
+        // if(file_exists(public_path($products->image))){
+        //     $img_del = unlink(public_path($products->images));
+        // }
         $products->delete();
-        return response()->json([ 'status' => 200 ,'message'=> 'Product Deleted Successfully' ], 200);
+        return response()->json([ 'status' => true ,'message'=> 'Product Deleted Successfully' ], 200);
 
     }
 
@@ -583,18 +626,73 @@ class ProductServices
         );
 
         if ($validator->fails()) {
-            return response()->json(['status' => 406, 'message' => $validator->messages()->first()], 406);
+            return response()->json(['status' => false, 'message' => $validator->messages()->first()], 406);
         }
         $products = Product::where(['restaurant_id'=>Auth::id()])->where('id',$request->product_id)->where('is_featured',1)->first();
 
         if(!$products){
-            return response()->json(['status'=> 404, 'message'=> 'Product Not Found'], 404);
+            return response()->json(['status'=> false, 'message'=> 'Product Not Found'], 404);
         }
-        if(file_exists(public_path($products->image))){
-            $img_del = unlink(public_path($products->images));
-        }
+        // if(file_exists(public_path($products->image))){
+        //     $img_del = unlink(public_path($products->images));
+        // }
         $products->delete();
-        return response()->json([ 'status' => 200 ,'message'=> 'Product Deleted Successfully' ], 200);
+        return response()->json([ 'status' => true ,'message'=> 'Product Deleted Successfully' ], 200);
     }
+    
+    public function enableFeaturedProduct($request)
+    {
+
+        $customMsgs = [
+            'product_id.required' => 'Please Provide Product Id',
+        ];
+        $validator = Validator::make($request->all(),
+            [
+                'product_id' => 'required',
+            ], $customMsgs
+        );
+
+        if ($validator->fails()) {
+            return response()->json(['status' => false, 'message' => $validator->messages()->first()], 406);
+        }
+        $products = Product::where(['restaurant_id'=>Auth::id()])->where('id',$request->product_id)->first();
+
+        if(!$products){
+            return response()->json(['status'=> false, 'message'=> 'Product Not Found'], 404);
+        }
+
+        $products->update([
+            'is_featured' => 1,
+        ]);
+        return response()->json([ 'status' => true ,'message'=> 'Added in Featured Product Successfully' ], 200);
+    }
+    
+    public function disableFeaturedProduct($request)
+    {
+
+        $customMsgs = [
+            'product_id.required' => 'Please Provide Product Id',
+        ];
+        $validator = Validator::make($request->all(),
+            [
+                'product_id' => 'required',
+            ], $customMsgs
+        );
+
+        if ($validator->fails()) {
+            return response()->json(['status' => false, 'message' => $validator->messages()->first()], 406);
+        }
+        $products = Product::where(['restaurant_id'=>Auth::id()])->where('id',$request->product_id)->first();
+
+        if(!$products){
+            return response()->json(['status'=> false, 'message'=> 'Product Not Found'], 404);
+        }
+
+        $products->update([
+            'is_featured' => 0,
+        ]);
+        return response()->json([ 'status' => true ,'message'=> 'Removed from Featured Product Successfully' ], 200);
+    }
+    
 }
 

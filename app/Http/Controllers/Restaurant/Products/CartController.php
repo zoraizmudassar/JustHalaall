@@ -12,11 +12,10 @@ class CartController extends Controller
 {
     public $cartService;
 
-    public function __construct(CartService $cartService)
-    {
+    public function __construct(CartService $cartService){
         $this->cartService = $cartService;
     }
-public function cartTotal(Request $request){
+    public function cartTotal(Request $request){
         return $this->cartService->cartTotal($request);
     }
     public function cartList(Request $request){
@@ -78,6 +77,12 @@ public function cartTotal(Request $request){
         return back();
     }
     public function updateCart(Request $request,$id){
+        $cart = Cart::find($id);
+        $cart->quantity = $request->qty;
+        $cart->update();
+        return back();
+    }
+    public function updateCartv1(Request $request,$id){
         $cart = Cart::find($id);
         $cart->quantity = $request->qty;
         $cart->update();

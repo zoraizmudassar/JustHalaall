@@ -32,23 +32,25 @@ Route::namespace('API\Restaurant')->prefix('restaurant')->as('restaurant.')->mid
         Route::post('edit-profile', [\App\Http\Controllers\API\Restaurant\RestaurantController::class, 'editProfile'])->name('editProfile');
         Route::post('account-details', [\App\Http\Controllers\API\Restaurant\RestaurantController::class, 'accountDetails'])->name('accountDetails');
         Route::post('add-product', [\App\Http\Controllers\API\Restaurant\ProductController::class, 'addProduct'])->name('addProduct');
-        Route::post('delete-product', [\App\Http\Controllers\API\Restaurant\ProductController::class, 'deleteProduct'])->name('deleteProduct');
+        Route::get('delete-product', [\App\Http\Controllers\API\Restaurant\ProductController::class, 'deleteProduct'])->name('deleteProduct');
         Route::post('edit-product', [\App\Http\Controllers\API\Restaurant\ProductController::class, 'editProduct'])->name('editProduct');
-        Route::post('product-details', [\App\Http\Controllers\API\Restaurant\ProductController::class, 'productDetails'])->name('productDetails');
-        Route::post('product-list', [\App\Http\Controllers\API\Restaurant\ProductController::class, 'productList'])->name('productList');
-        Route::post('featured-product-list', [\App\Http\Controllers\API\Restaurant\ProductController::class, 'featuredProductList'])->name('featuredProductList');
+        Route::get('product-details', [\App\Http\Controllers\API\Restaurant\ProductController::class, 'productDetails'])->name('productDetails');
+        Route::get('product-list', [\App\Http\Controllers\API\Restaurant\ProductController::class, 'productList'])->name('productList');
+        Route::get('featured-product-list', [\App\Http\Controllers\API\Restaurant\ProductController::class, 'featuredProductList'])->name('featuredProductList');
         Route::post('add-featured-product', [\App\Http\Controllers\API\Restaurant\ProductController::class, 'addFeaturedProduct'])->name('addFeaturedProduct');
-        Route::post('delete-featured-product', [\App\Http\Controllers\API\Restaurant\ProductController::class, 'deleteFeaturedProduct'])->name('deleteFeaturedProduct');
+        Route::get('delete-featured-product', [\App\Http\Controllers\API\Restaurant\ProductController::class, 'deleteFeaturedProduct'])->name('deleteFeaturedProduct');
         Route::post('edit-featured-product', [\App\Http\Controllers\API\Restaurant\ProductController::class, 'editFeaturedProduct'])->name('editFeaturedProduct');
-        Route::post('featured-product-details', [\App\Http\Controllers\API\Restaurant\ProductController::class, 'featuredProductDetails'])->name('featuredProductDetails');
-        Route::post('dashboard', [\App\Http\Controllers\API\Restaurant\ProductController::class, 'dashBoard'])->name('dashBoard');
+        Route::get('featured-product-details', [\App\Http\Controllers\API\Restaurant\ProductController::class, 'featuredProductDetails'])->name('featuredProductDetails');
+        Route::get('enable-featured-product', [\App\Http\Controllers\API\Restaurant\ProductController::class, 'enableFeaturedProduct'])->name('enableFeaturedProduct');
+        Route::get('disable-featured-product', [\App\Http\Controllers\API\Restaurant\ProductController::class, 'disableFeaturedProduct'])->name('disableFeaturedProduct');
+        Route::get('dashboard', [\App\Http\Controllers\API\Restaurant\ProductController::class, 'dashBoard'])->name('dashBoard');
 
         //       Deals Route's
         Route::post('add-new-deal', [\App\Http\Controllers\API\Restaurant\DealController::class, 'addNewDeal'])->name('addNewDeal');
-        Route::post('delete-deal', [\App\Http\Controllers\API\Restaurant\DealController::class, 'deleteDeal'])->name('deleteDeal');
+        Route::get('delete-deal', [\App\Http\Controllers\API\Restaurant\DealController::class, 'deleteDeal'])->name('deleteDeal');
         Route::post('edit-deal', [\App\Http\Controllers\API\Restaurant\DealController::class, 'editDeal'])->name('editDeal');
-        Route::post('deal-details', [\App\Http\Controllers\API\Restaurant\DealController::class, 'dealDetail'])->name('dealDetail');
-        Route::post('restaurant-deal-list', [\App\Http\Controllers\API\Restaurant\DealController::class, 'restaurantDealList'])->name('restaurantDealList');
+        Route::get('deal-details', [\App\Http\Controllers\API\Restaurant\DealController::class, 'dealDetail'])->name('dealDetail');
+        Route::get('restaurant-deal-list', [\App\Http\Controllers\API\Restaurant\DealController::class, 'restaurantDealList'])->name('restaurantDealList');
 
         //        Route::post('test',[\App\Http\Controllers\API\Restaurant\CategoryController::class,'categoryList'])->name('test');
 
@@ -83,7 +85,7 @@ Route::namespace('API\Customer')->prefix('customer')->as('customer.')->middlewar
     Route::get('getDashboard', [CustomerController::class, 'getDashboard'])->name('getDashboard');
     Route::get('getRestaurant', [CustomerController::class, 'getRestaurant'])->name('getRestaurant');
     Route::get('searchRestaurant', [CustomerController::class, 'searchRestaurant'])->name('searchRestaurant');
-    Route::post('restaurantDetail', [CustomerController::class, 'restaurantDetail'])->name('restaurantDetail');
+    Route::get('restaurantDetail', [CustomerController::class, 'restaurantDetail'])->name('restaurantDetail');
     Route::get('restaurantProducts', [CustomerController::class, 'restaurantProducts'])->name('restaurantProducts');
     Route::get('restaurantFeaturedProducts', [CustomerController::class, 'restaurantFeaturedProducts'])->name('restaurantFeaturedProducts');
     Route::get('restaurantDeals', [CustomerController::class, 'restaurantDeals'])->name('restaurantDeals');
@@ -94,7 +96,7 @@ Route::namespace('API\Customer')->prefix('customer')->as('customer.')->middlewar
     Route::post('getProfile', [CustomerController::class, 'getProfile'])->name('getProfile');
     Route::post('updateProfile', [CustomerController::class, 'updateProfile'])->name('updateProfile');
     Route::post('change-password', [\App\Http\Controllers\API\Customer\AuthenticationController::class, 'changePassword'])->name('changePassword');
-    Route::post('categoryProducts', [CustomerController::class, 'categoryProducts'])->name('categoryProducts');
+    Route::get('categoryProducts', [CustomerController::class, 'categoryProducts'])->name('categoryProducts');
 
     Route::get('rating', [\App\Http\Controllers\API\Restaurant\RatingController::class, 'index'])->name('rating');
     Route::post('rating-store', [\App\Http\Controllers\API\Restaurant\RatingController::class, 'store'])->name('rating.store');

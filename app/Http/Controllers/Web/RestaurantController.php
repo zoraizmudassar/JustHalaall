@@ -16,4 +16,11 @@ class RestaurantController extends Controller
 
         return view('web.restaurant-detail',compact('restaurantProducts', 'restaurantDetail'));
     }
+
+    public function detailsv1($id)
+    {
+        $restaurantProducts = Product::where('status','approved')->where('restaurant_id',$id)->get();
+        $restaurantDetail = Restaurant::select('name','aboutUs')->where('id',$id)->get();
+        return view('website.restaurantDetail',compact('restaurantProducts', 'restaurantDetail'));
+    }
 }

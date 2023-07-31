@@ -11,13 +11,13 @@
   background-attachment: fixed;
 }
 .homepage-bg-1{
-  background-image: url(website/assets/img/hero-bg.jpg);
+  background-image: url(website/assets/img/bg77.jpg);
 }
 .homepage-bg-2{
-  background-image: url(website/assets/img/hero-bg-2.jpg);
+  background-image: url(website/assets/img/bg11.jpg);
 }
 .homepage-bg-3{
-  background-image: url(website/assets/img/hero-bg-3.jpg);
+  background-image: url(website/assets/img/bg22.jpg);
 }
 .news-bg-1{
   background-image: url(website/assets/img/latest-news/news-bg-1.jpg);
@@ -52,7 +52,6 @@
 							<p class="subtitle">Fresh & Organic</p>
 							<h1>Delicious Seasonal Fruits</h1>
 							<div class="hero-btns">
-								<a href="shop.html" class="boxed-btn">Fruit Collection</a>
 								<a href="contact.html" class="bordered-btn">Contact Us</a>
 							</div>
 						</div>
@@ -70,7 +69,6 @@
 							<p class="subtitle">Fresh Everyday</p>
 							<h1>100% Organic Collection</h1>
 							<div class="hero-btns">
-								<a href="shop.html" class="boxed-btn">Visit Shop</a>
 								<a href="contact.html" class="bordered-btn">Contact Us</a>
 							</div>
 						</div>
@@ -88,7 +86,6 @@
 							<p class="subtitle">Mega Sale Going On!</p>
 							<h1>Get December Discount</h1>
 							<div class="hero-btns">
-								<a href="shop.html" class="boxed-btn">Visit Shop</a>
 								<a href="contact.html" class="bordered-btn">Contact Us</a>
 							</div>
 						</div>
@@ -98,7 +95,7 @@
 		</div>
 	</div>
 </div>
-<div class="list-section pt-80 pb-80">
+<div class="list-section pt-80 pb-80" hidden>
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
@@ -143,43 +140,74 @@
 			<div class="col-lg-8 offset-lg-2 text-center">
 				<div class="section-title">	
 					<h3><span class="orange-text">Our</span> Categories</h3>
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, fuga quas itaque eveniet beatae optio.</p>
 				</div>
 			</div>
 		</div>
 		<div class="row">
 		    @foreach($foodCategory as $category)
 			<div class="col-lg-4 col-md-6 text-center my-3">
-				<div class="single-product-item h-100">
-					<div class="product-image">
-						<a href="single-product.html"><img src="https://justhalaall.com/{{$category['image']}}" alt=""></a>
+				<a href="{{ url('categoryproductsv1/'.$category->id) }}">
+					<div class="single-product-item h-100">
+						<div class="product-image">
+							<img src="{{asset($category->image)}}" alt="">
+						</div>
+						<h3 style="font-weight: 500; text-transform: capitalize;">{{$category['name']}}</h3>
 					</div>
-					<h3 style="font-weight: 500;">{{$category['name']}}</h3>
-					<p hidden class="product-price"><span>Per Kg</span> 85$ </p>
-					<a hidden href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
-				</div>
+				</a>
 			</div>
 			@endforeach
-			<div class="col-lg-4 col-md-6 text-center" hidden>
-				<div class="single-product-item">
-					<div class="product-image">
-						<a href="single-product.html"><img src="website/assets/img/products/product-img-2.jpg" alt=""></a>
-					</div>
-					<h3>Berry</h3>
-					<p class="product-price"><span>Per Kg</span> 70$ </p>
-					<a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+		</div>
+	</div>
+</div>
+<div class="product-section mt-150 mb-150">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 offset-lg-2 text-center">
+				<div class="section-title">	
+					<h3><span class="orange-text">Our</span> Restaurants</h3>
 				</div>
 			</div>
-			<div class="col-lg-4 col-md-6 offset-md-3 offset-lg-0 text-center" hidden>
-				<div class="single-product-item">
-					<div class="product-image">
-						<a href="single-product.html"><img src="website/assets/img/products/product-img-3.jpg" alt=""></a>
+		</div>
+		<div class="row">
+		    @foreach($resturant as $data)
+			<div class="col-lg-4 col-md-6 text-center my-3">
+				<a href="{{ url('restaurant-detailv1/'.$data->id) }}">
+					<div class="single-product-item h-100">
+						<div class="product-image">
+							<img src="{{asset($data->logo)}}" alt="">
+						</div>
+						<h3 style="font-weight: 500; text-transform: capitalize;">{{$data['name']}}</h3>
 					</div>
-					<h3>Lemon</h3>
-					<p class="product-price"><span>Per Kg</span> 35$ </p>
-					<a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+				</a>
+			</div>
+			@endforeach
+		</div>
+	</div>
+</div>
+<div class="product-section mt-150 mb-150">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 offset-lg-2 text-center">
+				<div class="section-title">	
+					<h3><span class="orange-text">Featured</span> Products</h3>
 				</div>
 			</div>
+		</div>
+		<div class="row">
+		    @foreach($featuredProducts as $data)
+			<div class="col-lg-4 col-md-6 text-center my-3">
+				<a>
+					<div class="single-product-item h-100">
+						<div class="product-image">
+							<img src="{{asset($data->images)}}" alt="">
+						</div>
+						<h3 style="font-weight: 500; text-transform: capitalize;">{{$data['name']}}</h3>
+						<p class="product-price"> £{{$data['price']}} </p>
+						<button type="button" role="button" id="addcart{{$data->id}}" class="boxed-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
+					</div>
+				</a>
+			</div>
+			@endforeach
 		</div>
 	</div>
 </div>
@@ -203,12 +231,12 @@
 				<h4>Hikan Strwaberry</h4>
 				<div class="text">Quisquam minus maiores repudiandae nobis, minima saepe id, fugit ullam similique! Beatae, minima quisquam molestias facere ea. Perspiciatis unde omnis iste natus error sit voluptatem accusant</div>
 				<div class="time-counter"><div class="time-countdown clearfix" data-countdown="2020/2/01"><div class="counter-column"><div class="inner"><span class="count">00</span>Days</div></div> <div class="counter-column"><div class="inner"><span class="count">00</span>Hours</div></div>  <div class="counter-column"><div class="inner"><span class="count">00</span>Mins</div></div>  <div class="counter-column"><div class="inner"><span class="count">00</span>Secs</div></div></div></div>
-				<a href="cart.html" class="cart-btn mt-3"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+				<a href="#" class="cart-btn mt-3"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
 			</div>
 		</div>
 	</div>
 </section>
-<div class="latest-news pt-150 pb-150">
+<div hidden class="latest-news pt-150 pb-150">
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-8 offset-lg-2 text-center">
@@ -264,27 +292,6 @@
 		</div>
 	</div>
 </div>
-<div class="copyright">
-	<div class="container">
-		<div class="row">
-			<div class="col-lg-6 col-md-12">
-				<p><a href="https://imransdesign.com/">Just Halaall Team</a><br>
-				</p>
-			</div>
-			<div class="col-lg-6 text-right col-md-12">
-				<div class="social-icons">
-					<ul>
-						<li><a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
-						<li><a href="#" target="_blank"><i class="fab fa-twitter"></i></a></li>
-						<li><a href="#" target="_blank"><i class="fab fa-instagram"></i></a></li>
-						<li><a href="#" target="_blank"><i class="fab fa-linkedin"></i></a></li>
-						<li><a href="#" target="_blank"><i class="fab fa-dribbble"></i></a></li>
-					</ul>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
@@ -331,5 +338,45 @@ jQuery( document ).ready(function() {
         break;
     }
 @endif
+</script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        <?php
+    foreach ($featuredProducts as $item) {
+    ?>
+        $('#addcart<?php echo $item->id; ?>').click(function() {
+            <?php if (auth()->user() != null) { ?>
+            $.ajax({
+                type: 'post',
+                url: "{{ url('add-to-cartv1') }}",
+                data: {
+                    product_id: <?php echo $item->id; ?>,
+                    _token: $('meta[name="csrf-token"]').attr('content'),
+                },
+                success: function(response) {
+					Swal.fire({
+						icon: 'success',
+						title: 'Product add to cart',
+						showConfirmButton: false,
+						timer: 3000
+					});
+                }
+            });
+            <?php } else { ?>
+				Swal.fire({
+						icon: 'warning',
+						title: "Please Login First",
+						showConfirmButton: false,
+						timer: 3000
+					});
+            <?php } ?>
+        });
+        <?php } ?>
+    });
 </script>
 @endsection

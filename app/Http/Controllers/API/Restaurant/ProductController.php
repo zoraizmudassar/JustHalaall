@@ -61,5 +61,15 @@ class ProductController extends Controller
     {
         return $productServices->deleteFeaturedProduct($request);
     }
+    
+    public function enableFeaturedProduct(Request $request,ProductServices $productServices)
+    {
+        return $productServices->enableFeaturedProduct($request);
+    }
+    
+    public function disableFeaturedProduct(Request $request,ProductServices $productServices)
+    {
+        return $productServices->disableFeaturedProduct($request);
+    }
 
 }

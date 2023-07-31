@@ -104,10 +104,12 @@ Route::namespace('Restaurant')->prefix('restaurant')->as('restaurants.')->group(
 Route::namespace("Web")->group(function () {
     /* Checkout routes */
     Route::get("checkout", [\App\Http\Controllers\Web\CheckoutController::class, "index"])->name('index');
+    Route::get("checkoutv1", [\App\Http\Controllers\Web\CheckoutController::class, "indexv1"])->name('indexv1');
     Route::post("checkout-store", [\App\Http\Controllers\Web\CheckoutController::class, "Checkout"])->name('Checkout');
     // Route::get("restaurant/{slug}",[\App\Http\Controllers\Web\RestaurantController::class,"details"])->name('restaurant-detail');
     Route::get("restaurant-detail/{id}", [\App\Http\Controllers\Web\RestaurantController::class, "details"])->name('restaurant-detail');
     Route::get("orders", [\App\Http\Controllers\Web\OrderController::class, "index"])->name('orders');
+    Route::get("ordersv1", [\App\Http\Controllers\Web\OrderController::class, "indexv1"])->name('ordersv1');
 });
 Route::get('email', function () {
     return view('web.email');
@@ -121,9 +123,12 @@ Route::get('profile', function () {
 Route::get('contact', function () {
     return view('web.contact');
 });
-// Route::get('homev1', function () {
-//     return view('website.home');
-// });
+Route::get('aboutv1', function () {
+    return view('website.aboutUs');
+});
+Route::get('contactv1', function () {
+    return view('website.contactUs');
+});
 Route::get('signupv1', function () {
     return view('website.signup');
 });
@@ -143,6 +148,7 @@ Route::post('contact/store',[\App\Http\Controllers\ContactController::class,'sto
 Route::get('admin/contact',[\App\Http\Controllers\ContactController::class,'index']);
 Route::get('cart', [App\Http\Controllers\Web\CartController::class, 'index'])->name('cart')->middleware('auth');
 Route::post('add-to-cart', [\App\Http\Controllers\Web\CartController::class, 'store'])->name('addToCart')->middleware('auth');
+Route::post('add-to-cartv1', [\App\Http\Controllers\Web\CartController::class, 'storev1'])->name('addToCartv1')->middleware('auth');
 Route::get('remove-item/{id}', [App\Http\Controllers\Web\CartController::class, 'removeCart'])->name('removeCart')->middleware('auth');
 Route::get('detail', function () {
     return view('web.detailpage');
@@ -161,7 +167,7 @@ Route::get("distance", function () {
     printAll($distance / 1000);
 });
 
-//Authentication
+//AuthenticationV1
 Route::post('/userRegister', [\App\Http\Controllers\Auth\RegisterController::class, 'create'])->name('userRegister');
 Route::post('/userLogin', [\App\Http\Controllers\Auth\LoginController::class, 'login'])->name('userLogin');
 Route::post('/updateProfile', [\App\Http\Controllers\Auth\ProfileController::class, 'update'])->name('updateProfile');
@@ -172,8 +178,15 @@ Route::post('verify_otp', [App\Http\Controllers\Auth\ForgotPasswordController::c
 Route::post('update_password', [App\Http\Controllers\Auth\ForgotPasswordController::class, 'changeForgetPassword'])->name('update_password');
 Route::post('/logout', [\App\Http\Controllers\Auth\RegisterController::class, 'logout'])->name('logout');
 
-//Dashboard
+//DashboardV1
 Route::get('/homev1', [\App\Http\Controllers\HomeController::class, "getDashboard"])->name('homev1');
+Route::get('categoryproductsv1/{categoryId}', [\App\Http\Controllers\HomeController::class, "categoryProductsv1"])->name('categoryproductsv1');
+Route::get("restaurant-detailv1/{id}", [\App\Http\Controllers\Web\RestaurantController::class, "detailsv1"])->name('restaurant-detailv1');
+
+//Cartv1
+Route::get('cartv1', [App\Http\Controllers\Web\CartController::class, 'indexv1'])->name('cartv1')->middleware('auth');
+Route::post('update-cartv1/{id}', [\App\Http\Controllers\Restaurant\Products\CartController::class, 'updateCartv1'])->name('updateCart');
+Route::get('remove-itemv1/{id}', [App\Http\Controllers\Web\CartController::class, 'removeCartv1'])->name('removeCart')->middleware('auth');
 
 Route::get("map", function () {
 

@@ -44,69 +44,39 @@
     @yield('style')
 </head>
 <body>
-    <!--PreLoader-->
     <div class="loader">
         <div class="loader-inner">
             <div class="circle"></div>
         </div>
     </div>
-    <!--PreLoader Ends-->
-    
- 
-       	<!-- header -->
 	<div class="top-header-area" id="sticker">
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-12 col-sm-12 text-center">
 					<div class="main-menu-wrap">
-						<!-- logo -->
 						<div class="site-logo">
 							<a href="index.html">
-								<img src="website/assets/img/halaall.png" alt="">
+								<img src="website/assets/img/halaall.png" alt="" style="max-width: 50%;">
 							</a>
 						</div>
-						<!-- logo -->
-
-						<!-- menu start -->
 						<nav class="main-menu">
 							<ul>
-								<li class="current-list-item"><a href="#">Home</a>
-									<ul class="sub-menu">
-										<li><a href="#">Static Home</a></li>
-										<li><a href="#">Slider Home</a></li>
-									</ul>
-								</li>
-								<li><a href="#">About</a></li>
-								<li><a href="#">Pages</a>
-									<ul class="sub-menu">
-										<li><a href="#">404 page</a></li>
-										<li><a href="#">About</a></li>
-										<li><a href="#">Cart</a></li>
-										<li><a href="#">Check Out</a></li>
-										<li><a href="#">Contact</a></li>
-										<li><a href="#">News</a></li>
-										<li><a href="#">Shop</a></li>
-									</ul>
-								</li>
-
-								<li><a href="#">News</a>
-									<ul class="sub-menu">
-										<li><a href="#">News</a></li>
-										<li><a href="#">Single News</a></li>
-									</ul>
-								</li>
-								<li><a href="#">Contact</a></li>
+								<li><a href="/homev1">Home</a></li>
+								<li><a href="/aboutv1">About</a></li>
+								<li><a href="/contactv1">Contact</a></li>
+								@auth
 								<li><a href="#">Shop</a>
 									<ul class="sub-menu">
-										<li><a href="#">Shop</a></li>
-										<li><a href="#">Check Out</a></li>
-										<li><a href="#">Single Product</a></li>
-										<li><a href="#">Cart</a></li>
+										<li><a href="/cartv1">Cart</a></li>
+										<li><a href="/checkoutv1">Checkout</a></li>
 									</ul>
 								</li>
+								@endauth								
 								<li style="float: right;">
 									<div class="header-icons">
-										<a class="shopping-cart" href="#"><i class="fas fa-shopping-cart"></i></a>
+										@auth
+											<a class="shopping-cart" href="/cartv1"><i class="fas fa-shopping-cart"></i></a>
+										@endauth								
 									</div>
 									@auth
 									<li><a href="#">My Account</a>
@@ -127,15 +97,11 @@
 						</nav>
 						<a class="mobile-show search-bar-icon" href="#"><i class="fas fa-search"></i></a>
 						<div class="mobile-menu"></div>
-						<!-- menu end -->
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	<!-- end header -->
-	
-	<!-- search area -->
 	@auth
 	<div class="search-area">
 		<div class="container">
@@ -215,34 +181,51 @@
 		</div>
 	</div>
 	@endauth								
-	<!-- end search area -->
-
-        
-            @yield('content')
-       
-   
-        <!-- Scripts -->
-    <!--<script src="{{ asset('js/app.js') }}" defer></script>-->
     
-    <!-- jquery -->
-	<script src="{{ asset('website/assets/js/jquery-1.11.3.min.js') }}"></script>
-	<!-- bootstrap -->
-	<script src="{{ asset('website/assets/bootstrap/js/bootstrap.min.js') }}"></script>
-	<!-- count down -->
-	<script src="{{ asset('website/assets/js/jquery.countdown.js') }}"></script>
-	<!-- isotope -->
-	<script src="{{ asset('website/assets/js/jquery.isotope-3.0.6.min.js') }}"></script>
-	<!-- waypoints -->
-	<script src="{{ asset('website/assets/js/waypoints.js') }}"></script>
-	<!-- owl carousel -->
-	<script src="{{ asset('website/assets/js/owl.carousel.min.js') }}"></script>
-	<!-- magnific popup -->
-	<script src="{{ asset('website/assets/js/jquery.magnific-popup.min.js') }}"></script>
-	<!-- mean menu -->
-	<script src="{{ asset('website/assets/js/jquery.meanmenu.min.js') }}"></script>
-	<!-- sticker js -->
-	<script src="{{ asset('website/assets/js/sticker.js') }}"></script>
-	<!-- main js -->
-	<script src="{{ asset('website/assets/js/main.js') }}"></script>
+    @yield('content')
+       
+	<div class="copyright">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-6 col-md-12">
+					<p><a href="/">Just Halaall</a><br>
+					</p>
+				</div>
+				<div class="col-lg-6 text-right col-md-12">
+					<div class="social-icons">
+						<ul>
+							<li><a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
+							<li><a href="#" target="_blank"><i class="fab fa-twitter"></i></a></li>
+							<li><a href="#" target="_blank"><i class="fab fa-instagram"></i></a></li>
+							<li><a href="#" target="_blank"><i class="fab fa-linkedin"></i></a></li>
+							<li><a href="#" target="_blank"><i class="fab fa-dribbble"></i></a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+<!-- Scripts -->
+<!--<script src="{{ asset('js/app.js') }}" defer></script>-->
+<!-- jquery -->
+<script src="{{ asset('website/assets/js/jquery-1.11.3.min.js') }}"></script>
+<!-- bootstrap -->
+<script src="{{ asset('website/assets/bootstrap/js/bootstrap.min.js') }}"></script>
+<!-- count down -->
+<script src="{{ asset('website/assets/js/jquery.countdown.js') }}"></script>
+<!-- isotope -->
+<script src="{{ asset('website/assets/js/jquery.isotope-3.0.6.min.js') }}"></script>
+<!-- waypoints -->
+<script src="{{ asset('website/assets/js/waypoints.js') }}"></script>
+<!-- owl carousel -->
+<script src="{{ asset('website/assets/js/owl.carousel.min.js') }}"></script>
+<!-- magnific popup -->
+<script src="{{ asset('website/assets/js/jquery.magnific-popup.min.js') }}"></script>
+<!-- mean menu -->
+<script src="{{ asset('website/assets/js/jquery.meanmenu.min.js') }}"></script>
+<!-- sticker js -->
+<script src="{{ asset('website/assets/js/sticker.js') }}"></script>
+<!-- main js -->
+<script src="{{ asset('website/assets/js/main.js') }}"></script>
 </body>
 </html>

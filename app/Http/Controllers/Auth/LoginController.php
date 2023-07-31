@@ -36,10 +36,10 @@ class LoginController extends Controller
      *
      * @return void
      */
-    public function __construct()
-    {
-        $this->middleware('guest')->except('logout');
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('guest')->except('logout');
+    // }
 
     public function login(Request $request)
     {
@@ -52,11 +52,7 @@ class LoginController extends Controller
         $user = User::where('email', $request->email)->first();
         if($user){
                 if(auth()->attempt($credentials)){
-                    $notification = array(
-                        'message' => 'Login Successfully',
-                        'alert-type' => 'success'
-                    );
-                    return redirect('/homev1')->with($notification);
+                    return redirect('/homev1');
                 }
                 else{
                     $notification = array(

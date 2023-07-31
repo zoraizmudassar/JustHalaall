@@ -42,7 +42,11 @@ class ContactController extends Controller
         $contact->subject = $request->subject;
         $contact->message = $request->message;
         $contact->save();
-        return back()->with('success','Your Message send to admin!');
+        $notification = array(
+            'message' => 'Your Message send to Admin',
+            'alert-type' => 'success'
+        );
+        return back()->with($notification);
     }
 
     /**

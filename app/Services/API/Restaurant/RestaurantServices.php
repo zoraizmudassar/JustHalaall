@@ -15,43 +15,44 @@ class RestaurantServices
     {
 
         $customMsgs = [
-//            'restaurant_id.required' => 'Please Provide restaurant_id',
-            'name' => 'Please Provide name',
-            'email' => 'Please Provide email',
-            'phone' => 'Please Provide restaurant_id',
-            'address' => 'Please Provide address',
-            'password' => 'Please Provide address',
+            'restaurant_id.required' => 'Please Provide restaurant_id',
+            'name.required' => 'Please Provide name',
+            // 'email' => 'Please Provide email',
+            'phone.required' => 'Please Provide restaurant_id',
+            'address.required' => 'Please Provide address',
+            // 'password' => 'Please Provide address',
 
 
 
         ];
         $validator = Validator::make($request->all(),
             [
-//                'restaurant_id' => 'required',
+                'restaurant_id' => 'required',
                 'name' => '',
-                'email' => 'email|unique:restaurants',
+                // 'email' => 'email|unique:restaurants',
                 'phone' => '',
                 'address' => '',
-                'password' => '',
+                // 'password' => '',
             ], $customMsgs
         );
 
         if ($validator->fails()) {
-            return response()->json(['status' => 406, 'message' => $validator->messages()->first()], 406);
+            return response()->json(['status' => false, 'message' => $validator->messages()->first()], 406);
         }
 
-        $restaurant =  Restaurant::where('id',Auth::id())->first();
+        // $restaurant =  Restaurant::where('id',Auth::id())->first();
+        $restaurant =  Restaurant::where('id', $request->restaurant_id)->first();
         if(!$restaurant){
-            return response()->json(['status'=>'0','message'=>"restaurant_id not found"]);
+            return response()->json(['status'=>false, 'message'=>"restaurant_id not found"]);
         }
 
         $restaurant->name = $request->name ? $request->name : $restaurant->name;
-        $restaurant->email = $request->email ? $request->email : $restaurant->email;
+        // $restaurant->email = $request->email ? $request->email : $restaurant->email;
         $restaurant->phone = $request->phone ? $request->phone : $restaurant->phone;
         $restaurant->address = $request->address ? $request->address : $restaurant->address;
-        $restaurant->password = $restaurant->password ? \Illuminate\Support\Facades\Hash::make($request->password):$restaurant->password;
+        // $restaurant->password = $restaurant->password ? \Illuminate\Support\Facades\Hash::make($request->password):$restaurant->password;
         $restaurant->save();
-        return response()->json(['status'=>200,'message'=>"Update Record Successfully"],200);
+        return response()->json(['status'=>true,'message'=>"Update Record Successfully"],200);
 
 
 

@@ -63,7 +63,7 @@ class OrderServices
     public function orderList($request)
     {
         $orders = Order::with('cart','orderDetails','Statuses')->get();
-//        dd($orders);
+        dd($orders);
         $total_orders = [];
         foreach ($orders as $key => $order){
 

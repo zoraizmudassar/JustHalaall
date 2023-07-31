@@ -36,7 +36,8 @@ class HomeController extends Controller
     {
         $foodCategory = Category::get();
         $resturant = Restaurant::where('status', 'approved')->get();
-        return view('website.home', compact('foodCategory', 'resturant'));
+        $featuredProducts = Product::where('status', 'approved')->where('is_available', 1)->where('is_featured', 1)->get();      
+        return view('website.home', compact('foodCategory', 'resturant', 'featuredProducts'));
     }
     public function index()
     {
@@ -60,5 +61,10 @@ class HomeController extends Controller
     public function categoryProducts($categoryId) {
         $categoryProducts=Product::where(['category_id'=>$categoryId, 'status'=>'approved'])->get();
         return view('web.categoryproduct', compact('categoryProducts'));
+    }
+
+    public function categoryProductsv1($categoryId){
+        $categoryProducts=Product::where(['category_id'=>$categoryId, 'status'=>'approved'])->get();
+        return view('website.categoryProduct', compact('categoryProducts'));
     }
 }

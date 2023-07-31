@@ -27,42 +27,54 @@ class DealServices
                 'price' => 'required|integer|min:0',
                 'category_id' => 'required',
                 'delivery_time' => 'required|date_format:H:i',
-                'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'image' => 'required',
             ], $customMsgs
         );
         if ($validator->fails()) {
-            return response()->json(['status' => 406, 'message' => $validator->messages()->first()], 406);
+            return response()->json(['status' => false, 'message' => $validator->messages()->first()], 406);
         }
 
         $categroy = Category::where('id',$request->category_id)->first();
         if(!$categroy){
 
-            return response()->json([ 'status' => 404  , 'message' => 'Category id Not Found'],404);
+            return response()->json([ 'status' => false  , 'message' => 'Category id Not Found'],404);
         }
-        $file = $request->image;
-        if ($request->hasFile('image')) {
-            $fileName = $file->getClientOriginalName();
-            $fileSize = ($file->getSize()) / 2000; //Size in kb
-            $explodeImage = explode('.', $fileName);
-            $fileName = $explodeImage[0];
-            $extension = end($explodeImage);
-            $fileName = time() . "-" . $fileName . "." . $extension;
-            $imageExtensions = ['jpg', 'jpeg', 'gif', 'png', 'heif', 'hevc', 'heic', 'PNG'];
-            if (in_array($extension, $imageExtensions)) {
-                if ($fileSize > 2000) {
-                    return response()->json(['status' => 0, 'message' => "Image size should be less than 2 MB"]);
-                }
-                $folderName = "uploads/deals/";
-                $file->move($folderName, $fileName);
-                $path = $folderName . '/' . $fileName;
-                $save_image = $path;
+        
+        $filename = null;
+        if($request->image){
+            $f = finfo_open();
+            $mime_type = finfo_buffer($f, base64_decode($request->image) , FILEINFO_MIME_TYPE);
+            $type = explode('/', $mime_type);
+            $randomNumber = rand(1000000000,9999999999);
+            $filename = '/uploads/deals/' .$randomNumber.'.'.$type[1];
+            file_put_contents(public_path() . $filename, base64_decode($request->image));
+            $filename = 'https://www.justhalaall.com/public'.$filename;
+        }
+        
+//         $file = $request->image;
+//         if ($request->hasFile('image')) {
+//             $fileName = $file->getClientOriginalName();
+//             $fileSize = ($file->getSize()) / 2000; //Size in kb
+//             $explodeImage = explode('.', $fileName);
+//             $fileName = $explodeImage[0];
+//             $extension = end($explodeImage);
+//             $fileName = time() . "-" . $fileName . "." . $extension;
+//             $imageExtensions = ['jpg', 'jpeg', 'gif', 'png', 'heif', 'hevc', 'heic', 'PNG'];
+//             if (in_array($extension, $imageExtensions)) {
+//                 if ($fileSize > 2000) {
+//                     return response()->json(['status' => 0, 'message' => "Image size should be less than 2 MB"]);
+//                 }
+//                 $folderName = "uploads/deals/";
+//                 $file->move($folderName, $fileName);
+//                 $path = $folderName . '/' . $fileName;
+//                 $save_image = $path;
 
-//                if (isset($path) && !empty($path)){
-//                    if(file_exists(public_path($product->images))){
-//                        $img_del = unlink(public_path($product->images));
-//                    }
-            }
-        }
+// //                if (isset($path) && !empty($path)){
+// //                    if(file_exists(public_path($product->images))){
+// //                        $img_del = unlink(public_path($product->images));
+// //                    }
+//             }
+//         }
 
 
 
@@ -73,10 +85,10 @@ class DealServices
             'description' => $request->description,
             'price' => $request->price,
             'delivery_time' => $request->delivery_time,
-            'image' => $save_image,
+            'image' => $filename,
         ]);
 
-        return response()->json([ 'status' => 200  , 'message' => 'Deal Add Successfully'],200);
+        return response()->json([ 'status' => true  , 'message' => 'Deal Add Successfully'],200);
 
     }
 
@@ -101,52 +113,63 @@ class DealServices
                 'price' => 'required|integer|min:0',
                 'category_id' => 'required',
                 'delivery_time' => 'required|date_format:H:i',
-                'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'image' => 'required',
             ], $customMsgs
         );
         if ($validator->fails()) {
-            return response()->json(['status' => 0, 'message' => $validator->messages()->first()], 200);
+            return response()->json(['status' => false, 'message' => $validator->messages()->first()], 200);
         }
 
         $deal =  Deal::where('id',$request->deal_id)->where('restaurant_id',Auth::id())->first();
         if(!$deal){
 
-            return response()->json(['status' => 404, 'message'=> "Deal Not Found"],404);
+            return response()->json(['status' => false, 'message'=> "Deal Not Found"],404);
         }
         $categroy = Category::where('id',$request->category_id)->first();
 
         if(!$categroy){
 
-            return response()->json([ 'status' => 404  , 'message' => 'Category id Not Found'],404);
+            return response()->json([ 'status' => false  , 'message' => 'Category id Not Found'],404);
+        }
+        
+        $filename = null;
+        if($request->image){
+            $f = finfo_open();
+            $mime_type = finfo_buffer($f, base64_decode($request->image) , FILEINFO_MIME_TYPE);
+            $type = explode('/', $mime_type);
+            $randomNumber = rand(1000000000,9999999999);
+            $filename = '/uploads/deals/' .$randomNumber.'.'.$type[1];
+            file_put_contents(public_path() . $filename, base64_decode($request->image));
+            $filename = 'https://www.justhalaall.com/public'.$filename;
         }
 
-        $save_image = $deal->image;
-        $file = $request->image;
+        // $save_image = $deal->image;
+        // $file = $request->image;
 
-        if ($request->hasFile('image')) {
-            $fileName = $file->getClientOriginalName();
-            $fileSize = ($file->getSize()) / 2000; //Size in kb
-            $explodeImage = explode('.', $fileName);
-            $fileName = $explodeImage[0];
-            $extension = end($explodeImage);
-            $fileName = time() . "-" . $fileName . "." . $extension;
-            $imageExtensions = ['jpg', 'jpeg', 'gif', 'png', 'heif', 'hevc', 'heic', 'PNG'];
-            if (in_array($extension, $imageExtensions)) {
-                if ($fileSize > 2000) {
-                    return response()->json(['status' => 0, 'message' => "Image size should be less than 2 MB"]);
-                }
-                $folderName = "uploads/deals/";
-                $file->move($folderName, $fileName);
-                $path = $folderName . '/' . $fileName;
-                $save_image = $path;
+        // if ($request->hasFile('image')) {
+        //     $fileName = $file->getClientOriginalName();
+        //     $fileSize = ($file->getSize()) / 2000; //Size in kb
+        //     $explodeImage = explode('.', $fileName);
+        //     $fileName = $explodeImage[0];
+        //     $extension = end($explodeImage);
+        //     $fileName = time() . "-" . $fileName . "." . $extension;
+        //     $imageExtensions = ['jpg', 'jpeg', 'gif', 'png', 'heif', 'hevc', 'heic', 'PNG'];
+        //     if (in_array($extension, $imageExtensions)) {
+        //         if ($fileSize > 2000) {
+        //             return response()->json(['status' => 0, 'message' => "Image size should be less than 2 MB"]);
+        //         }
+        //         $folderName = "uploads/deals/";
+        //         $file->move($folderName, $fileName);
+        //         $path = $folderName . '/' . $fileName;
+        //         $save_image = $path;
 
-                if (isset($path) && !empty($path)){
-                    if(file_exists(public_path($deal->image))){
-                        $img_del = unlink(public_path($deal->image));
-                    }
-                }
-            }
-        }
+        //         if (isset($path) && !empty($path)){
+        //             if(file_exists(public_path($deal->image))){
+        //                 $img_del = unlink(public_path($deal->image));
+        //             }
+        //         }
+        //     }
+        // }
 
         $deal->update([
             'name' => $request->name,
@@ -154,10 +177,10 @@ class DealServices
             'description' => $request->description,
             'delivery_time' => $request->delivery_time,
             'price' => $request->price,
-            'image' => $save_image,
+            'image' => $filename,
         ]);
 
-        return response()->json([ 'status' => 200  , 'message' => 'Deal Update Successfully']);
+        return response()->json([ 'status' => true  , 'message' => 'Deal Update Successfully']);
     }
 
     public function dealDetail($request)
@@ -172,13 +195,13 @@ class DealServices
         );
 
         if ($validator->fails()) {
-            return response()->json(['status' => 406, 'message' => $validator->messages()->first()], 406);
+            return response()->json(['status' => false, 'message' => $validator->messages()->first()], 406);
         }
 
         $details = Deal::where('restaurant_id',Auth::id())
             ->where('id',$request->deal_id)->first();
         if (!$details){
-            return response()->json(['status' => 404, 'message' => "Deal not found"], 404);
+            return response()->json(['status' => false, 'message' => "Deal not found"], 404);
         }
 //        $images = [];
 //        $array_images = explode('|',$details->image);
@@ -198,7 +221,7 @@ class DealServices
             'status'=>$details->status,
         ];
 
-        return response()->json([ 'status' => 200 ,'data'=>$data ], 200);
+        return response()->json([ 'status' => true ,'data'=>$data ], 200);
     }
 
     public function restaurantDealList($request)
@@ -233,7 +256,7 @@ class DealServices
 
 
         }
-        return response()->json([ 'status' => 200 ,'data'=>$records ], 200);
+        return response()->json([ 'status' => true ,'data'=>$records ], 200);
 
     }
 
@@ -249,19 +272,19 @@ class DealServices
         );
 
         if ($validator->fails()) {
-            return response()->json(['status' => 406, 'message' => $validator->messages()->first()], 406);
+            return response()->json(['status' => false, 'message' => $validator->messages()->first()], 406);
         }
         $products = Deal::where(['restaurant_id'=>Auth::id()])->where('id',$request->deal_id)->first();
 
         if(!$products){
-            return response()->json(['status'=> 404, 'message'=> 'Deal Not Found'], 404);
+            return response()->json(['status'=> true, 'message'=> 'Deal Not Found'], 404);
         }
 
         if(file_exists(public_path($products->image))){
             $img_del = unlink(public_path($products->image));
         }
         $products->delete();
-        return response()->json([ 'status' => 200 ,'message'=> 'Deal Deleted Successfully' ], 200);
+        return response()->json([ 'status' => true ,'message'=> 'Deal Deleted Successfully' ], 200);
     }
 
 
