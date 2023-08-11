@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Models\Cart;
 use App\Models\Product;
+use App\Models\Deal;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
@@ -65,7 +66,7 @@ class CartController extends Controller
             $cart->quantity = 1;
             $cart->status = 'pending';
             $cart->save();
-            return response();
+            return back();
         }
     }
 

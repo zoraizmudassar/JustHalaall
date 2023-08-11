@@ -1,4 +1,5 @@
 @extends('website.layouts.app')
+@section('title','Checkout')
 @section('content')
 <style>
 .breadcrumb-bg {
@@ -90,7 +91,7 @@
 														<a href="#" class="text-dark" style="font-weight: 600; text-transform: capitalize; font-size: medium;">{{$item->product->name ?? '' }}</a>
                                                 		<div class="small text-muted" style="font-size: 100%; font-weight: 500;">Price: £ {{ $item->unit_price ?? '' }} 
 															<span class="mx-2">|</span> Qty: {{ $item->quantity ?? '' }} 
-															<span class="mx-2">|</span> Subtotal: £{{ $item->quantity * $item->unit_price }}
+															<span class="mx-2">|</span> Subtotal: £ {{ $item->quantity * $item->unit_price }}
 														</div>
                                             		</div>
                                         		</div>

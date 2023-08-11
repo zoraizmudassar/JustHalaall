@@ -1,4 +1,5 @@
 @extends('website.layouts.app')
+@section('title','About Us')
 @section('content')
 <style>
 .breadcrumb-bg{

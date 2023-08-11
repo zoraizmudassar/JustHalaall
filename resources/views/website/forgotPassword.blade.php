@@ -1,4 +1,5 @@
 @extends('website.layouts.authHeader')
+@section('title','Forgot Password')
 @section('content')
 <div class="checkout-section mt-200 mb-150">
 	<div class="container">

@@ -13,30 +13,35 @@ class DealServices
     {
         return view('restaurant.deals.create');
     }
-//    public function approved($request)
-//    {
-//        $deals = Deal::where('restaurant_id',Auth::id())->where('status','approved')->latest()->with('restaurant')->get();
-//        return view('restaurant.deals.index',compact('deals'));
-//    }
-//    public function rejected($request)
-//    {
-//        $deals = Deal::where('restaurant_id',Auth::id())->where('status','rejected')->latest()->with('restaurant')->get();
-//        return view('restaurant.deals.rejected',compact('deals'));
-//    }
-//    public function pending($request)
-//    {
-//        $deals = Deal::where('restaurant_id',Auth::id())->where('status','pending')->latest()->with('restaurant')->get();
-//        return view('restaurant.deals.pending',compact('deals'));
-//    }
+    public function approved($request)
+    {
+        $deals = Deal::where('restaurant_id',Auth::id())->where('status','approved')->latest()->with('restaurant')->get();
+        $status = 'Approved';
+        return view('restaurant.deals.pending',compact('deals','status'));
+    }
+    public function rejected($request)
+    {
+        $deals = Deal::where('restaurant_id',Auth::id())->where('status','rejected')->latest()->with('restaurant')->get();
+        $status = 'Rejected';
+        return view('restaurant.deals.pending',compact('deals','status'));
+    }
+    public function pending($request)
+    {
+        $deals = Deal::where('restaurant_id',Auth::id())->where('status','pending')->latest()->with('restaurant')->get();
+        $status = 'Pending';
+        return view('restaurant.deals.pending',compact('deals','status'));
+    }
     public function enable($request)
     {
         $deals = Deal::where('restaurant_id',Auth::id())->where(['status'=>"1"])->latest()->with('restaurant')->get();
-        return view('restaurant.deals.enable',compact('deals'));
+        $status = 'Enable';
+        return view('restaurant.deals.enable',compact('deals','status'));
     }
     public function disable($request)
     {
         $deals = Deal::where('restaurant_id',Auth::id())->where(['status'=>"0"])->latest()->with('restaurant')->get();
-        return view('restaurant.deals.disable',compact('deals'));
+        $status = 'Disable';
+        return view('restaurant.deals.enable',compact('deals','status'));
     }
 
     public function store($request)
@@ -62,24 +67,26 @@ class DealServices
         if ($validator->fails()) {
             return response()->json(['status' => 404, 'message' => $validator->messages()->first()]);
         }
+        $path = '';
         $file = $request->image;
-        if ($request->hasFile('image')) {
+        if($request->hasFile('image')){
             $fileName = $file->getClientOriginalName();
-            $fileSize = ($file->getSize()) / 2000; //Size in kb
             $explodeImage = explode('.', $fileName);
             $fileName = $explodeImage[0];
             $extension = end($explodeImage);
             $fileName = time() . "-" . $fileName . "." . $extension;
-            $imageExtensions = ['jpg', 'jpeg', 'gif', 'png', 'heif', 'hevc', 'heic', 'PNG'];
-            if (in_array($extension, $imageExtensions)) {
-                if ($fileSize > 2000) {
-                    return response()->json(['status' => 0, 'message' => "Image size should be less than 2 MB"]);
-                }
-                $folderName = "uploads/deals/";
+            $imageExtensions = ['JPG', 'JPEG', 'PNG', 'jpg', 'jpeg', 'png'];
+            if(in_array($extension, $imageExtensions)){
+                $folderName = "uploads/deals";
                 $file->move($folderName, $fileName);
                 $path = $folderName . '/' . $fileName;
-                $save_image = $path;
 
+            }else{
+                $notification = array(
+                    'message' => 'Image should be in JPG or PNG and JPEG',
+                    'alert-type' => 'info'
+                );
+                return redirect()->back()->withInput($request->all())->with($notification);
             }
         }
 
@@ -90,21 +97,38 @@ class DealServices
             'description' => $request->description,
             'price' => $request->price,
             'delivery_time' => $request->delivery_time,
-            'image' => $save_image,
+            'image' => $path,
         ]);
 
-        if ($data){
-            return response()->json([ 'status' => 200, 'url'=>route('restaurants.deal.pending'), 'message' => ' Deal Added Successfully']);
-        }else{
-            return response()->json([ 'status' => 404, 'message' => ' Deal NOT Added']);
+        $notification = array(
+            'message' => 'Deal Created Successfully',
+            'alert-type' => 'success'
+        );
+        if($data){
+            $returnArray = array(
+                'value' => 1,
+                'url' => route('restaurants.deal.pending')
+            );
+            return response()->json($returnArray);
         }
+        else{
+            $value = 0;
+            return response()->json($value);
+        }
+        return redirect()->route('restaurants.deal.pending')->with($notification); 
+
+        // if ($data){
+        //     return response()->json([ 'status' => 200, 'url'=>route('restaurants.deal.pending'), 'message' => ' Deal Added Successfully']);
+        // }else{
+        //     return response()->json([ 'status' => 404, 'message' => ' Deal NOT Added']);
+        // }
     }
 
-    public function pending($request)
-    {
-        $deals = Deal::where('restaurant_id',Auth::id())->get();
-        return view('restaurant.deals.pending',compact('deals'));
-    }
+    // public function pending($request)
+    // {
+    //     $deals = Deal::where('restaurant_id',Auth::id())->get();
+    //     return view('restaurant.deals.pending',compact('deals'));
+    // }
     public function changeStatus($request)
     {
 
@@ -119,6 +143,13 @@ class DealServices
         }
 
     }
+
+    public function dealDetail($request)
+    {
+        $data = Deal::find($request->id);
+        return response()->json(['status' => 1  ,'data'=> $data]);
+    }
+
     public function update($request)
     {
 

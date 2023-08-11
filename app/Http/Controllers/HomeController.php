@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Restaurant;
 use App\Models\Product;
+use App\Models\Deal;
 
 class HomeController extends Controller
 {
@@ -36,8 +37,9 @@ class HomeController extends Controller
     {
         $foodCategory = Category::get();
         $resturant = Restaurant::where('status', 'approved')->get();
-        $featuredProducts = Product::where('status', 'approved')->where('is_available', 1)->where('is_featured', 1)->get();      
-        return view('website.home', compact('foodCategory', 'resturant', 'featuredProducts'));
+        $featuredProducts = Product::where('status', 'approved')->where('is_available', 1)->where('is_featured', 1)->with('category')->get();    
+        $deals = Deal::where('status', 1)->with('category')->get();
+        return view('website.home', compact('foodCategory', 'resturant', 'featuredProducts','deals'));
     }
     public function index()
     {
@@ -64,7 +66,9 @@ class HomeController extends Controller
     }
 
     public function categoryProductsv1($categoryId){
-        $categoryProducts=Product::where(['category_id'=>$categoryId, 'status'=>'approved'])->get();
-        return view('website.categoryProduct', compact('categoryProducts'));
+        $categoryProducts=Product::where(['category_id'=>$categoryId, 'status'=>'approved'])->with('category')->get();
+        $categoryName = Category::find($categoryId);
+        $categoryName = $categoryName['name'];
+        return view('website.categoryProduct', compact('categoryProducts','categoryName'));
     }
 }

@@ -21,31 +21,41 @@ class ProductController extends Controller
         return $productServices->rejected($request);
     }
 
-        public function approved(Request $request,ProductServices $productServices)
-        {
-            return $productServices->approved($request);
-        }
-        public function pending(Request $request,ProductServices $productServices)
-        {
-            return $productServices->pending($request);
-        }
+    public function approved(Request $request,ProductServices $productServices)
+    {
+        return $productServices->approved($request);
+    }
+    public function pending(Request $request,ProductServices $productServices)
+    {
+        return $productServices->pending($request);
+    }
 
     public function store(Request $request,ProductServices $productServices)
     {
         return $productServices->store($request);
-        }
-        public function update(Request $request,ProductServices $productServices)
-        {
-            return $productServices->update($request);
-        }
+    }
+    public function update(Request $request,ProductServices $productServices)
+    {
+        return $productServices->update($request);
+    }
 
-        public function changeStatus(Request $request,ProductServices $productServices)
-        {
-            return $productServices->changeStatus($request);
-        }
+    public function changeStatus(Request $request,ProductServices $productServices)
+    {
+        return $productServices->changeStatus($request);
+    }
+
+    public function changeFeature(Request $request,ProductServices $productServices)
+    {
+        return $productServices->changeFeature($request);
+    }
+
+    public function productDetail(Request $request,ProductServices $productServices)
+    {
+        return $productServices->productDetail($request);
+    }
 
     public function destroy(Request $request,ProductServices $productServices)
     {
         return $productServices->destroy($request);
-        }
+    }
 }

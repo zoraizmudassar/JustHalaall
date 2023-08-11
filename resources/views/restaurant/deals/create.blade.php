@@ -89,8 +89,8 @@
 
                         </div>
                         <div class="modal-footer">
-                            <button class="btn btn-default" type="button" data-dismiss="modal">Cancel</button>
-                            <button class="btn btn-warning" type="submit">Submit</button>
+                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                            <button class="btn btn-success" type="submit">Submit</button>
                         </div>
                     </form>
                 </div>
@@ -100,6 +100,8 @@
 @endsection
 
 @section('script')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
 
         /*IMAGE*/
@@ -139,15 +141,24 @@
                     processData: false,
                     success:function(data) {
                         $.unblockUI();
-                        if(data.status === 200){
-                            successMsg(data.message);
-                            // $('#addProductModal').modal('hide');
-                            // $('#addRestaurantModal').modal('toggle');
+                        if(data.value === 1){
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text: "Deal Added Successfully",
+                                showConfirmButton: false,
+                                timer: 3000
+                            });
                             window.location.href = data.url;
-                            // window.location.reload();
                         }
-                        if(data.status === 0){
-                            errorMsg(data.message);
+                        if(data === 0){
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: "Something went wrong",
+                                showConfirmButton: false,
+                                timer: 3000
+                            });
                         }
                     },
                     error:function(data) {

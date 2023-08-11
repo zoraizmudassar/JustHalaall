@@ -27,6 +27,7 @@
                                     {{--                                    <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Position: activate to sort column ascending" style="width: 224px;">Name</th>--}}
                                     <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 101px;">Price</th>
                                     <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 101px;">Availablity</th>
+                                    <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 101px;">Featured</th>
                                     {{--                                    <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 101px;">Category Name</th>--}}
                                     <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 43px;">Status</th>
                                     {{--                                    <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Start date: activate to sort column ascending" style="width: 96px;">Status</th>--}}
@@ -42,7 +43,10 @@
                                         <td>{{$res->description}}</td>
                                         <td>{{$res->price}}</td>
                                         <td>
-                                            <input data-id="{{$res->id}}" id="check" class="toggle-class" type="checkbox" data-onstyle="warning" data-offstyle="danger" data-toggle="toggle" data-on="Available" data-off=UnAvailable" {{ $res->is_available == 1 ? 'checked' : '' }}>
+                                            <input data-id="{{$res->id}}" id="check" class="toggle-class" type="checkbox" data-onstyle="warning" data-offstyle="danger" data-toggle="toggle" data-on="Available" data-off="UnAvailable" {{ $res->is_available == 1 ? 'checked' : '' }}>
+                                        </td>
+                                        <td>
+                                            <input data-id="{{$res->id}}" id="check" class="toggle-class-feature" type="checkbox" data-onstyle="success" data-offstyle="warning" data-toggle="toggle" data-on="Featured" data-off="UnFeatured" {{ $res->is_featured == 1 ? 'checked' : '' }}>
                                         </td>
                                         <td>
                                             {{$res->status}}
@@ -298,6 +302,30 @@
                     error:function(data) {
                         console.log('error');
                         // $.unblockUI();
+                    }
+                });
+            });
+            $('.toggle-class-feature').change(function() {
+                var status = $(this).prop('checked') == true ? 1 : 0;
+                var user_id = $(this).data('id');
+
+                // blockUi();
+                $.ajax({
+                    type:'POST',
+                    dataType:'json',
+                    url:'{{url('/restaurant/product/change-feature')}}',
+                    data:{'_token': '{{ csrf_token() }}','status': status, 'user_id': user_id},
+                    success:function(data) {
+                        if(data.status === 1){
+                            successMsg(data.message);
+                            window.location.reload();
+                        }
+                        if(data.status === 0){
+                            errorMsg(data.message);
+                        }
+                    },
+                    error:function(data) {
+                        console.log('error');
                     }
                 });
             });

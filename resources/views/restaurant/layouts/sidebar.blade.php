@@ -47,9 +47,9 @@
             <div class="bg-white py-2 collapse-inner rounded">
                                 <h6 class="collapse-header">Deal Components:</h6>
                 <a class="collapse-item" href="{{route('restaurants.deal.create')}}">Add New</a>
-{{--                <a class="collapse-item" href="{{route('restaurants.deal.approved')}}">Approved</a>--}}
-{{--                <a class="collapse-item" href="{{route('restaurants.deal.pending')}}">Pending</a>--}}
-{{--                <a class="collapse-item" href="{{route('restaurants.deal.rejected')}}">Rejected</a>--}}
+                <a class="collapse-item" href="{{route('restaurants.deal.approved')}}">Approved</a>
+                <a class="collapse-item" href="{{route('restaurants.deal.pending')}}">Pending</a>
+                <a class="collapse-item" href="{{route('restaurants.deal.rejected')}}">Rejected</a>
                 <a class="collapse-item" href="{{route('restaurants.deal.enable')}}">Enable</a>
                 <a class="collapse-item" href="{{route('restaurants.deal.disable')}}">Disable</a>
             </div>

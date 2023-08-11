@@ -71,6 +71,8 @@
     </div>
 @endsection
 @section('script')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
 
         $('#password-eye').hover(function () {
@@ -120,11 +122,17 @@
 
                     $.unblockUI();
                     if(data.status === 1){
-                        successMsg(data.message);
+                        Swal.fire({
+                            icon: 'success',
+                            title: data.message,
+                        });
                         window.location.reload();
                     }
                     if(data.status === 0){
-                        errorMsg(data.message);
+                        Swal.fire({
+                            icon: 'error',
+                            title: data.message,
+                        });
                     }
                 },
                 error:function(data) {

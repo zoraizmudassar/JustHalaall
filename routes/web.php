@@ -67,6 +67,9 @@ Route::namespace('Restaurant')->prefix('restaurant')->as('restaurants.')->group(
         Route::namespace('Deal')->prefix('deal')->as('deal.')->group(function () {
 
             Route::get('/create', [App\Http\Controllers\Restaurant\Deal\DealController::class, 'create'])->name('create');
+            Route::get('/pending', [App\Http\Controllers\Restaurant\Deal\DealController::class, 'pending'])->name('pending');
+            Route::get('/approved', [App\Http\Controllers\Restaurant\Deal\DealController::class, 'approved'])->name('approved');
+            Route::get('/rejected', [App\Http\Controllers\Restaurant\Deal\DealController::class, 'rejected'])->name('rejected');
             Route::get('/enable', [App\Http\Controllers\Restaurant\Deal\DealController::class, 'enable'])->name('enable');
             Route::get('/disable', [App\Http\Controllers\Restaurant\Deal\DealController::class, 'disable'])->name('disable');
             Route::post('/store', [\App\Http\Controllers\Restaurant\Deal\DealController::class, 'store'])->name('store');
@@ -74,6 +77,7 @@ Route::namespace('Restaurant')->prefix('restaurant')->as('restaurants.')->group(
             Route::post('/update', [\App\Http\Controllers\Restaurant\Deal\DealController::class, 'update'])->name('update');
             Route::post('/change-status', [\App\Http\Controllers\Restaurant\Deal\DealController::class, 'changeStatus'])->name('changeStatus');
             Route::post('/delete', [\App\Http\Controllers\Restaurant\Deal\DealController::class, 'destroy'])->name('delete');
+            Route::post('/deal-detail', [\App\Http\Controllers\Restaurant\Deal\DealController::class, 'dealDetail'])->name('dealDetail');            
         });
         //    Product Route's
         Route::namespace('Order')->prefix('order')->as('order.')->group(function () {
@@ -96,7 +100,9 @@ Route::namespace('Restaurant')->prefix('restaurant')->as('restaurants.')->group(
             Route::post('/store', [\App\Http\Controllers\Restaurant\Products\ProductController::class, 'store'])->name('store');
             Route::post('/update', [\App\Http\Controllers\Restaurant\Products\ProductController::class, 'update'])->name('update');
             Route::post('/change-status', [\App\Http\Controllers\Restaurant\Products\ProductController::class, 'changeStatus'])->name('changeStatus');
+            Route::post('/change-feature', [\App\Http\Controllers\Restaurant\Products\ProductController::class, 'changeFeature'])->name('changeFeature');
             Route::post('/delete', [\App\Http\Controllers\Restaurant\Products\ProductController::class, 'destroy'])->name('delete');
+            Route::post('/product-detail', [\App\Http\Controllers\Restaurant\Products\ProductController::class, 'productDetail'])->name('productDetail');            
         });
     });
 });
@@ -144,11 +150,18 @@ Route::get('verifyotpv1', function () {
 Route::get('updatePasswordv1', function () {
     return view('website.updatePassword');
 });
+Route::get('detailv1', function () {
+    return view('website.detail');
+});
+Route::get('orderv1', function () {
+    return view('website.order');
+});
 Route::post('contact/store',[\App\Http\Controllers\ContactController::class,'store']);
 Route::get('admin/contact',[\App\Http\Controllers\ContactController::class,'index']);
 Route::get('cart', [App\Http\Controllers\Web\CartController::class, 'index'])->name('cart')->middleware('auth');
 Route::post('add-to-cart', [\App\Http\Controllers\Web\CartController::class, 'store'])->name('addToCart')->middleware('auth');
 Route::post('add-to-cartv1', [\App\Http\Controllers\Web\CartController::class, 'storev1'])->name('addToCartv1')->middleware('auth');
+Route::post('add-to-cartv2', [\App\Http\Controllers\Web\CartController::class, 'storev2'])->name('addToCartv2')->middleware('auth');
 Route::get('remove-item/{id}', [App\Http\Controllers\Web\CartController::class, 'removeCart'])->name('removeCart')->middleware('auth');
 Route::get('detail', function () {
     return view('web.detailpage');

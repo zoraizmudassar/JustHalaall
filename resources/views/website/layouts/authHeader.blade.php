@@ -61,7 +61,7 @@
 					<div class="main-menu-wrap">
 						<!-- logo -->
 						<div class="site-logo">
-							<a href="index.html">
+							<a href="/homev1">
 								<img src="website/assets/img/halaall.png" alt="" style="max-width: 50%;">
 							</a>
 						</div>

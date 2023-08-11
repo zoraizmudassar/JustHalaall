@@ -15,20 +15,20 @@ class ProductServices
     public function rejected($request)
     {
         $products = Product::where('restaurant_id',Auth::id())->where('status','rejected')->latest()->with('restaurant')->get();
-
-        return view('restaurant.products.rejected',compact('products'));
+        $status = 'Rejected';
+        return view('restaurant.products.pending',compact('products','status'));
     }
     public function approved($request)
     {
         $products = Product::where('restaurant_id',Auth::id())->where('status','approved')->latest()->with('restaurant')->get();
-
-        return view('restaurant.products.index',compact('products'));
+        $status = 'Approved';
+        return view('restaurant.products.pending',compact('products','status'));
     }
     public function pending($request)
     {
         $products = Product::where('restaurant_id',Auth::id())->where('status','pending')->latest()->with('restaurant')->get();
-
-        return view('restaurant.products.pending',compact('products'));
+        $status = 'Pending';
+        return view('restaurant.products.pending',compact('products','status'));
     }
 
     public function store($request)
@@ -55,32 +55,28 @@ class ProductServices
         if ($validator->fails()) {
             return response()->json(['status' => 0, 'message' => $validator->messages()->first()], 200);
         }
+        $path = '';
         $file = $request->image;
-        if ($request->hasFile('image')) {
+        if($request->hasFile('image')){
             $fileName = $file->getClientOriginalName();
-            $fileSize = ($file->getSize()) / 2000; //Size in kb
             $explodeImage = explode('.', $fileName);
             $fileName = $explodeImage[0];
             $extension = end($explodeImage);
             $fileName = time() . "-" . $fileName . "." . $extension;
-            $imageExtensions = ['jpg', 'jpeg', 'gif', 'png', 'heif', 'hevc', 'heic', 'PNG'];
-            if (in_array($extension, $imageExtensions)) {
-                if ($fileSize > 2000) {
-                    return response()->json(['status' => 0, 'message' => "Image size should be less than 2 MB"]);
-                }
+            $imageExtensions = ['JPG', 'JPEG', 'PNG', 'jpg', 'jpeg', 'png'];
+            if(in_array($extension, $imageExtensions)){
                 $folderName = "uploads/products";
                 $file->move($folderName, $fileName);
                 $path = $folderName . '/' . $fileName;
-                $save_image = $path;
 
-//                if (isset($path) && !empty($path)){
-//                    if(file_exists(public_path($product->images))){
-//                        $img_del = unlink(public_path($product->images));
-//                    }
+            }else{
+                $notification = array(
+                    'message' => 'Image should be in JPG or PNG and JPEG',
+                    'alert-type' => 'info'
+                );
+                return redirect()->back()->withInput($request->all())->with($notification);
             }
-                }
-
-
+        }
 
         $data = Product::create([
             'restaurant_id' => Auth::id(),
@@ -89,11 +85,24 @@ class ProductServices
             'description' => $request->description,
             'delivery_time' => $request->delivery_time,
             'price' => $request->price,
-            'images' => $save_image,
+            'images' => $path,
         ]);
-
-
-        return response()->json([ 'status' => 200 , 'url'=> route('restaurants.product.pending'), 'message' => ' Product Add Successfully']);
+        $notification = array(
+            'message' => 'Product Created Successfully',
+            'alert-type' => 'success'
+        );
+        if($data){
+            $returnArray = array(
+                'value' => 1,
+                'url' => route('restaurants.product.pending')
+            );
+            return response()->json($returnArray);
+        }
+        else{
+            $value = 0;
+            return response()->json($value);
+        }
+        return redirect()->route('restaurants.product.pending')->with($notification); 
 
     }
 
@@ -176,6 +185,21 @@ class ProductServices
 
         return response()->json(['status' => 1  ,'message'=>'Status Change Successfully.']);
 
+    }
+
+    public function changeFeature($request)
+    {
+        $user = Product::find($request->user_id);
+        $user->is_featured = $request->status;
+        $user->save();
+        return response()->json(['status' => 1  ,'message'=>'Feature Status Change Successfully.']);
+    }
+
+    public function productDetail($request)
+    {
+        dd($request->all());
+        $data = Product::find($request->id);
+        return response()->json(['status' => 1  ,'data'=> $data]);
     }
 
     public function destroy($request)

@@ -55,7 +55,7 @@
 				<div class="col-lg-12 col-sm-12 text-center">
 					<div class="main-menu-wrap">
 						<div class="site-logo">
-							<a href="index.html">
+							<a href="/homev1">
 								<img src="website/assets/img/halaall.png" alt="" style="max-width: 50%;">
 							</a>
 						</div>
@@ -82,8 +82,8 @@
 									<li><a href="#">My Account</a>
 										<ul class="sub-menu">
 											<li><a class="mobile-hide search-bar-icon" href="#">My Profile</a></li>
-											<li><a href="#">My Orders</a></li>
-											<li><a href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">Logout</a></li>
+											<li><a href="/orderv1">My Orders</a></li>
+											<li><a data-toggle="modal" data-target="#exampleModal">Logout</a></li>
 											<form id="logout-form" action="{{route('logout')}}" method="POST" style="display: none;">
 												@csrf
 											</form>
@@ -135,8 +135,8 @@
 									@if($errors->has('address'))
 										<span class="badge displayBadges py-2 text-light mt-2" style="background: #cd3f3f; display: block; font-size: 13px !important;">{{$errors->first('address')}}</span>
 									@endif
-									<label for="" class="text-white float-left">Image</label>					        	
-									<p>
+									<label hidden for="" class="text-white float-left">Image</label>					        	
+									<p hidden>
 										<input name="image" value="" type="file">
 									</p>					
 									@if($errors->has('image'))
@@ -183,12 +183,33 @@
 	@endauth								
     
     @yield('content')
-       
+	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: transparent">
+                    <h5>Logout?</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-center">
+                    Select "Logout" below if you are ready to end your current session.
+                </div>
+                <div class="modal-footer" style="background-color: transparent">
+                    <button type="button" style="box-shadow: none;" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    <a href="{{ route('logout') }}" 
+						onclick="event.preventDefault();document.getElementById('logout-form').submit();" data-toggle="modal" data-target="#logoutModal">
+                        <button type="button" style="box-shadow: none; background: #202020; border: none;" class="btn btn-danger mx-1 py-2 px-3">Logout</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>       
 	<div class="copyright">
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-6 col-md-12">
-					<p><a href="/">Just Halaall</a><br>
+					<p><a href="/homev1">Just Halaall</a><br>
 					</p>
 				</div>
 				<div class="col-lg-6 text-right col-md-12">
