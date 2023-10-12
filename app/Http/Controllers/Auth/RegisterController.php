@@ -168,6 +168,7 @@ class RegisterController extends Controller
             'message' => "You have been logged out",
             'alert-type' => 'success'
         );
-        return back()->with('success' , $notification);
+        // return back()->with('success' , $notification);
+        return redirect('/loginv1')->with($notification);
     }
 }

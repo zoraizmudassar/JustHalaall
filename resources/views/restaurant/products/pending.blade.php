@@ -40,17 +40,17 @@ label{
                             <tbody class="text-center">
                                 @foreach($products as $res)
                                     <tr>
-                                        <td>{{$res->name}}</td>
-                                        <td>{{substr($res->description, 0, 20).'...'}}</td>
-                                        <td>{{$res->price}}</td>
-                                        <td>
+                                        <td style="vertical-align: middle;">{{$res->name}}</td>
+                                        <td style="vertical-align: middle;">{{substr($res->description, 0, 20).'...'}}</td>
+                                        <td style="vertical-align: middle;">{{$res->price}}</td>
+                                        <td style="vertical-align: middle;">
                                             <input data-id="{{$res->id}}" id="check" class="toggle-class" type="checkbox" data-onstyle="warning" data-offstyle="danger" data-toggle="toggle" data-on="Available" data-off="UnAvailable" {{ $res->is_available == 1 ? 'checked' : '' }}>
                                         </td>
-                                        <td>
+                                        <td style="vertical-align: middle;">
                                             <input data-id="{{$res->id}}" id="check" class="toggle-class-feature" type="checkbox" data-onstyle="success" data-offstyle="warning" data-toggle="toggle" data-on="Featured" data-off="UnFeatured" {{ $res->is_featured == 1 ? 'checked' : '' }}>
                                         </td>
-                                        <td><span class="badge badge-warning p-2">{{ucfirst($res->status) }}</span></td>                                            
-                                        <td>
+                                        <td style="vertical-align: middle;"><span class="badge badge-warning p-2">{{ucfirst($res->status) }}</span></td>                                            
+                                        <td style="vertical-align: middle;">
                                             <div class="btn-group" role="group" aria-label="Basic example">
                                                 <button type="button" style="background: #ff982f;border: none; border-radius: 5px;" data-id="{{$res}}" class="btn btn-sm btn-success edit-product-btn mx-1"><i class="fa fa-pencil-alt"></i></button>
                                                 <button type="button" data-id="{{$res->id}}" class="btn btn-sm btn-danger delete-category-btn mx-1" style="border-radius: 5px;"><i class="fa fa-trash-alt"></i></button>

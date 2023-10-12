@@ -7,7 +7,7 @@
     "require": {
         "php": "^7.3|^8.0",
         "fruitcake/laravel-cors": "^2.0",
-        "guzzlehttp/guzzle": "^7.0.1",
+        "guzzlehttp/guzzle": "*",
         "khsing/world": "^9.0",
         "laravel/framework": "^8.54",
         "laravel/passport": "^10.1",
@@ -16,6 +16,7 @@
         "laravel/telescope": "^4.7",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.3",
+        "paypal/rest-api-sdk-php": "^1.14",
         "pnlinh/laravel-google-distance": "^1.0",
         "stripe/stripe-php": "^8.10"
     },

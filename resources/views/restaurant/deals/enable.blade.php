@@ -30,19 +30,19 @@
                             <tbody class="text-center">
                                 @foreach($deals as $res)
                                     <tr>
-                                        <td>{{$res->name}}</td>
-                                        <td>{{substr($res->description, 0, 20).'...'}}</td>
-                                        <td>{{$res->price}}</td>
-                                        <td>{{$res->delivery_time}}</td>
+                                        <td style="vertical-align: middle;">{{$res->name}}</td>
+                                        <td style="vertical-align: middle;">{{substr($res->description, 0, 20).'...'}}</td>
+                                        <td style="vertical-align: middle;">{{$res->price}}</td>
+                                        <td style="vertical-align: middle;">{{$res->delivery_time}}</td>
                                         @if($res->status == 1)
-                                        <td><span class="badge badge-success p-2">Enable</span></td> 
+                                        <td style="vertical-align: middle;"><span class="badge badge-success p-2">Enable</span></td> 
                                         @elseif($res->status == 0)
-                                        <td><span class="badge badge-danger p-2">Disable</span></td> 
+                                        <td style="vertical-align: middle;"><span class="badge badge-danger p-2">Disable</span></td> 
                                         @endif
-                                        <td>
+                                        <td style="vertical-align: middle;">
                                             <input data-id="{{$res->id}}" id="check" class="toggle-class" type="checkbox" data-onstyle="success" data-offstyle="danger" data-toggle="toggle" data-on="Enable" data-off="Disable" {{ $res->status ? 'checked' : '' }}>
                                         </td>                
-                                        <td>
+                                        <td style="vertical-align: middle;">
                                             <div class="btn-group" role="group" aria-label="Basic example">
                                             <button type="button" data-id="{{$res}}" class="btn btn-sm btn-warning edit-deal-btn mx-1" style="border-radius: 5px;"><i class="fa fa-pencil-alt"></i></button>
                                                 <button type="button" data-id="{{$res->id}}" class="btn btn-sm btn-danger delete-deal-btn mx-1" style="border-radius: 5px;"><i class="fa fa-trash-alt"></i></button>

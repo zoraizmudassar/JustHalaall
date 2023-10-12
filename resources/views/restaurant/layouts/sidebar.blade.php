@@ -32,9 +32,9 @@
             <div class="bg-white py-2 collapse-inner rounded">
                                 <h6 class="collapse-header">Product Components:</h6>
                 <a class="collapse-item" href="{{route('restaurants.product.create')}}">Add New</a>
-                <a class="collapse-item" href="{{route('restaurants.product.approved')}}">Approved</a>
-                <a class="collapse-item" href="{{route('restaurants.product.pending')}}">Pending</a>
-                <a class="collapse-item" href="{{ route('restaurants.product.rejected') }}">Rejected</a>
+                <a class="collapse-item" href="{{route('restaurants.product.approved')}}">Products</a>
+                <!-- <a class="collapse-item" href="{{route('restaurants.product.pending')}}">Pending</a> -->
+                <!-- <a class="collapse-item" href="{{ route('restaurants.product.rejected') }}">Rejected</a> -->
             </div>
         </div>
     </li>
@@ -47,9 +47,9 @@
             <div class="bg-white py-2 collapse-inner rounded">
                                 <h6 class="collapse-header">Deal Components:</h6>
                 <a class="collapse-item" href="{{route('restaurants.deal.create')}}">Add New</a>
-                <a class="collapse-item" href="{{route('restaurants.deal.approved')}}">Approved</a>
-                <a class="collapse-item" href="{{route('restaurants.deal.pending')}}">Pending</a>
-                <a class="collapse-item" href="{{route('restaurants.deal.rejected')}}">Rejected</a>
+                <!-- <a class="collapse-item" href="{{route('restaurants.deal.approved')}}">Approved</a> -->
+                <!-- <a class="collapse-item" href="{{route('restaurants.deal.pending')}}">Pending</a> -->
+                <!-- <a class="collapse-item" href="{{route('restaurants.deal.rejected')}}">Rejected</a> -->
                 <a class="collapse-item" href="{{route('restaurants.deal.enable')}}">Enable</a>
                 <a class="collapse-item" href="{{route('restaurants.deal.disable')}}">Disable</a>
             </div>
@@ -64,7 +64,8 @@
         <div id="collapseorder" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                                 <h6 class="collapse-header">Order Components:</h6>
-                <a class="collapse-item" href="{{route('restaurants.order.pending-order')}}">Pending</a>
+                <a class="collapse-item" href="{{route('restaurants.order.all-order')}}">All</a>
+                <a class="collapse-item" href="{{route('restaurants.order.pending-order')}}">Preparing</a>
                 <a class="collapse-item" href="{{route('restaurants.order.accepted-order')}}">Accepted</a>
                 <a class="collapse-item" href="{{route('restaurants.order.on-way')}}">On Way</a>
                 <a class="collapse-item" href="{{route('restaurants.order.complete-order')}}">Complete</a>

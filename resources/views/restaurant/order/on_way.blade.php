@@ -7,56 +7,84 @@
         <div class="card-header py-3 justify-content-between">
             <div class="row justify-content-between align-items-center">
                 <h6 class="ml-3 font-weight-bold">On Way Orders</h6>
-                {{--                <button class="btn btn-sm btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg"><i class="fa fa-plus"></i> Add New Product</button>--}}
             </div>
         </div>
-        <div class="card-body">
-            <div class="table-responsive">
-                <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <table class="table table-bordered dataTable" id="dataTable" role="grid" aria-describedby="dataTable_info" style="width: 100%;">
-                                <thead>
-                                <tr role="row">
-                                    <th class="sorting sorting_asc" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 70px;">Order Id</th>
-                                    <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 101px;">UserName</th>
-                                    <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 101px;">Payment Type</th>
-                                    <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 43px;">Status</th>
-                                    <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" style="width: 85px;">Place Date</th>
-                                    <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Salary: activate to sort column ascending" style="width: 30px;">Action</th>
+        <div class="row">
+        <div class="col-12 mb-5">
+            <div class="wrapper">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table dataTable table-hover" id="dataTable" role="grid" aria-describedby="dataTable_info" style="width: 100%;">
+                            <thead class="thead-dark text-center">
+                                <tr>
+                                    <th scope="col">Order Id</th>
+                                    <th scope="col">Customer</th>
+                                    <th scope="col">Item</th>
+                                    <th scope="col">Total</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Location</th>
+                                    <th scope="col">Approval Status</th>
+                                    {{-- <th scope="col">Order Status</th> --}}
+                                    <th scope="col">Place Date</th>
+                                    <th scope="col">Action</th>
                                 </tr>
-                                </thead>
-                                <tbody>
+                            </thead>
+                            <tbody class="text-center">
                                 @foreach($orders as $res)
-                                    <tr class="odd">
-                                        <td class="sorting_1">{{$res->id}}</td>
-                                        <td>{{ $res->user->name }}</td>
-                                        <td>{{ ucfirst($res->payment_type) }}</td>
-                                        <td>
-                                            @php $statuses = \App\Models\Status::all(); @endphp
-                                            <select data-id="{{$res->id}}" class="custom-select custom-select-sm statusSet" aria-label="Select Status">
-                                                @foreach($statuses as $status)
-                                                    <option value="{{$status->id}}" {{ $res->status_id == $status->id ? "selected" : $res->status_id == 4 }}>{{$status->status}}</option>
-                                                @endforeach
-                                            </select>
-                                        </td>
-                                        <td>
-                                            {{$res->created_at->toFormattedDateString()}}
-                                        </td>
-                                        <td>
+                                    <tr>
+                                        <td style="vertical-align: middle;">{{$res->id}}</td>
+                                        <td style="vertical-align: middle;">{{$res->user->name}}</td>
+                                        <td style="vertical-align: middle;">{{$res->orderDetails->product_name->name}}</td>         
+                                        <td style="vertical-align: middle;">£ {{$res->total}}</td>   
+                                        <td class="text-capitalize">
+                                            @if($res->status == 'preparing')
+                                            <span class="badge badge-warning p-2">{{$res->status}}</span>
+                                            @elseif($res->status == 'pending')
+                                            <span class="badge badge-warning p-2">{{$res->status}}</span>
+                                            @elseif($res->status == 'accepted')
+                                            <span class="badge badge-success p-2">{{$res->status}}</span>
+                                            @elseif($res->status == 'complete')
+                                            <span class="badge badge-success p-2">{{$res->status}}</span>
+                                            @elseif($res->status == 'rejected')
+                                            <span class="badge badge-danger p-2">{{$res->status}}</span>
+                                            @elseif($res->status == 'make order on way')
+                                            <span class="badge badge-primary p-2">{{$res->status}}</span>
+                                            @else
+                                            <span class="badge badge-dark p-2">{{$res->status}}</span>
+                                            @endif
+                                        </td>     
+                                        <td style="vertical-align: middle;">{{$res->address}}</td>                         
+                                          <td> 
+                                              @php $statuses = ['complete','make order on way'] @endphp
+                                              <select data-id="{{$res->id}}" class="custom-select custom-select-sm statusSet text-capitalize text-center" aria-label="Select Status"> 
+                                                  @foreach($statuses as $status) 
+                                                      <option value="{{$status}}" {{ $res->status == $status ? "selected" : $res->status == 'preparing' }}>{{$status}}</option> 
+                                                     @endforeach 
+                                                    </select>
+                                                     </td> 
+                                                        {{--  <td> --}}
+                                                            {{--    @php $statuses = ['preparing','ready to collect','delivered'] @endphp --}}
+                                                                {{--    <select data-id="{{$res->id}}" class="custom-select custom-select-sm orderStatus" aria-label="Select Status"> --}}
+                                                                {{--  @foreach($statuses as $key => $status) --}}
+                                                                    {{--     <option value="{{$status}}" {{ $res->accepted_status == $status ? "selected" : "" }}>{{$status}}</option> --}}
+                                                                    {{--    @endforeach --}}
+                                                                    {{--  </select>--}}
+                                                                    {{--  </td>--}}
+                                        <td style="vertical-align: middle;">{{$res->created_at->toFormattedDateString()}}</td>
+                                        <td style="vertical-align: middle;">
                                             <div class="btn-group" role="group" aria-label="Basic example">
                                                 <a href="{{route('restaurant.order.orderDetails',$res->id)}}" class="btn btn-sm btn-primary detail-order-btn"><i class="fas fa-eye"></i></a>
                                             </div>
                                         </td>
                                     </tr>
                                 @endforeach
-                                </tbody>
-                            </table>
-                        </div>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
     </div>
     <!-- END - DataTales Example -->
     <div class="modal fade bd-example-modal-lg" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -157,15 +185,39 @@
                         // $.unblockUI();
                     }
                 });
-                // $.ajax({
-                // type: "GET",
-                // dataType: "json",
-                // url: '/changeStatus',
-                // data: {'status': status, 'user_id': user_id},
-                // success: function(data){
-                // console.log(data.success)
-                // }
-                // });
+            });
+
+            $('.orderStatus').change(function() {
+                const status = $(this).val();
+                var order_id = $(this).attr('data-id');
+
+                //blockUi();
+                $.ajax({
+                    type:'POST',
+                    dataType:'json',
+                    url:'{{route('restaurants.order.acceptedStatus-order')}}',
+                    data:{'_token': '{{ csrf_token() }}','status': status, 'order_id': order_id},
+                    // cache: false,
+                    // contentType: false,
+                    // processData: false,
+                    success:function(data) {
+                        // $.unblockUI();
+                        if(data.status === 200){
+                            successMsg(data.message);
+                            // $('#addUserModal').modal('hide');
+                            // $('#addRestaurantModal').modal('toggle');
+                            // window.location.href = data.url;
+                            // window.location.reload();
+                        }
+                        if(data.status === 404){
+                            errorMsg(data.message);
+                        }
+                    },
+                    error:function(data) {
+                        console.log('error');
+                        // $.unblockUI();
+                    }
+                });
             });
 
             $('.detail-order-btn').click(function (e) {

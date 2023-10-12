@@ -32,7 +32,14 @@
 												<span class="badge displayBadges py-2 text-light mt-2" style="background: #cd3f3f; display: block; font-size: 13px !important;">{{$errors->first('password')}}</span>
 											@endif							        	
 											<button type="submit" class="boxed-btn">Login</button><a href="{{url('signupv1')}}" class="text-dark ml-2">Create an new account?</a>
-											<a href="{{url('forgot-password')}}" class="text-dark ml-2 float-right"><b>Forgot Password?</b></a>
+											<a href="{{url('forgot-password')}}" class="text-dark ml-2 float-right"><b>Forgot Password?</b></a>					
+											<a hidden href="{{ route('social.oauth', 'facebook') }}" class="btn btn-primary btn-block">
+												Login with Facebook
+											</a>
+											<a href="{{ route('social.oauth', 'google') }}" style="background: #e1e1e1;" class="btn btn-light btn-block w-100 py-2 my-5">
+                                        		<img style="margin-left: -6px;" src="icons8-google-30.png" alt="user" class="rounded-circle thumb-sm"> 
+												Login with Google
+											</a>
 										</form>
 									</div>
 								</div>

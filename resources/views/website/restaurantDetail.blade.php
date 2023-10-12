@@ -57,7 +57,7 @@
 					<div class="product-image">
 						<img src="{{asset($data['images'])}}" alt="">
 					</div>
-					<h3 style="font-weight: 500; text-transform: capitalize;">{{$data['name']}}</h3>
+					<h3 class="mx-3" style="font-weight: 500; text-transform: capitalize;">{{$data['name']}}</h3>
 					<p class="product-price"> £{{$data['price']}} </p>
 					<button type="button" role="button" id="addcart{{$data->id}}" class="boxed-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
 				</div>

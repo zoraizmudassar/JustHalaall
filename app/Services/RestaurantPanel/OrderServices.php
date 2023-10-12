@@ -9,29 +9,34 @@ use Illuminate\Support\Facades\Auth;
 
 class OrderServices
 {
+    public function all($request)
+    {
+        $orders = Order::latest()->with('user','orderDetails')->get();
+        return view('restaurant.order.all',compact('orders'));
+    }
     public function pending($request)
     {
-        $orders = Order::latest()->where('status','pending')->with('user','orderDetails')->get();
+        $orders = Order::latest()->where('status','preparing')->with('user','orderDetails')->get();
         return view('restaurant.order.pending',compact('orders'));
     }
     public function accepted($request)
     {
-        $orders = Order::latest()->where('status','accepted')->with('user','orderDetails')->get();
-        return view('restaurant.order.accepted',compact('orders'));
+      $orders = Order::latest()->where('status','accepted')->with('user','orderDetails')->get();
+      return view('restaurant.order.accepted',compact('orders'));
     }
     public function onWay($request)
     {
-        $orders = Order::latest()->where('status','make order on way')->with('user','orderDetails')->get();
-        return view('restaurant.order.on_way',compact('orders'));
+       $orders = Order::latest()->where('status','make order on way')->with('user','orderDetails')->get();
+       return view('restaurant.order.on_way',compact('orders'));
     }
     public function complete($request)
     {
         $orders = Order::latest()->where('status','complete')->with('user','orderDetails')->get();
-        return view('restaurant.order.delivered',compact('orders'));
+        return view('restaurant.order.complete',compact('orders'));
     }
     public function rejected($request)
     {
-        $orders = Order::latest()->where('status','rejected')->with('user','orderDetails','status')->get();
+        $orders = Order::latest()->where('status','rejected')->with('user','orderDetails')->get();
         return view('restaurant.order.rejected',compact('orders'));
     }
 public function sendNotification($token, $title=null, $body=null,$icon=null,$sound=null,$data=null){
@@ -89,11 +94,11 @@ public function sendNotification($token, $title=null, $body=null,$icon=null,$sou
         }
 
         if ($save){
-            $user = User::find($order->user_id);
-            $token = $user->fcm_token;
-            $title = "Your Order has been ".$request->status;
-            $body = "Your Order No ".$order->id;
-            $this->sendNotification($token, $title=null, $body=null,$icon=null,$sound=null,$data=null);
+           // $user = User::find($order->user_id);
+           // $token = $user->fcm_token;
+           // $title = "Your Order has been ".$request->status;
+           // $body = "Your Order No ".$order->id;
+           // $this->sendNotification($token, $title=null, $body=null,$icon=null,$sound=null,$data=null);
             return response()->json(['status' => 200,'message'=>'Status Change Successfully.']);
         }else{
             return response()->json(['status' => 404,'message'=>'Status NOT Change']);

@@ -107,7 +107,7 @@ class DealServices
         if($data){
             $returnArray = array(
                 'value' => 1,
-                'url' => route('restaurants.deal.pending')
+                'url' => route('restaurants.deal.enable')
             );
             return response()->json($returnArray);
         }
@@ -115,7 +115,7 @@ class DealServices
             $value = 0;
             return response()->json($value);
         }
-        return redirect()->route('restaurants.deal.pending')->with($notification); 
+        return redirect()->route('restaurants.deal.enable')->with($notification); 
 
         // if ($data){
         //     return response()->json([ 'status' => 200, 'url'=>route('restaurants.deal.pending'), 'message' => ' Deal Added Successfully']);

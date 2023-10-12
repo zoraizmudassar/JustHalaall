@@ -13,6 +13,11 @@ class OrderController extends Controller
         return $this->middleware('auth:restaurant');
     }
 
+    public function all(Request $request,OrderServices $orderServices)
+    {
+        return $orderServices->all($request);
+    }
+
     public function pending(Request $request,OrderServices $orderServices)
     {
         return $orderServices->pending($request);

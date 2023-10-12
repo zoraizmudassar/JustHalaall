@@ -74,11 +74,11 @@
 							@if($cartData)
                                 @foreach($cartData as $key => $cart)
 									<tr class="table-body-row">									
-										<td class="product-image"><img src="{{asset($cart->product->images ?? '')}}" alt=""></td>
-										<td class="product-name">{{$cart->product->name ?? ''}}</td>
-										<td class="product-price">{{$cart['unit_price'] ?? ''}}</td>
-										<td class="quantity-box">
-                                            <form action="{{url('update-cartv1/'.$cart->id)}}" method="POST">
+										<td style="vertical-align: middle;" class="product-image"><img src="{{asset($cart->product->images ?? '')}}" alt=""></td>
+										<td style="vertical-align: middle;" class="product-name">{{$cart->product->name ?? ''}}</td>
+										<td style="vertical-align: middle;" class="product-price">{{$cart['unit_price'] ?? ''}}</td>
+										<td style="vertical-align: middle;" class="quantity-box">
+                                            <form action="{{url('update-cartv1/'.$cart->id)}}" method="POST" class="mb-0 mt-2">
                                                 @csrf
                                                 <div class="qty qty-minus" onclick="decreaseQty('cartQty{{$cart->id}}')">-</div>
                                                 <input id="cartQty{{$cart->id}}" name="qty" class="qty" type="number" value="{{ $cart['quantity'] ?? '' }}" min="1" size="1">
@@ -86,8 +86,8 @@
                                                 <button type="submit" style="border: 2px solid; color: #fd7050; margin-left: 10px; height: 47px; border-radius: 8px;"><i class="fa fa-check"></i></button>
                                             </form>
                                         </td>
-										<td class="product-total">£ {{$cart['unit_price'] * $cart['quantity']}}</td>
-										<td class="remove-pr">
+										<td style="vertical-align: middle;" class="product-total">£ {{$cart['unit_price'] * $cart['quantity']}}</td>
+										<td style="vertical-align: middle;" class="remove-pr">
                                             <a href="{{'remove-itemv1/' . $cart->id}}"><i class="fas fa-times text-dark"></i></a>
                                         </td>
 									</tr>
@@ -121,9 +121,11 @@
 							</tr>
 						</tbody>
 					</table>
+					@if(count($cartData) != 0)
 					<div class="cart-buttons">
 						<a href="{{'checkoutv1'}}" class="boxed-btn black float-right">Check Out</a>
 					</div>
+					@endif
 				</div>
 			</div>
 		</div>

@@ -49,7 +49,7 @@ class Order extends Model
 
     public function orderDetails()
     {
-        return $this->hasOne(OrderDetail::class,'order_id');
+        return $this->hasOne(OrderDetail::class,'order_id')->with('product_name');
     }
 
     public function status()

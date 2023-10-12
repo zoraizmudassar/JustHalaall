@@ -51,7 +51,7 @@ class SocialLoginController extends Controller
 
     protected function sendSuccessResponse()
     {
-        return redirect()->intended('/');
+        return redirect()->intended('/homev1');
     }
 
     protected function sendFailedResponse($msg = null)

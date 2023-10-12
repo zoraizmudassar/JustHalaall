@@ -157,7 +157,7 @@ a:hover{
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-info text-uppercase mb-1">New Deals (Enabled)</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{\App\Models\Product::where(['status'=>'Make Order On Way', 'restaurant_id'=>Auth::id()])->count()}}</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{\App\Models\Deal::where(['status'=>'approved', 'restaurant_id'=>Auth::id()])->count()}}</div>
                     </div>
                     <div class="col-auto">
                         <i class="fa fa-gift fa-2x text-info-300" style="color: #36b9cc!important;"></i>
@@ -174,7 +174,7 @@ a:hover{
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Total Products</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{\App\Models\Product::where(['status'=>'accepted', 'restaurant_id'=>Auth::id()])->count()}}</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{\App\Models\Product::where(['status'=>'approved', 'restaurant_id'=>Auth::id()])->count()}}</div>
                     </div>
                     <div class="col-auto">
                         <i class="fas fa-calendar fa-2x text-success-300" style="color: #1cc88a!important;"></i>
@@ -216,235 +216,59 @@ a:hover{
                             <th scope="col">Location</th>
                             <th scope="col">Status</th>
                             <th scope="col">Status Approval</th>
+                            <th scope="col">Order Date</th>
                             <th scope="col">Action</th>
                         </tr>
                     </thead>
                     <tbody class="text-center">
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>Zoraiz Mudassar</td>
-                            <td>Zinger Burger</td>
-                            <td>34</td>
-                            <td>London</td>
-                            <td><span class="badge badge-warning p-2">Make Order On Way</span></td>
-                            <td>
-                                @php $statuses = ['pending','approved','rejected']; @endphp
-                                <select class="custom-select custom-select-sm statusSet text-center" aria-label="Select Status">
-                                @foreach($statuses as $status)
-                                    <option value="{{$status}}">{{ ucfirst($status) }}</option>
-                                @endforeach
-                                </select>
-                            </td>
-                            <td>
-                                <button type="button" class="btn btn-sm btn-outline-dark">Detail</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>Zoraiz Mudassar</td>
-                            <td>Zinger Burger</td>
-                            <td>34</td>
-                            <td>London</td>
-                            <td><span class="badge badge-success p-2">Complete</span></td>
-                            <td>
-                                @php $statuses = ['pending','approved','rejected']; @endphp
-                                <select class="custom-select custom-select-sm statusSet text-center" aria-label="Select Status">
-                                    @foreach($statuses as $status)
-                                        <option value="{{$status}}">{{ ucfirst($status) }}</option>
-                                    @endforeach
-                                </select>
-                            </td>
-                            <td>
-                                <button type="button" class="btn btn-sm btn-outline-dark">Detail</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td>Zoraiz Mudassar</td>
-                            <td>Zinger Burger</td>
-                            <td>34</td>
-                            <td>London</td>
-                            <td><span class="badge badge-primary p-2">Primary</span></td>
-                            <td>
-                                @php $statuses = ['pending','approved','rejected']; @endphp
-                                <select  class="custom-select custom-select-sm statusSet text-center" aria-label="Select Status">
-                                    @foreach($statuses as $status)
-                                        <option value="{{$status}}">{{ ucfirst($status) }}</option>
-                                    @endforeach
-                                </select>
-                            </td>
-                            <td>
-                                <button type="button" class="btn btn-sm btn-outline-dark">Detail</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">4</th>
-                            <td>Zoraiz Mudassar</td>
-                            <td>Zinger Burger</td>
-                            <td>87</td>
-                            <td>London</td>
-                            <td>
-                                <span class="badge badge-warning p-2">Make Order On Way</span>
-                            </td>
-                            <td>
-                                @php $statuses = ['pending','approved','rejected']; @endphp
-                                <select  class="custom-select custom-select-sm statusSet text-center" aria-label="Select Status">
-                                    @foreach($statuses as $status)
-                                        <option value="{{$status}}">{{ ucfirst($status) }}</option>
-                                    @endforeach
-                                </select>
-                            </td>
-                            <td>
-                                <button type="button" class="btn btn-sm btn-outline-dark">Detail</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">5</th>
-                            <td>Zoraiz Mudassar</td>
-                            <td>Zinger Burger</td>
-                            <td>23</td>
-                            <td>London</td>
-                            <td>
-                                <span class="badge badge-primary p-2">Primary</span>
-                            </td>
-                            <td>
-                                @php $statuses = ['pending','approved','rejected']; @endphp
-                                <select  class="custom-select custom-select-sm statusSet text-center" aria-label="Select Status">
-                                    @foreach($statuses as $status)
-                                        <option value="{{$status}}">{{ ucfirst($status) }}</option>
-                                    @endforeach
-                                </select>
-                            </td>
-                            <td>
-                                <button type="button" class="btn btn-sm btn-outline-dark">Detail</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">6</th>
-                            <td>Zoraiz Mudassar</td>
-                            <td>Zinger Burger</td>
-                            <td>34</td>
-                            <td>London</td>
-                            <td>
-                                <span class="badge badge-success p-2">Accepted</span>
-                            </td>
-                            <td>
-                                @php $statuses = ['pending','approved','rejected']; @endphp
-                                <select class="custom-select custom-select-sm statusSet text-center" aria-label="Select Status">
-                                    @foreach($statuses as $status)
-                                        <option value="{{$status}}">{{ ucfirst($status) }}</option>
-                                    @endforeach
-                                </select>
-                            </td>
-                            <td>
-                                <button type="button" class="btn btn-sm btn-outline-dark">Detail</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">7</th>
-                            <td>Zoraiz Mudassar</td>
-                            <td>Zinger Burger</td>
-                            <td>76</td>
-                            <td>London</td>
-                            <td>
-                                <span class="badge badge-success p-2">Accepted</span>
-                            </td>
-                            <td>
-                                @php $statuses = ['pending','approved','rejected']; @endphp
-                                <select class="custom-select custom-select-sm statusSet text-center" aria-label="Select Status">
-                                    @foreach($statuses as $status)
-                                        <option value="{{$status}}">{{ ucfirst($status) }}</option>
-                                    @endforeach
-                                </select>
-                            </td>
-                            <td>
-                                <button type="button" class="btn btn-sm btn-outline-dark">Detail</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">5</th>
-                            <td>Zoraiz Mudassar</td>
-                            <td>Zinger Burger</td>
-                            <td>23</td>
-                            <td>London</td>
-                            <td>
-                                <span class="badge badge-primary p-2">Primary</span>
-                            </td>
-                            <td>
-                                @php $statuses = ['pending','approved','rejected']; @endphp
-                                <select class="custom-select custom-select-sm statusSet text-center" aria-label="Select Status">
-                                    @foreach($statuses as $status)
-                                        <option value="{{$status}}">{{ ucfirst($status) }}</option>
-                                    @endforeach
-                                </select>
-                            </td>
-                            <td>
-                                <button type="button" class="btn btn-sm btn-outline-dark">Detail</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">8</th>
-                            <td>Zoraiz Mudassar</td>
-                            <td>Zinger Burger</td>
-                            <td>12</td>
-                            <td>London</td>
-                            <td>
-                                <span class="badge badge-danger p-2">Rejected</span>
-                            </td>
-                            <td>
-                                @php $statuses = ['pending','approved','rejected']; @endphp
-                                <select  class="custom-select custom-select-sm statusSet text-center" aria-label="Select Status">
-                                    @foreach($statuses as $status)
-                                        <option value="{{$status}}">{{ ucfirst($status) }}</option>
-                                    @endforeach
-                                </select>
-                            </td>
-                            <td>
-                                <button type="button" class="btn btn-sm btn-outline-dark">Detail</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">9</th>
-                            <td>Zoraiz Mudassar</td>
-                            <td>Zinger Burger</td>
-                            <td>86</td>
-                            <td>London</td>
-                            <td>
-                                <span class="badge badge-danger p-2">Rejected</span>
-                            </td>
-                            <td>
-                                @php $statuses = ['pending','approved','rejected']; @endphp
-                                <select class="custom-select custom-select-sm statusSet text-center" aria-label="Select Status">
-                                    @foreach($statuses as $status)
-                                        <option value="{{$status}}">{{ ucfirst($status) }}</option>
-                                    @endforeach
-                                </select>
-                            </td>
-                            <td>
-                                <button type="button" class="btn btn-sm btn-outline-dark">Detail</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">10</th>
-                            <td>Zoraiz Mudassar</td>
-                            <td>Zinger Burger</td>
-                            <td>44</td>
-                            <td>London</td>
-                            <td>
-                                <span class="badge badge-success p-2">Accepted</span>
-                            </td>
-                            <td>
-                                @php $statuses = ['pending','approved','rejected']; @endphp
-                                <select class="custom-select custom-select-sm statusSet text-center" aria-label="Select Status">
-                                    @foreach($statuses as $status)
-                                        <option value="{{$status}}" >{{ ucfirst($status) }}</option>
-                                    @endforeach
-                                </select>
-                            </td>
-                            <td>
-                                <button type="button" class="btn btn-sm btn-outline-dark">Detail</button>
-                            </td>
-                        </tr>
+                        @foreach($orders as $res)
+                            <tr>
+                                <td style="vertical-align: middle;">{{$res->id}}</td>
+                                <td style="vertical-align: middle;">{{$res->user->name}}</td>
+                                <td style="vertical-align: middle;">{{$res->orderDetails->product_name->name}}</td>         
+                                <td style="vertical-align: middle;">£ {{$res->total}}</td>  
+                                <td style="vertical-align: middle;">{{$res->address}}</td>                         
+                                <td class="text-capitalize">
+                                    @if($res->status == 'preparing')
+                                    <span class="badge badge-warning p-2">{{$res->status}}</span>
+                                    @elseif($res->status == 'pending')
+                                    <span class="badge badge-warning p-2">{{$res->status}}</span>
+                                    @elseif($res->status == 'accepted')
+                                    <span class="badge badge-success p-2">{{$res->status}}</span>
+                                    @elseif($res->status == 'complete')
+                                    <span class="badge badge-success p-2">{{$res->status}}</span>
+                                    @elseif($res->status == 'rejected')
+                                    <span class="badge badge-danger p-2">{{$res->status}}</span>
+                                    @elseif($res->status == 'make order on way')
+                                    <span class="badge badge-primary p-2">{{$res->status}}</span>
+                                    @else
+                                    <span class="badge badge-dark p-2">{{$res->status}}</span>
+                                    @endif
+                                </td>     
+                                    <td> 
+                                        @php $statuses = ['accepted','complete','rejected','make order on way','preparing'] @endphp
+                                        <select data-id="{{$res->id}}" class="custom-select custom-select-sm statusSet text-capitalize text-center" aria-label="Select Status"> 
+                                            @foreach($statuses as $status) 
+                                                <option value="{{$status}}" {{ $res->status == $status ? "selected" : $res->status == 'preparing' }}>{{$status}}</option> 
+                                                @endforeach 
+                                            </select>
+                                                </td> 
+                                                {{--  <td> --}}
+                                                    {{--    @php $statuses = ['preparing','ready to collect','delivered'] @endphp --}}
+                                                        {{--    <select data-id="{{$res->id}}" class="custom-select custom-select-sm orderStatus" aria-label="Select Status"> --}}
+                                                        {{--  @foreach($statuses as $key => $status) --}}
+                                                            {{--     <option value="{{$status}}" {{ $res->accepted_status == $status ? "selected" : "" }}>{{$status}}</option> --}}
+                                                            {{--    @endforeach --}}
+                                                            {{--  </select>--}}
+                                                            {{--  </td>--}}
+                                <td style="vertical-align: middle;">{{$res->created_at->toFormattedDateString()}}</td>
+                                <td style="vertical-align: middle;">
+                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                        <a href="{{route('restaurant.order.orderDetails',$res->id)}}" class="btn btn-sm btn-primary detail-order-btn"><i class="fas fa-eye"></i></a>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>

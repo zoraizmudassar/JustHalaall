@@ -58,69 +58,37 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-md-12">
-					<table class="table table-hover text-center">
+					<table class="table table-hover text-center" style="text-transform: capitalize;">
 						<thead>
 							<tr>
 								<th scope="col">Order No</th>
 								<th scope="col">Restaurant</th>
 								<th scope="col">Payment Type</th>
 								<th scope="col">Total</th>
-								<th scope="col">Status</th>
+								<th scope="col">Restaurant Status</th>
 								<th scope="col">Date</th>
 							</tr>
 						</thead>
             			<tbody>
+							@foreach($orders as $order)
 							<tr>
-								<th scope="row">1</th>
-								<td>Desi Restaurant</td>
-								<td>Cash on Delivery</td>
-								<td>£25</td>
-								<td><span class="badge badge-warning p-2">Make Order On Way</span></td>
-								<td>05 Oct 2021</td>
+								<th scope="row">{{$order['order_no']}}</th>
+								<td>-</td>
+								<td>{{$order['orderDetails']['payment_id']}}</td>
+								<td>£ {{$order['total']}}</td>
+								<td><span class="badge badge-warning p-2">{{$order['status']}}</span></td>
+								<?php 
+									$timestamp = strtotime($order['order_place_date']);
+									$newFormat = date("d M Y", $timestamp); 
+								?>
+								<td>{{$newFormat}}</td>
 							</tr>
+							@endforeach
+							@if(count($orders) <= 0)
 							<tr>
-								<th scope="row">2</th>
-								<td>Desi Restaurant</td>
-								<td>Cash on Delivery</td>
-								<td>£25</td>
-								<td><span class="badge badge-success p-2">Complete</span></td>
-								<td>05 Oct 2021</td>
+								<td colspan="6" style="text-align: center;">No Order Found!</td>
 							</tr>
-							<tr>
-								<th scope="row">3</th>
-								<td>Desi Restaurant</td>
-								<td>Cash on Delivery</td>
-								<td>£25</td>
-								<td><span class="badge badge-danger p-2">Rejected</span></td>
-								<td>05 Oct 2021</td>
-							</tr>
-							<tr>
-								<th scope="row">4</th>
-								<td>Desi Restaurant</td>
-								<td>Cash on Delivery</td>
-								<td>£25</td>
-								<td><span class="badge badge-danger p-2">Rejected</span></td>
-								<td>05 Oct 2021</td>
-							</tr>
-							<tr>
-								<th scope="row">5</th>
-								<td>Desi Restaurant</td>
-								<td>Cash on Delivery</td>
-								<td>£25</td>
-								<td><span class="badge badge-warning p-2">Make Order On Way</span></td>
-								<td>05 Oct 2021</td>
-							</tr>
-							<tr>
-								<th scope="row">6</th>
-								<td>Desi Restaurant</td>
-								<td>Cash on Delivery</td>
-								<td>£25</td>
-								<td><span class="badge badge-success p-2">Accepted</span></td>
-								<td>05 Oct 2021</td>
-							</tr>
-							<tr hidden>
-								<td colspan="7" style="text-align: center;">No Order Found!</td>
-							</tr>
+							@endif
 						</tbody>
 					</table>
 				</div>			

@@ -31,15 +31,18 @@ return [
     ],
 
     'facebook' => [
-        'client_id'     => env('FB_ID'),
-        'client_secret' => env('FB_SECRET'),
-        'redirect'      => env('APP_URL') . '/oauth/facebook/callback',
+        'client_id'     => '3118535295122430',
+        'client_secret' => 'a4086786e2fde51b9799bd92d2edacd9',
+        'redirect'      => 'https://127.0.0.1:8000/oauth/facebook/callback',
     ],
 
     'google' => [
-    'client_id'     => env('GL_ID'),
-    'client_secret' => env('GL_SECRET'),
-    'redirect'      => env('APP_URL') . '/oauth/google/callback',
-],
+        'client_id'     => '34948595426-5mu9aigvrtccdjr41qjq72ftd0clk5mi.apps.googleusercontent.com',
+        'client_secret' => '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',
+        'redirect'      => 'http://127.0.0.1:8000/oauth/google/callback',
+    ],
+    'googlemaps' => [
+        'key' => env('GOOGLE_MAPS_API_KEY'),
+    ]
 
 ];

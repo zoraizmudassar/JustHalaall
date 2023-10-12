@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Restaurant;
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use App\Models\Restaurant;
+use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -19,7 +20,8 @@ class RestaurantController extends Controller
 
     public function index()
     {
-        return view('restaurant.index');
+        $orders = Order::latest()->with('user','orderDetails')->get();
+        return view('restaurant.index',compact('orders'));
     }
 
     public function editProfile(Request $request,Restaurant $restaurant)
@@ -75,11 +77,11 @@ class RestaurantController extends Controller
                 $path = $folderName . '/' . $fileName;
                 $save_image = $path;
 
-                if (isset($path) && !empty($path)){
-                    if(file_exists(public_path($user->logo))){
-                        $img_del = unlink(public_path($user->logo));
-                    }
-                }
+                // if (isset($path) && !empty($path)){
+                //     if(file_exists(public_path($user->logo))){
+                //         $img_del = unlink(public_path($user->logo));
+                //     }
+                // }
             }
         }
 

@@ -22,9 +22,13 @@ Route::get('/clear-cache', function() {
     return 'Done';
     // return what you want
 });
+Route::get('paywithpaypal', [SocialLoginController::class, 'payWithPaypal'])->name('paywithpaypal');
+Route::post('paypal', [SocialLoginController::class, 'postPaymentWithpaypal'])->name('paypal');
+Route::get('paypal', [SocialLoginController::class, 'getPaymentStatus'])->name('status');
 
 Route::get('oauth/{driver}', [SocialLoginController::class, 'redirectToProvider'])->name('social.oauth');
 Route::get('oauth/{driver}/callback', [SocialLoginController::class, 'handleProviderCallback'])->name('social.callback');
+// Route::get('oauth/facebook/callback', [SocialLoginController::class, 'handleProviderCallback'])->name('social.callback');
 
 
 Auth::routes();
@@ -82,6 +86,7 @@ Route::namespace('Restaurant')->prefix('restaurant')->as('restaurants.')->group(
         //    Product Route's
         Route::namespace('Order')->prefix('order')->as('order.')->group(function () {
 
+            Route::get('/order-all', [App\Http\Controllers\Restaurant\Order\OrderController::class, 'all'])->name('all-order');
             Route::get('/order-pending', [App\Http\Controllers\Restaurant\Order\OrderController::class, 'pending'])->name('pending-order');
             Route::get('/order-accepted', [App\Http\Controllers\Restaurant\Order\OrderController::class, 'accepted'])->name('accepted-order');
             Route::get('/order-complete', [App\Http\Controllers\Restaurant\Order\OrderController::class, 'complete'])->name('complete-order');

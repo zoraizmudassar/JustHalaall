@@ -75,14 +75,14 @@
 								<li style="float: right;">
 									<div class="header-icons">
 										@auth
-											<a class="shopping-cart" href="/cartv1"><i class="fas fa-shopping-cart"></i></a>
+											<a class="shopping-cart mt-1" href="/cartv1"><i class="fas fa-shopping-cart"></i></a>
 										@endauth								
 									</div>
 									@auth
 									<li><a href="#">My Account</a>
 										<ul class="sub-menu">
 											<li><a class="mobile-hide search-bar-icon" href="#">My Profile</a></li>
-											<li><a href="/orderv1">My Orders</a></li>
+											<li><a href="/ordersv1">My Orders</a></li>
 											<li><a data-toggle="modal" data-target="#exampleModal">Logout</a></li>
 											<form id="logout-form" action="{{route('logout')}}" method="POST" style="display: none;">
 												@csrf

@@ -54,11 +54,10 @@ class CheckoutController extends Controller
         );
         }
         $cart = Cart::where('user_id',Auth()->user()->id)->get();
-        $sub_total =0 ;
+        $sub_total = 0;
         foreach($cart as $item){
             $sub_total += $item->quantity * $item->unit_price;
         }
-        
         $total = $sub_total;
         $order = new Order;
         $order->name = $request->name;
@@ -67,7 +66,7 @@ class CheckoutController extends Controller
         $order->address = $request->address;
         $order->order_no = 'Order'.random_int(1000, 9999);
         $order->order_place_date = Carbon::now()->format('Y-m-d');
-        $order->status = 'Preparing';
+        $order->status = 'preparing';
         $order->payment_type = $request->paymentMethod;
         $order->user_id = Auth()->user()->id;
 
@@ -82,6 +81,7 @@ class CheckoutController extends Controller
         $order->coupon_discount = 0;
         $order->tax = 0;
         $order->total = $total;
+
         $order->save();
         $from = $request->address .' '.$request->city.','.$request->state.','.$request->country;
         $shipping_charge = 0;
@@ -111,31 +111,39 @@ class CheckoutController extends Controller
                 }
         }
         $order_update = Order::find($order->id);
-            $order_update->shipping_charge = $shipping_charge;
-            $order_update->total = $order_update->total + $shipping_charge;
-            $order_update->update();
+        $order_update->shipping_charge = $shipping_charge;
+        $order_update->total = $order_update->total + $shipping_charge;
+        $order_update->update();
         if($request->paymentMethod=='card'){
         $stripe = new \Stripe\StripeClient(
-                    'pk_test_51KT26VDuKSCrfM2pauObEL6P9pEphtZN4W0eOtz79NTcFlEVp8Yub37AgWxBnhXbFizoQQHe6UsmOqlpgotFutWq00L3bdQIgV'
+                    'sk_test_51KtEUaBu1iUxbOUFRCAIb1zzTPspSqogixpxlGYfESEXN9cOUBj9AmLnCACV5hlaC7gI8Nv8kcwULq0Mm7cXFE6A00K7doqmmN'
                 );
-                $token = $stripe->tokens->create([
-                    'card' => [
-                        'number' => $request->card_no,
-                        'exp_month' => $request->exp_month,
-                        'exp_year' => $request->exp_year,
-                        'cvc' => $request->cvc,
-                    ],
-                ]);
+                // dd($stripe);
+                // $token = $stripe->tokens->create([
+                //     'card' => [
+                //         'number' => $request->card_no,
+                //         'exp_month' => $request->exp_month,
+                //         'exp_year' => $request->exp_year,
+                //         'cvc' => $request->cvc,
+                //     ],
+                // ]);
+                // dd($token);
+                // dd(env('STRIPE_SECRET'));
+                // dd($order_update->total + $shipping_charge);
                 Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
-                Stripe\Charge::create([
+                $data = Stripe\Charge::create([
                     "amount" => ($order_update->total + $shipping_charge) * 100,
                     "currency" => "gbp",
-                    "source" => $token->id,
+                    "source" => $request->stripeToken,
                     "description" => "This order payment"
                 ]);
         }
         $cart_empty = Cart::where('user_id',Auth()->user()->id)->delete();
-        return redirect('/');
+        $notification = array(
+            'message' => 'Order Placed Successfully',
+            'alert-type' => 'success'
+        );
+        return redirect('/homev1')->with($notification);
     }
     public function Distance($from, $to){
         // Google API key

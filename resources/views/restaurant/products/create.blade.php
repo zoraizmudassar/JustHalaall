@@ -44,16 +44,11 @@
                                 </div>
                                 <div class="col-6">
                                     <div class="form-group">
-{{--                                        <label class="input-label" for="exampleFormControlInput1">Name</label>--}}
-                                        <label for="sel1">Select Category</label>
-                                        <select  name="category_id" class="form-control" id="sel1">
-                                            @php $categories = \App\Models\Category::all(); @endphp
-                                            <option selected="selected"  disabled>Select Category</option>
-                                        @foreach($categories as $category)
-                                            <option value="{{$category->id}}" >{{$category->name}}</option>
-                                            @endforeach
-                                        </select>
+                                        <label class="input-label" for="exampleFormControlInput1">Delivery Time</label><small class="text-danger">(In Minute's)</small>
+                                        <input type="text" name="delivery_time" id="delivery_time" class="form-control form-control-sm onlynumber" placeholder="Delivery Time">
+                                        {{--                                    <span class="errmsg text-danger"></span>--}}
                                     </div>
+
                                 </div>
                             </div>
 
@@ -66,21 +61,27 @@
                                         {{--                                    <label class="custom-file-label" for="customFileEg1"></label>--}}
                                     </div>
                                 </div>
+                              
                                 <div class="col-6">
                                     <div class="form-group">
-                                        <label class="input-label" for="exampleFormControlInput1">Delivery Time</label><small class="text-danger">(In Minute's)</small>
-                                        <input type="text" name="delivery_time" id="delivery_time" class="form-control form-control-sm onlynumber" placeholder="Delivery Time">
-                                        {{--                                    <span class="errmsg text-danger"></span>--}}
+{{--                                        <label class="input-label" for="exampleFormControlInput1">Name</label>--}}
+                                        <label for="sel1">Select Category</label>
+                                        <select  name="category_id" class="form-control py-2" id="sel1">
+                                            @php $categories = \App\Models\Category::all(); @endphp
+                                            <option selected="selected"  disabled>Select Category</option>
+                                        @foreach($categories as $category)
+                                            <option value="{{$category->id}}" >{{$category->name}}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
-
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-12">
+                                <div class="col-6">
                                     <div class="form-group">
                                         <center>
                                             {{--                                        <img class="mt-3 restaurant-logo" style="width: 30%;border: 1px solid; border-radius: 10px;" id="output1" src="{{asset('assets/web/images/Patty Burger.jpg')}}" alt="image"/>--}}
-                                            <img class="mt-3 product-logo" style="width: 30%;border: 1px solid; border-radius: 10px;"
+                                            <img class="mt-3 product-logo" style="width: 50%;border: 1px solid; border-radius: 10px;"
                                                  id="output" src="{{asset('assets/admin/img/noImageSelected.jpg')}}" alt="image"/>
                                         </center>
                                     </div>

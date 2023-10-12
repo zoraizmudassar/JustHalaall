@@ -46,6 +46,26 @@
   transition: transform .6s; /* Animation */
 }
 
+.square-img-wrapper {
+    position: relative;
+    padding-bottom: 100%; /* 1:1 Aspect Ratio (Square) */
+    overflow: hidden;
+}
+
+.square-img-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.square-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensure the image covers the entire container */
+}
+
 .zoom:hover {
 	/* box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px; */
 	box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
@@ -238,7 +258,7 @@
 						</div>
 						<h3 style="font-weight: 500; text-transform: capitalize;">{{$data['name']}}</h3>
 						<p class="product-price"> £{{$data['price']}} </p>
-						<button type="button" role="button" id="addcart{{$data->id}}" class="boxed-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
+						<button hidden type="button" role="button" id="addcart{{$data->id}}" class="boxed-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
 					</div>
 				</a>
 			</div>
