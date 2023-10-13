@@ -7,6 +7,7 @@ use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use PDF;
 
 class OrderController extends Controller
 {
@@ -36,5 +37,24 @@ class OrderController extends Controller
 
         $orders = Order::where('user_id',Auth()->user()->id)->with('orderDetails')->get();
         return view('website.order',compact('orders'));
+    }
+
+    public function Pdf($id)
+    {
+        $orders = Order::where('id', $id)->with('orderDetails')->get();
+        $data = [
+            'name' => $orders[0]['name'],
+            'email' => $orders[0]['email'],
+            'address' => $orders[0]['address'],
+            'phone' => $orders[0]['phone'],
+            'order_no' => $orders[0]['order_no'],
+            'order_place_date' => $orders[0]['order_place_date'],
+            'discount' => $orders[0]['discount'],
+            'total' => $orders[0]['total'],
+            'item' => $orders[0]->orderDetails->product_name['name'],
+        ];
+        $pdf = PDF::loadView('myPDF', $data);
+        $time = now()->format('H_i_s');
+        return $pdf->download($time.' HalaallFood.pdf');
     }
 }

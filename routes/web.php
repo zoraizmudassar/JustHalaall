@@ -163,6 +163,7 @@ Route::get('orderv1', function () {
 });
 Route::post('contact/store',[\App\Http\Controllers\ContactController::class,'store']);
 Route::get('admin/contact',[\App\Http\Controllers\ContactController::class,'index']);
+Route::get('userOrderPdf/{id}',[\App\Http\Controllers\Web\OrderController::class,'Pdf'])->middleware('auth');
 Route::get('cart', [App\Http\Controllers\Web\CartController::class, 'index'])->name('cart')->middleware('auth');
 Route::post('add-to-cart', [\App\Http\Controllers\Web\CartController::class, 'store'])->name('addToCart')->middleware('auth');
 Route::post('add-to-cartv1', [\App\Http\Controllers\Web\CartController::class, 'storev1'])->name('addToCartv1')->middleware('auth');
