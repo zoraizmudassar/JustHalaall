@@ -164,6 +164,7 @@ Route::get('orderv1', function () {
 Route::post('contact/store',[\App\Http\Controllers\ContactController::class,'store']);
 Route::get('admin/contact',[\App\Http\Controllers\ContactController::class,'index']);
 Route::get('userOrderPdf/{id}',[\App\Http\Controllers\Web\OrderController::class,'Pdf'])->middleware('auth');
+Route::get('/clearOrderHistory',[\App\Http\Controllers\Web\OrderController::class,'clearOrderHistory'])->middleware('auth');
 Route::get('cart', [App\Http\Controllers\Web\CartController::class, 'index'])->name('cart')->middleware('auth');
 Route::post('add-to-cart', [\App\Http\Controllers\Web\CartController::class, 'store'])->name('addToCart')->middleware('auth');
 Route::post('add-to-cartv1', [\App\Http\Controllers\Web\CartController::class, 'storev1'])->name('addToCartv1')->middleware('auth');
@@ -174,6 +175,8 @@ Route::get('detail', function () {
 });
 //demo
 Route::get('/', [\App\Http\Controllers\HomeController::class, "index"])->name('index');
+Route::get('/restaurantsv1', [\App\Http\Controllers\HomeController::class, "allRestaurants"])->name('restaurantsv1');
+Route::get('/productsv1', [\App\Http\Controllers\HomeController::class, "allProducts"])->name('productsv1');
 Route::get('/web', [\App\Http\Controllers\HomeController::class, "index1"])->name('web');
 Route::get('search', [\App\Http\Controllers\HomeController::class, "search"])->name('search');
 Route::post('update-cart/{id}', [\App\Http\Controllers\Restaurant\Products\CartController::class, 'updateCart'])->name('updateCart');
@@ -206,6 +209,7 @@ Route::get("restaurant-detailv1/{id}", [\App\Http\Controllers\Web\RestaurantCont
 Route::get('cartv1', [App\Http\Controllers\Web\CartController::class, 'indexv1'])->name('cartv1')->middleware('auth');
 Route::post('update-cartv1/{id}', [\App\Http\Controllers\Restaurant\Products\CartController::class, 'updateCartv1'])->name('updateCart');
 Route::get('remove-itemv1/{id}', [App\Http\Controllers\Web\CartController::class, 'removeCartv1'])->name('removeCart')->middleware('auth');
+Route::post('add-to-cartv11', [\App\Http\Controllers\Web\CartController::class, 'storev11'])->name('addToCartv11');
 
 Route::get("map", function () {
 

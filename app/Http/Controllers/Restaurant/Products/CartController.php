@@ -22,6 +22,10 @@ class CartController extends Controller
         return $this->cartService->cartList($request);
     }
 
+    public function short_distance1(Request $request){
+        return $this->cartService->short_distance1($request);
+    }    
+
     public function addToCart(Request $request){
         return $this->cartService->addToCart($request);
     }

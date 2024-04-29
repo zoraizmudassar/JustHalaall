@@ -233,6 +233,48 @@ public function cartTotal(Request $request)
             return $this->successResponse($e->getMessage());
         }
     }
+
+    public function short_distance1(Request $request)
+    {
+        $latitudeTo = $request->latitudeTo;
+        $longitudeTo = $request->longitudeTo;
+        $latitudeFrom = $request->latitudeFrom;
+        $longitudeFrom = $request->longitudeFrom;
+
+        $earthRadius = 6371;
+
+        // Convert latitude and longitude from degrees to radians
+        $lat1 = deg2rad($latitudeTo);
+        $lon1 = deg2rad($longitudeTo);
+        $lat2 = deg2rad($latitudeFrom);
+        $lon2 = deg2rad($longitudeFrom);
+
+        // Haversine formula
+        $dlat = $lat2 - $lat1;
+        $dlon = $lon2 - $lon1;
+
+        $a = sin($dlat/2) * sin($dlat/2) + cos($lat1) * cos($lat2) * sin($dlon/2) * sin($dlon/2);
+        $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
+
+        // Calculate the distance
+        $distance = $earthRadius * $c;
+
+        return $distance;
+
+
+        try{
+        // Calculate distance between latitude and longitude
+        $theta    = $longitudeFrom - $longitudeTo;
+        $dist    = sin(deg2rad($latitudeFrom)) * sin(deg2rad($latitudeTo)) +  cos(deg2rad($latitudeFrom)) * cos(deg2rad($latitudeTo)) * cos(deg2rad($theta));
+        $dist    = acos($dist);
+        $dist    = rad2deg($dist);
+        $miles    = $dist * 60 * 1.1515;
+        $distance = round($miles * 1.609344, 2);
+       return $distance;
+        } catch (Exception $e) {
+            return $this->successResponse($e->getMessage());
+        }
+    }
     
     function getAddress($latitude, $longitude)
     {

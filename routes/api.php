@@ -114,6 +114,7 @@ Route::namespace('API\Customer')->prefix('customer')->as('customer.')->middlewar
 
 Route::middleware(['json.response'])->group(function () {
     Route::get('cartList', [CartController::class, 'cartList'])->name('cartList');
+    Route::get('short_distance1', [CartController::class, 'short_distance1'])->name('short_distance1');    
     Route::get('total-cart', [CartController::class, 'cartTotal']);
     Route::post('addToCart', [CartController::class, 'addToCart'])->name('addToCart');
     Route::get('removeFromCart', [CartController::class, 'removeFromCart'])->name('removeFromCart');

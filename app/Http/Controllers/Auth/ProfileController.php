@@ -15,7 +15,11 @@ class ProfileController extends Controller
     public function sendFailedRegisterResponse(array $data)
     {
         $errors =  Validator::make($data, [
-            'name' => ['required', 'string'],
+            // 'name' => ['required', 'string'],
+            'first_name' => ['required', 'string'],
+            // 'midlle_name' => ['required', 'string'],
+            'last_name' => ['required', 'string'],
+            'postal_code' => ['required'],
             'phone' => ['required', 'unique:users'],
             'address' => ['required'],
         ]);
@@ -25,13 +29,21 @@ class ProfileController extends Controller
     public function update(Request $request)
     {
         $customMsgs = [
-            'name.required' => 'Please Provide Name',
+            // 'name.required' => 'Please Provide Name',
+            'first_name.required' => 'Please Provide First Name',
+            // 'midlle_name.required' => 'Please Provide Middle Name',
+            'last_name.required' => 'Please Provide Last Name',
+            'postal_code.required' => 'Please Provide Postal Code',
             'phone.required' => 'Please Provide Phone',
             'address.required' => 'Please Provide Address',
         ];
         $validator = Validator::make($request->all(),
             [
-                'name' => 'required',
+                // 'name' => 'required',
+                'first_name' => 'required',
+                // 'midlle_name' => 'required',
+                'last_name' => 'required',
+                'postal_code' => 'required',
                 'phone' => 'required|unique:users',
                 'address' => 'required',
             ], $customMsgs
@@ -69,9 +81,14 @@ class ProfileController extends Controller
             }
         }
 
-        if($request->has('name') && $request->has('id')){
+
+        if($request->has('id')){
             $user = User::where('id', $request->id)->update([
-                'name' => $request->name,
+                'name' => $request->first_name . ' ' . $request->middle_name . ' ' . $request->last_name,
+                'first_name' => $request->first_name,
+                'midlle_name' => $request->midlle_name ? $request->midlle_name : '',
+                'last_name' => $request->last_name,
+                'postal_code' => $request->postal_code,
                 'phone' => $request->phone,
                 'address' => $request->address
             ]);

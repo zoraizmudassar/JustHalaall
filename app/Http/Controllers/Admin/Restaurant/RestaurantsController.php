@@ -18,6 +18,30 @@ class RestaurantsController extends Controller
     {
         return $restaurantServices->approved();
     }
+    public function restaurant(RestaurantServices $restaurantServices)
+    {
+        return $restaurantServices->restaurant();
+    }   
+    public function week(RestaurantServices $restaurantServices)
+    {
+        return $restaurantServices->week();
+    }    
+    public function report($id, RestaurantServices $restaurantServices)
+    {
+        return $restaurantServices->report($id);
+    }    
+    public function weeklyReport($start, $end, $id,  RestaurantServices $restaurantServices)
+    {
+        return $restaurantServices->weeklyReport($start, $end, $id);
+    }        
+    public function weeklyReportData(Request $request, RestaurantServices $restaurantServices)
+    {
+        return $restaurantServices->weeklyReportData($request);
+    }
+    public function changeStatus1(Request $request,RestaurantServices $restaurantServices)
+    {
+        return $restaurantServices->changeStatus1($request);
+    }            
     public function rejected(RestaurantServices $restaurantServices)
     {
         return $restaurantServices->rejected();

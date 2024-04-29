@@ -43,6 +43,8 @@ class RestaurantController extends Controller
         $validator = Validator::make($request->all(),
             [
                 'name' => 'required',
+                'latitude' => 'required',
+                'longitude' => 'required',
                 'password' => 'nullable|min:8|same:password_confirmation',
                 'password_confirmation' => 'nullable|min:8',
                 'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -93,6 +95,8 @@ class RestaurantController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->logo = $save_image;
+        $user->latitude = $request->latitude;
+        $user->longitude = $request->longitude;
         $user->save();
         return response()->json([ 'status' => 1 , 'message' => 'Profile Updated Successfully']);
     }

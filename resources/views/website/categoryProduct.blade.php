@@ -47,7 +47,7 @@
 						</div>
 						<h3 style="font-weight: 500; text-transform: capitalize;">{{$category['name']}}</h3>
 						<p class="product-price"> £{{$category['price']}} </p>
-						<button type="button" role="button" id="addcart{{$category->id}}" class="boxed-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
+						<button type="button" role="button" id="addcart{{$category->id}}" class="boxed-btn">Add to Cart <i class="fas fa-shopping-cart"></i></button>
 					</div>
 				</a>
 			</div>

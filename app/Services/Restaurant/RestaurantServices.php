@@ -3,6 +3,10 @@
 namespace App\Services\Restaurant;
 
 use App\Models\Restaurant;
+use App\Models\Order;
+use App\Models\OrderDetail;
+use DateTime;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -20,7 +24,117 @@ class RestaurantServices
     {
         $restaurants = Restaurant::where('status','rejected')->latest()->get();
         return view('admin.restaurants.rejected',compact('restaurants'));
+    }
 
+    public function restaurant()
+    {
+        $restaurants = Restaurant::latest()->get();
+        return view('admin.restaurants.report',compact('restaurants'));
+    }
+
+    public function week()
+    {
+        $restaurants = Restaurant::latest()->get();
+        return view('admin.restaurants.week-report',compact('restaurants'));
+    }
+    
+    public function weeklyReportData(Request $request)
+    {
+        dd($request->all());
+    }
+
+    public function changeStatus1($request)
+    {
+        $id =  $request->restaurant_id;
+        $timestamps = OrderDetail::where('restaurant_id', $id)->with('order')->get()->pluck('order.created_at')
+                                                                                        ->map(function ($timestamp) {
+                                                                                            return $timestamp->toFormattedDateString();
+                                                                                        });
+        $last = count($timestamps) - 1;
+        $weekStartDates = [];
+        $weekEndDates = [];
+        
+        for ($i = 1; $i < count($timestamps); $i++) {
+            $startDate = Carbon::createFromFormat('M d, Y', $timestamps[$i - 1]);
+            $endDate = Carbon::createFromFormat('M d, Y', $timestamps[$i]);        
+            $weeks = $startDate->diffInWeeks($endDate);
+            for ($j = 0; $j < $weeks; $j++) {
+                $weekStartDates[] = $startDate->copy()->startOfWeek()->format("M d, Y");
+                $weekEndDates[] = $startDate->copy()->endOfWeek()->format("M d, Y");
+                $startDate->addWeek();
+            }
+        }
+        
+        $totalWeeks = count($weekStartDates);
+        
+        $weekDetails = [];
+        for ($i = 0; $i < $totalWeeks; $i++) {
+            $weekDetails[] = [
+              
+                    "Start Date" => $weekStartDates[$i],
+                    "End Date" => $weekEndDates[$i]
+            ];
+        }
+        return response()->json([ 'status' => 200 , 'message' => ' Restaurant Weekly Data', 'data' => $weekDetails]);
+    }
+
+    public function weeklyReport($start, $end, $id)
+    {
+        $startDate = date('Y-m-d H:i:s', strtotime($start));
+        $endDate = date('Y-m-d H:i:s', strtotime($end));
+        $orders = OrderDetail::where('restaurant_id', $id)
+                ->whereBetween('created_at', [$startDate, $endDate])
+                ->with('order')
+                ->get();  
+        return view('admin.order.report',compact('orders'));
+
+
+        $timestamps = OrderDetail::where('restaurant_id', $id)->with('order')->get()->pluck('order.created_at')
+                                                                                    ->map(function ($timestamp) {
+                                                                                        return $timestamp->toFormattedDateString();
+                                                                                    });
+        $last = count($timestamps) - 1;
+        // dd($timestamps[0] , $timestamps[$last]);
+
+        $array = [
+            "Oct 10, 2023",
+            "Nov 17, 2023",
+            "Nov 18, 2023"
+        ];
+        
+        $weekStartDates = [];
+        $weekEndDates = [];
+        
+        for ($i = 1; $i < count($timestamps); $i++) {
+            $startDate = Carbon::createFromFormat('M d, Y', $timestamps[$i - 1]);
+            $endDate = Carbon::createFromFormat('M d, Y', $timestamps[$i]);        
+            $weeks = $startDate->diffInWeeks($endDate);
+            for ($j = 0; $j < $weeks; $j++) {
+                $weekStartDates[] = $startDate->copy()->startOfWeek()->format("M d, Y");
+                $weekEndDates[] = $startDate->copy()->endOfWeek()->format("M d, Y");
+                $startDate->addWeek();
+            }
+        }
+        
+        $totalWeeks = count($weekStartDates);
+        
+        $weekDetails = [];
+        for ($i = 0; $i < $totalWeeks; $i++) {
+            $weekDetails[] = [
+                "Week " . ($i + 1) => [
+                    "Start Date" => $weekStartDates[$i],
+                    "End Date" => $weekEndDates[$i]
+                ]
+            ];
+        }
+        return view('admin.order.report',compact('orders'));
+    }
+
+
+    public function report($id)
+    {        
+        $orders = OrderDetail::where('restaurant_id', $id)->with('order')->get();        
+        return view('admin.order.report',compact('orders'));
     }
 
     public function form()

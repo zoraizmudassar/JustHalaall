@@ -2,9 +2,6 @@
 @section('title','Restaurant Detail')
 @section('content')
 <style>
-.breadcrumb-bg{
-  	background-image: url(website/assets/img/breadcrumb-bg.jpg);
-}
 .zoom {
   transition: transform .6s; /* Animation */
 }
@@ -13,8 +10,14 @@
 	box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   transform: scale(1.1); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
 }
+.breadcrumb-bgg {
+    background-image: url("{{ asset('website/assets/img/bg1141.jpg') }}"); /* Replace 'your-image-path.jpg' with the path to your background image */
+    background-size: cover; /* Adjust as needed, 'cover' makes the image cover the entire container */
+    background-position: center; /* Adjust as needed, 'center' centers the image horizontally and vertically */
+    background-repeat: no-repeat; /* Prevent the background image from repeating */
+}
 </style>
-<div class="breadcrumb-section breadcrumb-bg">
+<div class="breadcrumb-section breadcrumb-bgg">
 	<div class="container">
 		<div class="row py-4">
 			<div class="col-lg-8 offset-lg-2 text-center">
@@ -34,7 +37,11 @@
 						<i class="fas fa-star" style="color: #fd7e14"></i>
 						<i class="fas fa-star" style="color: #fd7e14"></i>
 					</span>
-					<h5 class="text-uppercase mt-1">CLOSED until Mon 14:00</h5>
+                    @if($timer == 1)
+					<h5 class="text-uppercase mt-1">Closed until {{$end_timer}}</h5>
+                    @else
+					<h5 class="text-uppercase mt-1">Closed</h5>
+                    @endif
 				</div>
 			</div>
 		</div>
@@ -59,7 +66,9 @@
 					</div>
 					<h3 class="mx-3" style="font-weight: 500; text-transform: capitalize;">{{$data['name']}}</h3>
 					<p class="product-price"> £{{$data['price']}} </p>
-					<button type="button" role="button" id="addcart{{$data->id}}" class="boxed-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
+                    @if($timer == 1)
+					    <button type="button" role="button" id="addcart{{$data->id}}" class="boxed-btn">Add to Cart <i class="fas fa-shopping-cart"></i></button>
+                    @endif
 				</div>
 				</a>
 			</div>

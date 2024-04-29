@@ -54,19 +54,27 @@ class CheckoutController extends Controller
         );
         }
         $cart = Cart::where('user_id',Auth()->user()->id)->get();
+        $latestId = Order::latest()->first();
+        $latest_id = 1;
+        if($latestId){
+            $latest_id = $latestId['id'];
+        }
         $sub_total = 0;
         foreach($cart as $item){
             $sub_total += $item->quantity * $item->unit_price;
         }
+        $orderFormat = Carbon::now()->format('my');
+        $orderFormat1 = 313000;
         $total = $sub_total;
         $order = new Order;
         $order->name = $request->name;
         $order->email = $request->email;
         $order->phone = $request->phone;
         $order->address = $request->address;
-        $order->order_no = 'Order'.random_int(1000, 9999);
+        // $order->order_no = 'Order'.random_int(1000, 9999);
+        $order->order_no = $orderFormat1.''.$latest_id;
         $order->order_place_date = Carbon::now()->format('Y-m-d');
-        $order->status = 'preparing';
+        $order->status = 'pending';
         $order->payment_type = $request->paymentMethod;
         $order->user_id = Auth()->user()->id;
 

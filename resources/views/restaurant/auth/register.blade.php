@@ -43,8 +43,10 @@
                                 <form class="user" action="{{ route('restaurants.register') }}" method="POST">
                                     @csrf
 
-                                    <div class="form-group mb-3">
-                                        <input type="text" class="form-control form-control-user @error('name') is-invalid @enderror"
+                                    <div class="row my-3">
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                            <input type="text" class="form-control form-control-user @error('name') is-invalid @enderror"
                                                id="exampleInputName" aria-describedby="nameHelp" name="name" value="{{ old('name') }}"
                                                required autocomplete="name" autofocus
                                                placeholder="Enter Name...">
@@ -53,10 +55,11 @@
                                             <strong>{{ $message }}</strong>
                                         </span>
                                         @enderror
-                                    </div>
-
-                                    <div class="form-group mb-3">
-                                        <input type="email" class="form-control form-control-user @error('email') is-invalid @enderror"
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                            <input type="email" class="form-control form-control-user @error('email') is-invalid @enderror"
                                                id="exampleInputEmail" aria-describedby="emailHelp" name="email" value="{{ old('email') }}"
                                                required autocomplete="email"
                                                placeholder="Enter Email Address...">
@@ -65,6 +68,20 @@
                                             <strong>{{ $message }}</strong>
                                         </span>
                                         @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row my-3">
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <input type="text" required id="latitude" placeholder="Latitude" class="form-control form-control-user" name="latitude" autocomplete="latitude">
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <input type="text" required id="longitude" placeholder="Longitude" class="form-control form-control-user" name="longitude" autocomplete="longitude">
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="form-group mb-3">
                                         <input type="password" class="form-control form-control-user @error('password') is-invalid @enderror"
@@ -112,6 +129,20 @@
 
 <!-- Custom scripts for all pages-->
 <script src="{{ asset('assets/admin/js/sb-admin-2.min.js') }}"></script>
+<script>
+    if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(function (position) {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+            var inputElement = document.getElementById("latitude");
+            inputElement.value = latitude;
+            var inputElement1 = document.getElementById("longitude");
+            inputElement1.value = longitude;
+        });
+    } else {
+        alert("Geolocation is not available in your browser.");
+    }
+</script>
 
 </body>
 

@@ -43,11 +43,28 @@
                 </div>
 
                 <div class="row mt-3">
+                    <div class="col-md-6">
+                        <label>Latitude</label>
+                        <div class="d-flex position-relative justify-content-end">
+                            <input type="text" name="latitude" id="latitude" class="form-control" placeholder="Latitude" value="{{$restaurant->latitude}}">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Longitude</label>
+                            <div class="d-flex position-relative justify-content-end">
+                                <input type="text" name="longitude" id="longitude" class="form-control" placeholder="Longitude" value="{{$restaurant->longitude}}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-3">
 
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Profile Image</label>
-                            <input type="file" name="image" id="customFileEg1" class="form-control" onchange="loadFile(event)">
+                            <input type="file" name="image" id="customFileEg1" class="form-control py-1" onchange="loadFile(event)">
 
                         </div>
                     </div>

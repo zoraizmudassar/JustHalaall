@@ -22,15 +22,31 @@
 											<div class="row my-3">
 												<div class="col-lg-6 my-2">
 													<p>
-														<input name="name" type="text" placeholder="Name">
-														@if($errors->has('name'))
-															<span class="badge displayBadges py-2 text-light mt-2" style="background: #cd3f3f; display: block; font-size: 13px !important;">{{$errors->first('name')}}</span>
+														<input name="first_name" type="text" placeholder="First Name" value="{{ old('first_name') }}" required>
+														@if($errors->has('first_name'))
+															<span class="badge displayBadges py-2 text-light mt-2" style="background: #cd3f3f; display: block; font-size: 13px !important;">{{$errors->first('first_name')}}</span>
 														@endif
 													</p>
 												</div>
 	                                            <div class="col-lg-6 my-2">
 													<p>
-														<input name="address" type="text" placeholder="Address">
+														<input name="middle_name" type="text" placeholder="Middle Name" value="{{ old('middle_name') }}" required>
+														@if($errors->has('middle_name'))
+															<span class="badge displayBadges py-2 text-light mt-2" style="background: #cd3f3f; display: block; font-size: 13px !important;">{{$errors->first('middle_name')}}</span>
+														@endif
+													</p>
+												</div>
+												<div class="col-lg-6 my-2">
+													<p>
+														<input name="last_name" type="text" placeholder="Last Name" value="{{ old('last_name') }}" required>
+														@if($errors->has('last_name'))
+															<span class="badge displayBadges py-2 text-light mt-2" style="background: #cd3f3f; display: block; font-size: 13px !important;">{{$errors->first('last_name')}}</span>
+														@endif
+													</p>
+												</div>
+	                                            <div class="col-lg-6 my-2">
+													<p>
+														<input name="address" type="text" placeholder="Address" value="{{ old('address') }}" required>
 														@if($errors->has('address'))
 															<span class="badge displayBadges py-2 text-light mt-2" style="background: #cd3f3f; display: block; font-size: 13px !important;">{{$errors->first('address')}}</span>
 														@endif
@@ -38,7 +54,15 @@
 												</div>
 												<div class="col-lg-6 my-2">
 													<p>
-														<input name="email" type="email" placeholder="Email">
+														<input name="postal_code" type="number" placeholder="Postal Code" value="{{ old('postal_code') }}" required>
+														@if($errors->has('postal_code'))
+															<span class="badge displayBadges py-2 text-light mt-2" style="background: #cd3f3f; display: block; font-size: 13px !important;">{{$errors->first('postal_code')}}</span>
+														@endif
+													</p>
+												</div>
+												<div class="col-lg-6 my-2">
+													<p>
+														<input name="email" type="email" placeholder="Email" value="{{ old('email') }}" required>
 														@if($errors->has('email'))
 															<span class="badge displayBadges py-2 text-light mt-2" style="background: #cd3f3f; display: block; font-size: 13px !important;">{{$errors->first('email')}}</span>
 														@endif
@@ -46,7 +70,7 @@
 												</div>
 												<div class="col-lg-6 my-2">
 													<p>
-														<input name="phone" type="text" placeholder="Phone No">
+														<input name="phone" type="text" placeholder="Phone No" value="{{ old('phone') }}" required>
 														@if($errors->has('phone'))
 															<span class="badge displayBadges py-2 text-light mt-2" style="background: #cd3f3f; display: block; font-size: 13px !important;">{{$errors->first('phone')}}</span>
 														@endif
@@ -54,15 +78,15 @@
 												</div>
 												<div class="col-lg-6 my-2">
 													<p>
-														<input name="password" type="password" placeholder="Password">
+														<input name="password" type="password" placeholder="Password" value="{{ old('password') }}" required>
 														@if($errors->has('password'))
 															<span class="badge displayBadges py-2 text-light mt-2" style="background: #cd3f3f; display: block; font-size: 13px !important;">{{$errors->first('password')}}</span>
 														@endif
 													</p>
 												</div>
-												<div class="col-lg-6 my-2">
+												<div class="col-lg-6 my-2" hidden>
 													<p>
-														<input name="password_confirmation" type="password" placeholder="Confirm Password">
+														<input name="password_confirmation" type="password" placeholder="Confirm Password" value="{{ old('password_confirmation') }}">
 														@if($errors->has('password_confirmation'))
 															<span class="badge displayBadges py-2 text-light mt-2" style="background: #cd3f3f; display: block; font-size: 13px !important;">{{$errors->first('password_confirmation')}}</span>
 														@endif
@@ -77,7 +101,7 @@
 												<!--	</p>-->
 												<!--</div>-->
 											</div>																			
-											<button type="submit" class="boxed-btn">Register</button><a href="{{url('loginv1')}}" class="text-dark ml-2">Already have an account?</a>
+											<button type="submit" class="boxed-btn px-5">Register</button><a href="{{url('loginv1')}}" class="text-dark ml-2"> <b>Already have an account?</b></a>
 										</form>
 									</div>
 								</div>

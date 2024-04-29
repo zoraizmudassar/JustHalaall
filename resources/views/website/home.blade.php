@@ -173,7 +173,7 @@
 		</div>
 		<div class="row">
 		    @foreach($foodCategory as $category)
-			<div class="col-lg-4 col-md-6 text-center my-3">
+			<div class="col-lg-3 col-md-6 text-center my-3">
 				<a href="{{ url('categoryproductsv1/'.$category->id) }}">
 					<div class="single-product-item h-100 zoom">
 						<div class="product-image">
@@ -198,7 +198,7 @@
 		</div>
 		<div class="row">
 		    @foreach($resturant as $data)
-			<div class="col-lg-4 col-md-6 text-center my-3">
+			<div class="col-lg-3 col-md-6 text-center my-3">
 				<a href="{{ url('restaurant-detailv1/'.$data->id) }}">
 					<div class="single-product-item h-100 zoom">
 						<div class="product-image">
@@ -212,12 +212,59 @@
 		</div>
 	</div>
 </div>
+
+<div class="product-section mt-150 mb-150">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="product-filters">
+					<ul>
+						<?php $static = 999; ?>
+						<li class="active CatClick" data-id={{$static}} data-filter="*">All</li>
+						@foreach($foodCategory as $category)
+							<li class="CatClick" data-id="{{$category['id']}}" data-filter=".{{ $category['id'] }}">{{ $category['name'] }}</li>
+						@endforeach
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="row product-lists">
+			@foreach($products as $data)
+				<div class="col-lg-4 col-md-6 text-center {{$data['category_id']}}">
+					<a data-id="{{json_encode($data)}}" class="detail">
+						<div class="single-product-item h-100 zoom">
+							<div class="product-image">
+								<img src="{{asset($data->images)}}" alt="">
+							</div>
+							<h3 class="mb-0" style="font-weight: 500; text-transform: capitalize;">{{$data->name}}</h3>
+							<h6 style="font-weight: 500; text-transform: capitalize;">{{$data->category->name}}</h6>
+							<p class="product-price"> £{{$data->price}} </p>
+							<button type="button" role="button" id="addcart{{$data->id}}" class="boxed-btn">Add to Cart <i class="fas fa-shopping-cart"></i></button>
+						</div>
+					</a>
+				</div>
+			@endforeach
+		</div>
+		<div class="row">
+			<div class="col-lg-5 text-center"></div>
+    		<div class="col-lg-2 text-center">
+				<div class="pagination-wrap text-center">
+					<ul class="pagination" style="text-align: center !important;"></ul>
+				</div>
+			</div>
+			<div class="col-lg-5 text-center"></div>
+		</div>
+	</div>
+</div>
+
 <div class="product-section mt-150 mb-150">
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-8 offset-lg-2 text-center">
 				<div class="section-title">	
 					<h3><span class="orange-text">Featured</span> Products</h3>
+					<button hidden id="get-location-button">Get Location</button>
+    				<p hidden id="location-display"></p>
 				</div>
 			</div>
 		</div>
@@ -231,7 +278,7 @@
 						</div>
 						<h3 style="font-weight: 500; text-transform: capitalize;">{{$data['name']}}</h3>
 						<p class="product-price"> £{{$data['price']}} </p>
-						<button type="button" role="button" id="addcart{{$data->id}}" class="boxed-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
+						<button type="button" role="button" id="addcart{{$data->id}}" class="boxed-btn">Add to Cart <i class="fas fa-shopping-cart"></i></button>
 					</div>
 				</a>
 			</div>
@@ -258,7 +305,7 @@
 						</div>
 						<h3 style="font-weight: 500; text-transform: capitalize;">{{$data['name']}}</h3>
 						<p class="product-price"> £{{$data['price']}} </p>
-						<button hidden type="button" role="button" id="addcart{{$data->id}}" class="boxed-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
+						<button hidden type="button" role="button" id="addcart{{$data->id}}" class="boxed-btn">Add to Cart <i class="fas fa-shopping-cart"></i></button>
 					</div>
 				</a>
 			</div>
@@ -286,7 +333,7 @@
 				<h4>Hikan Strwaberry</h4>
 				<div class="text">Quisquam minus maiores repudiandae nobis, minima saepe id, fugit ullam similique! Beatae, minima quisquam molestias facere ea. Perspiciatis unde omnis iste natus error sit voluptatem accusant</div>
 				<div class="time-counter"><div class="time-countdown clearfix" data-countdown="2020/2/01"><div class="counter-column"><div class="inner"><span class="count">00</span>Days</div></div> <div class="counter-column"><div class="inner"><span class="count">00</span>Hours</div></div>  <div class="counter-column"><div class="inner"><span class="count">00</span>Mins</div></div>  <div class="counter-column"><div class="inner"><span class="count">00</span>Secs</div></div></div></div>
-				<a href="#" class="cart-btn mt-3"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+				<a href="#" class="cart-btn mt-3">Add to Cart <i class="fas fa-shopping-cart"></i></a>
 			</div>
 		</div>
 	</div>
@@ -435,6 +482,21 @@
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+	document.getElementById('get-location-button').addEventListener('click', () => {
+    if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(function (position) {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+            const locationDisplay = document.getElementById('location-display');
+            locationDisplay.textContent = `Latitude: ${latitude}, Longitude: ${longitude}`;
+        });
+    } else {
+        alert("Geolocation is not available in your browser.");
+    }
+});
+</script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script>
 jQuery( document ).ready(function() {
     $('form input').focus(function(){

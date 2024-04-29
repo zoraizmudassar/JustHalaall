@@ -52,13 +52,17 @@ class RegisterController extends Controller
     public function sendFailedRegisterResponse(array $data)
     {
         $errors =  Validator::make($data, [
-            'name' => ['required', 'string'],
+            // 'name' => ['required', 'string'],
+            'first_name' => ['required', 'string'],
+            // 'middle_name' => ['required', 'string'],
+            'last_name' => ['required', 'string'],
+            'postal_code' => ['required', 'string'],
             'email' => ['required', 'string', 'email', 'unique:users'],
             'phone' => ['required', 'unique:users'],
             // 'image' => ['required'],
             'address' => ['required'],
             'password' => ['required', 'min:6'],
-            'password_confirmation' => ['required_with:password', 'same:password', 'min:6']
+            // 'password_confirmation' => ['required_with:password', 'same:password', 'min:6']
         ]);
         return $errors;
     }
@@ -66,7 +70,10 @@ class RegisterController extends Controller
     public function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
+            'first_name' => ['required', 'string', 'max:255'],
+            // 'middle_name' => ['required', 'string', 'max:255'],
+            'last_name' => ['required', 'string', 'max:255'],
+            'postal_code' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
@@ -81,7 +88,11 @@ class RegisterController extends Controller
     public function create(Request $request)
     {
         $customMsgs = [
-            'name.required' => 'Please Provide Name',
+            // 'name.required' => 'Please Provide Name',
+            'first_name.required' => 'Please Provide First Name',
+            // 'middle_name.required' => 'Please Provide Middle Name',
+            'last_name.required' => 'Please Provide Last Name',
+            'postal_code.required' => 'Please Provide Postal Code',
             'email.required' => 'Please Provide Email',
             'phone.required' => 'Please Provide Phone',
             // 'image.required' => 'Please upload profile image',
@@ -90,13 +101,17 @@ class RegisterController extends Controller
         ];
         $validator = Validator::make($request->all(),
             [
-                'name' => 'required',
+                // 'name' => 'required',
+                'first_name' => 'required',
+                // 'middle_name' => 'required',
+                'last_name' => 'required',
+                'postal_code' => 'required',
                 'email' => 'required|email|unique:users',
                 'phone' => 'required|unique:users',
                 // 'image' => 'required',
                 'address' => 'required',
                 'password' => 'required|min:6',
-                'password_confirmation' => 'required_with:password|same:password|min:6'
+                // 'password_confirmation' => 'required_with:password|same:password|min:6'
             ], $customMsgs
         );
 
@@ -136,7 +151,11 @@ class RegisterController extends Controller
 
         if($request->has('email') && $request->has('password')){
             $user = User::create([
-                'name' => $request->name,
+                'name' => $request->first_name . ' ' . $request->middle_name . ' ' . $request->last_name,
+                'first_name' => $request->first_name,
+                'middle_name' => $request->middle_name ? $request->middle_name : '',
+                'last_name' => $request->last_name,
+                'postal_code' => $request->postal_code,
                 'email' => $request->email,
                 'phone' => $request->phone,
                 'image' => $path,
@@ -164,11 +183,12 @@ class RegisterController extends Controller
     public function logout()
     {
         Auth::logout();
-        $notification = array(
-            'message' => "You have been logged out",
-            'alert-type' => 'success'
-        );
+        // $notification = array(
+        //     'message' => "You have been logged out",
+        //     'alert-type' => 'success'
+        // );
         // return back()->with('success' , $notification);
-        return redirect('/loginv1')->with($notification);
+        // return redirect('/homev1')->with($notification);
+        return redirect('/homev1');
     }
 }

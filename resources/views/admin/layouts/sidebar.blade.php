@@ -102,6 +102,20 @@
             </div>
         </div>
     </li>
+
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsereport" aria-expanded="true" aria-controls="collapseTwo">
+            <i class="fas fa-file-alt"></i>
+            <span> Reports</span>
+        </a>
+        <div id="collapsereport" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Report Components:</h6>
+                <a class="collapse-item" href="{{route('admin.report.restaurant')}}">Restaurant</a>
+                <a class="collapse-item" href="{{route('admin.report.week')}}">Weekly Report</a>
+            </div>
+        </div>
+    </li>
     <!-- Divider -->
 {{--    <hr class="sidebar-divider d-none d-md-block">--}}
 

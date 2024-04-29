@@ -5,14 +5,20 @@
 .breadcrumb-bg {
   	background-image: url(website/assets/img/breadcrumb-bg.jpg);
 }
+.breadcrumb-bgg {
+	background-image: url('website/assets/img/checkout3.jpg'); /* Replace 'your-image-path.jpg' with the path to your background image */
+	background-size: cover; /* Adjust as needed, 'cover' makes the image cover the entire container */
+	background-position: center; /* Adjust as needed, 'center' centers the image horizontally and vertically */
+	background-repeat: no-repeat; /* Prevent the background image from repeating */
+}
 </style>
-<div class="breadcrumb-section breadcrumb-bg">
+<div class="breadcrumb-section breadcrumb-bg breadcrumb-bgg">
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-8 offset-lg-2 text-center">
 				<div class="breadcrumb-text">
 					<p>Fresh and Organic</p>
-					<h1>Check Out Product</h1>
+					<h1>Check Out</h1>
 				</div>
 			</div>
 		</div>

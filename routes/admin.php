@@ -32,6 +32,17 @@ Route::namespace('Admin')->prefix('admin')->as('admin.')->group(function () {
         Route::post('/change-status', [\App\Http\Controllers\Admin\Restaurant\RestaurantsController::class, 'changeStatus'])->name('changeStatus');
     });
 
+    // reports routes
+    Route::namespace('Restaurant')->prefix('reports')->as('report.')->group(function () {
+        Route::get('/restaurant', [\App\Http\Controllers\Admin\Restaurant\RestaurantsController::class, 'restaurant'])->name('restaurant');
+        Route::get('/week', [\App\Http\Controllers\Admin\Restaurant\RestaurantsController::class, 'week'])->name('week');
+        Route::get("report-detail/{id}", [\App\Http\Controllers\Admin\Restaurant\RestaurantsController::class, "report"])->name('report-detail');
+        Route::get("weekly-detail/{start}/{end}/{id}", [\App\Http\Controllers\Admin\Restaurant\RestaurantsController::class, "weeklyReport"])->name('weekly-detail');
+        Route::post("weekData", [\App\Http\Controllers\Admin\Restaurant\RestaurantsController::class, "weeklyReportData"])->name('weekData'); 
+
+        Route::post('/change-status', [\App\Http\Controllers\Admin\Restaurant\RestaurantsController::class, 'changeStatus1'])->name('changeStatus');
+    });
+
     // Users routes
     Route::namespace('User')->prefix('users')->as('user.')->group(function () {
         Route::get('/form', [\App\Http\Controllers\Admin\User\UsersController::class, 'form'])->name('form');
