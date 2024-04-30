@@ -80,7 +80,7 @@ class HomeController extends Controller
     }
 
     public function categoryProductsv1($categoryId){
-        $categoryProducts=Product::where(['category_id'=>$categoryId, 'status'=>'approved'])->with('category')->get();
+        $categoryProducts=Product::where(['category_id'=>$categoryId, 'status'=>'approved'])->with('category', 'restaurant')->get();
         $categoryName = Category::find($categoryId);
         $categoryName = $categoryName['name'];
         return view('website.categoryProduct', compact('categoryProducts','categoryName'));

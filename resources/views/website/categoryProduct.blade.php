@@ -45,6 +45,9 @@
 						<div class="product-image">
 							<img src="{{asset($category->images)}}" alt="">
 						</div>
+                        <a href="{{ url('restaurant-detailv1/'.$category['restaurant']['id']) }}">
+                            <button type="button" role="button" id="addcart{{$category->id}}" class="boxed-btn py-0 mb-2">{{$category['restaurant']['name']}} </button>
+                        </a>
 						<h3 style="font-weight: 500; text-transform: capitalize;">{{$category['name']}}</h3>
 						<p class="product-price"> £{{$category['price']}} </p>
 						<button type="button" role="button" id="addcart{{$category->id}}" class="boxed-btn">Add to Cart <i class="fas fa-shopping-cart"></i></button>

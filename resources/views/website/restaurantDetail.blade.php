@@ -16,6 +16,169 @@
     background-position: center; /* Adjust as needed, 'center' centers the image horizontally and vertically */
     background-repeat: no-repeat; /* Prevent the background image from repeating */
 }
+/*--------------------------------
+Menu Page
+-----------------------------------*/
+
+.menu-section {
+  margin: 0 auto;
+  display: block;
+  width: 100%;
+  max-width: 1200px;
+  padding-top:5px;
+}
+
+.menu-list {
+  float: left;
+  /* width: 49%; */
+  margin-right: 10px;
+  padding-bottom:25px;
+}
+
+.page-template-menu-template .interior-cta-background {
+  display: inline-block;
+  width: 100%;
+  background: #ccc;
+  text-align: center;
+  margin-top: -114px;
+  padding: 150px 30px;
+  background-repeat: no-repeat;
+  color: #ffffff;
+  background-size: cover;
+  background-position: center center;
+}
+
+.page-template-menu-template .site-header li a {
+  color: #fff;
+}
+
+.menu-list hr {
+  margin: 36px 0
+}
+
+.menu-list span.dots {
+  position: absolute;
+  top: 12px;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  margin: 0;
+  border: 0;
+  height: 3px;
+  display: block;
+  background-image: radial-gradient(circle closest-side, #b3b3b3 99%, transparent 1%);
+  background-position: bottom;
+  background-size: 6px 3px;
+  background-repeat: repeat-x
+}
+
+.menu-list__title {
+  text-align: left;
+  text-transform: uppercase;
+  letter-spacing: 1.85px;
+  font-weight: 600;
+}
+
+.menu-list__item {
+  position: relative;
+  margin-bottom: 30px;
+  list-style: none;
+}
+
+.menu-list__item:last-child {
+  margin-bottom: 0
+}
+
+.menu-list__item-title {
+  position: relative;
+  margin-top: 0;
+  margin-bottom: 5px;
+  padding-right: 96px;
+  text-align: left;
+  letter-spacing: 1.25px;
+}
+
+.menu-list__item-title .item_title {
+  position: relative;
+  z-index: 5;
+  background-color: white;
+  font-size: 20px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+p.menu-list__item-desc {
+  position: relative;
+  margin-bottom: 0;
+  text-align: left
+}
+
+p.menu-list__item-desc+span.dots {
+  display: none
+}
+
+.desc__content {
+  position: relative;
+  z-index: 5;
+  background-color: white
+}
+
+.menu-list__item-price {
+  position: absolute;
+  top: -2px;
+  right: 0;
+  z-index: 1;
+  max-width: 96px;
+  background-color: white;
+  font-size: 19px;
+  font-size: 1.1875rem;
+  line-height: 1.27316;
+  font-weight: bold;
+  /* font-size: 15px; */
+}
+
+.menu-list__item-price p {
+  color: #e3b379;
+  font-size: 17px;
+  font-family: 'Source Sans Pro', Arial;
+}
+
+.menu-list__item-highlight-title {
+  position: absolute;
+  top: -38px;
+  left: -18px;
+  padding: 0 18px;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.250em;
+  color: white;
+  background-color: #c59d5f
+}
+
+.menu-list__item-highlight-wrapper {
+  margin-top: 54px;
+  margin-bottom: 38px
+}
+
+.menu-list__item-highlight-wrapper:before {
+  content: '';
+  position: absolute;
+  top: -18px;
+  left: -18px;
+  right: -18px;
+  bottom: -18px;
+  border: 2px solid #c59d5f
+}
+
+@media(max-width:1000px) {
+  .menu-list {
+    display:block;
+    margin:0 auto;
+    float: none;
+    width: 100%;
+    max-width:95%;
+  }
+}
 </style>
 <div class="breadcrumb-section breadcrumb-bgg">
 	<div class="container">
@@ -23,6 +186,7 @@
 			<div class="col-lg-8 offset-lg-2 text-center">
 				<div class="breadcrumb-text">
 					<h1 style="text-transform: capitalize;">About {{$restaurantDetail[0]->name}}</h1>
+                    <button type="button" data-toggle="modal" data-target="#exampleModal" class="boxed-btn mt-2">Restaurant Menu  <i class="fas fa fa-bars"></i></button>
 				</div>
 			</div>
 		</div>
@@ -115,6 +279,55 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Restaurant Menu</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <section class="interior-section-two menu-section">
+                    <div class="menu-list menu-list__dotted menu-list-1">
+                        <h4 class="text-center mb-0" style="text-transform: capitalize;">Embark on a Culinary Journey with Our Exquisite Array of Delicious Menu Offerings</h4>
+                        <hr style="margin: 20px 0;">
+                        <ul class="menu-list__items">
+                            @foreach($restaurantProducts as $index => $data)
+                                @if($index % 2 == 0)
+                                    <div class="row">
+                                @endif
+                                    <div class="col-6">
+                                        <li class="menu-list__item">
+                                            <h4 class="menu-list__item-title">
+                                                <span class="item_title">{{$data['name']}}</span>
+                                                <span class="dots"></span>
+                                            </h4>
+                                            <p class="menu-list__item-desc">
+                                                <span class="desc__content"></span></p><p>{{$data['description']}}</p>
+                                                <p></p> 
+                                                <span class="dots"></span>
+                                                <span class="menu-list__item-price"><p>£ {{$data['price']}}</p>
+                                            </span>
+                                        </li>
+                                    </div>
+                                @if(($index + 1) % 2 == 0 || $loop->last)
+                                    </div>
+                                @endif
+                            @endforeach
+                        </ul>
+                    </div>
+                </section>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>

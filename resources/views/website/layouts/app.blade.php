@@ -253,6 +253,37 @@ html {
 	.bg-faded, .bg-secondary {
 		background-color: #f5f5f5 !important;
 	}
+	marquee {
+		background: #f5efef;
+		border:5px solid #e67416;
+		padding: 12px 0px;
+		border-radius:10px;
+		color:#2b2b2b;
+		font-weight: bold;
+		font-size: 20px;
+		font-family: "Poppins", sans-serif;
+		position: relative;
+		overflow: hidden;
+		margin-top: 1%;
+	}
+	marquee:before, marquee:after {
+		position: absolute;
+		top: 0;
+		width: 10rem;
+		height: 100%;
+		content: "";
+		/*   z-index: -1; */
+	}
+	marquee:before {
+		left: 0;
+		width: 20px;
+		background: linear-gradient(to right, #FFEBEE -100%, transparent 100%);
+		}
+	marquee:after {
+		right: 0;
+		width: 20px;
+		background: linear-gradient(to left, #FFEBEE -100%, transparent 100%);
+	}
 </style>
 <body>
     <!-- <div class="loader">
@@ -283,7 +314,7 @@ html {
 								<li><a href="/productsv1">Products</a></li>
 								@auth
 								<li><a href="#">Shop</a>
-									<ul class="sub-menu">
+									<ul class="sub-menu" style="z-index: 999;">
 										<li><a href="/cartv1">Cart</a></li>
 										<li><a href="/checkoutv1">Checkout</a></li>
 									</ul>
@@ -324,7 +355,7 @@ html {
 									@auth
 									<li class="mt-2">
 										<a style="border: 2px solid white; border-radius: 30px;" href="#" class="dropdown-toggle py-2" data-toggle="dropdown"><i class='fas fa-user-alt mr-2'></i> {{auth()->user()->name}} <span class="caret"></span></a>
-										<ul class="sub-menu">
+										<ul class="sub-menu" style="z-index: 999;">
 											<li><a class="mobile-hide search-bar-icon w-100" href="#"> My Profile</a></li>
 											<li><a class="w-100" href="/ordersv1"> My Orders</a></li>
 											<li><a class="w-100" data-toggle="modal" data-target="#exampleModal"> Logout</a></li>
@@ -336,7 +367,7 @@ html {
 									@else
 									<li class="mt-2">
 										<a href="#" class="cart-btn mt-1 px-5 btn-outline-light" style="color: #fff; font-weight: 400; padding: 8px 20px; background-color: #F28123;">Login</a>
-										<ul class="sub-menu" style="position: relative; top: 10px;">
+										<ul class="sub-menu" style="position: relative; top: 10px; z-index: 999;">
 											<li><a href="{{url('loginv1')}}">User Login</a></li>
 											<li><a href="/restaurant/login">Restaurants Login</a></li>
 										</ul>
@@ -347,6 +378,7 @@ html {
 						</nav>
 						<a class="mobile-show search-bar-icon" href="#"><i class="fas fa-search"></i></a>
 						<div class="mobile-menu"></div>
+						<marquee behavior="" direction="left">The HTML marquee element is used to insert a scrolling area of text.</marquee>
 					</div>
 				</div>
 			</div>
