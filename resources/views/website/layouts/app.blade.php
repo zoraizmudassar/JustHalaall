@@ -378,7 +378,7 @@ html {
 						</nav>
 						<a class="mobile-show search-bar-icon" href="#"><i class="fas fa-search"></i></a>
 						<div class="mobile-menu"></div>
-						<marquee behavior="" direction="left">The HTML marquee element is used to insert a scrolling area of text.</marquee>
+						<marquee behavior="" direction="left">FInd your nearest (HMC approved) Halal Food within a Mile</marquee>
 					</div>
 				</div>
 			</div>

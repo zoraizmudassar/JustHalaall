@@ -102,7 +102,7 @@ class RestaurantServices
         $validator = Validator::make($request->all(),
             [
 //                'restaurant_id' => 'required',
-                'card_no' => 'required',
+                'card_no' => 'required|length:16',
                 'card_expiry' => 'required|date_format:m/Y|after:yesterday',
                 'security_code' => 'required|max:3',
                 'first_name' => 'required|string',
@@ -114,13 +114,34 @@ class RestaurantServices
             return response()->json(['status' => 406, 'message' => $validator->messages()->first()], 406);
         }
 
-        $account = AccountDetail::where('restaurant_id',Auth::id())->first();
-//        dd($account);
-        if(isset($account)){
-            return response()->json(['status'=> 200, 'message' => 'You have Already Add Details']);
-        }
+//         $restaurant = Restaurant::where('id',Auth::id())->first();
+// //        dd($account);
+//         if(isset($account)){
+//             return response()->json(['status'=> 200, 'message' => 'You have Already Add Details']);
+//         }
 
 //       $date =  explode('/',$request->card_expiry);
+
+        $data = AccountDetail::updateOrCreate(
+            ['restaurant_id' =>Auth::id()],
+            [
+                'card_no'=>$request->card_no,
+                'card_expiry'=>$request->card_expiry,
+                'security_code'=>$request->security_code,
+                'first_name'=>$request->first_name,
+                'last_name'=>$request->last_name,
+            ]
+        );
+
+        $isCreated = $data->wasRecentlyCreated ? 1 : 0;
+        
+        if ($isCreated == 1) {
+            return response()->json(['status'=>200,'message'=>"Account Details Added Successfully"],200);
+
+        } else {
+            return response()->json(['status'=>200,'message'=>"Account Details Updatdd Successfully"],200);
+        }
+
 
         AccountDetail::create([
             'restaurant_id'=>Auth::id(),
@@ -132,9 +153,15 @@ class RestaurantServices
 //            'first_name'=>$request->first_name,
         ]);
 
-        return response()->json(['status'=>200,'message'=>"Account Details Added Successfully"],200);
 
 
+
+    }
+
+    public function getAccountDetails($request)
+    {
+        $data = AccountDetail::where('restaurant_id', Auth::id())->first();
+        return response()->json(['status'=>200,'data'=> $data],200);
 
     }
 

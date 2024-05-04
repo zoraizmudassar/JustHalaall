@@ -22,5 +22,10 @@ class RestaurantController extends Controller
     public function accountDetails(Request $request,RestaurantServices $restaurantServices)
     {
         return $restaurantServices->accountDetails($request);
-  }
+    }
+
+    public function getAccountDetails(Request $request,RestaurantServices $restaurantServices)
+    {
+        return $restaurantServices->getAccountDetails($request);
+    }
 }

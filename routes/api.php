@@ -31,6 +31,7 @@ Route::namespace('API\Restaurant')->prefix('restaurant')->as('restaurant.')->mid
         Route::post('get-profile', [\App\Http\Controllers\API\Restaurant\RestaurantController::class, 'getProfile'])->name('getProfile');
         Route::post('edit-profile', [\App\Http\Controllers\API\Restaurant\RestaurantController::class, 'editProfile'])->name('editProfile');
         Route::post('account-details', [\App\Http\Controllers\API\Restaurant\RestaurantController::class, 'accountDetails'])->name('accountDetails');
+        Route::get('get-account-details', [\App\Http\Controllers\API\Restaurant\RestaurantController::class, 'getAccountDetails'])->name('getAccountDetails');
         Route::post('add-product', [\App\Http\Controllers\API\Restaurant\ProductController::class, 'addProduct'])->name('addProduct');
         Route::get('delete-product', [\App\Http\Controllers\API\Restaurant\ProductController::class, 'deleteProduct'])->name('deleteProduct');
         Route::post('edit-product', [\App\Http\Controllers\API\Restaurant\ProductController::class, 'editProduct'])->name('editProduct');
